@@ -1,0 +1,33 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core"
+           xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugMeasure"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugMeasure"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:complexType name="PerformanceInfoLine">
+        <xs:sequence>
+            <xs:element name="lineNo" type="xs:decimal"/>
+            <xs:element name="frequency" type="xs:decimal"/>
+            <xs:element name="durability" type="xs:decimal"/>
+            <xs:element name="pureDurability" type="xs:decimal"/>
+            <xs:element name="serverCallSignal" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PerformanceInfoMain">
+        <xs:sequence>
+            <xs:element name="targetID" type="ns2:DebugTargetId"/>
+            <xs:element name="totalDurability" type="xs:decimal"/>
+            <xs:element name="totalIndepServerWorkTime" type="xs:decimal"/>
+            <xs:element name="performanceFrequency" type="xs:decimal"/>
+            <xs:element name="moduleData" type="tns:PerformanceInfoModule" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="sessionID" type="ns1:UUID"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PerformanceInfoModule">
+        <xs:sequence>
+            <xs:element name="moduleID" type="ns2:BSLModuleIdInternal"/>
+            <xs:element name="lineInfo" type="tns:PerformanceInfoLine" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

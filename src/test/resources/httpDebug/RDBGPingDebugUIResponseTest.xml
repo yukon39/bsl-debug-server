@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+          xmlns:bsch="http://v8.1c.ru/8.2/data/bsl"
+          xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+          xmlns:debugBreakpoints="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+          xmlns:debugCalculations="http://v8.1c.ru/8.3/debugger/debugCalculations"
+          xmlns:debugDBGUICommands="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+          xmlns:debugMeasure="http://v8.1c.ru/8.3/debugger/debugMeasure"
+          xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+          xmlns:debugRTEInfo="http://v8.1c.ru/8.3/debugger/debugRTEInfo"
+          xmlns:v8="http://v8.1c.ru/8.1/data/core"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoStarted">
+        <debugDBGUICommands:cmdIDNum>1</debugDBGUICommands:cmdIDNum>
+        <debugDBGUICommands:cmdID>targetStarted</debugDBGUICommands:cmdID>
+        <debugDBGUICommands:targetID>
+            <id>0e215a1d-5230-42db-85f2-ca373357f81f</id>
+            <seanceId>fdbd8b88-8a7f-4674-8f4f-945cbefe90f5</seanceId>
+            <seanceNo>2</seanceNo>
+            <infoBaseInstanceID>1945345b-e6a5-4183-ac6e-a6cf4e6085ed</infoBaseInstanceID>
+            <infoBaseAlias>DefAlias</infoBaseAlias>
+            <isServerInfoBase>undefined</isServerInfoBase>
+            <configVersion>e6fd5c7d56a8824bbf34499f7696645f00000000</configVersion>
+            <targetType>ManagedClient</targetType>
+        </debugDBGUICommands:targetID>
+    </debugRDBGRequestResponse:result>
+    <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoQuit">
+        <debugDBGUICommands:cmdIDNum>2</debugDBGUICommands:cmdIDNum>
+        <debugDBGUICommands:cmdID>targetQuit</debugDBGUICommands:cmdID>
+        <debugDBGUICommands:targetID>
+            <id>fb7a44a9-2d52-4f4d-bce4-fa2e9688fbe9</id>
+            <seanceId>fdbd8b88-8a7f-4674-8f4f-945cbefe90f5</seanceId>
+            <seanceNo>2</seanceNo>
+            <infoBaseInstanceID>1945345b-e6a5-4183-ac6e-a6cf4e6085ed</infoBaseInstanceID>
+            <infoBaseAlias>DefAlias</infoBaseAlias>
+            <isServerInfoBase>undefined</isServerInfoBase>
+            <configVersion>e6fd5c7d56a8824bbf34499f7696645f00000000</configVersion>
+            <targetType>ServerEmulation</targetType>
+        </debugDBGUICommands:targetID>
+    </debugRDBGRequestResponse:result>
+    <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoCallStackFormed">
+        <debugDBGUICommands:cmdIDNum>7</debugDBGUICommands:cmdIDNum>
+        <debugDBGUICommands:cmdID>callStackFormed</debugDBGUICommands:cmdID>
+        <debugDBGUICommands:targetID>
+            <id>c1b80dce-9bb7-4f2c-9e08-e9284eb8d561</id>
+            <seanceId>664fbf3c-6438-4434-8426-7cf030e40175</seanceId>
+            <seanceNo>2</seanceNo>
+            <infoBaseInstanceID>9be75f16-976d-44ad-89d4-46e3978f5dcd</infoBaseInstanceID>
+            <infoBaseAlias>DefAlias</infoBaseAlias>
+            <isServerInfoBase>undefined</isServerInfoBase>
+            <configVersion>c0a10f2bf1e33d4ca6ce466e292c695c00000000</configVersion>
+            <targetType>ServerEmulation</targetType>
+        </debugDBGUICommands:targetID>
+        <debugDBGUICommands:stopByBP>false</debugDBGUICommands:stopByBP>
+        <debugDBGUICommands:callStack>
+            <moduleIDStr></moduleIDStr>
+            <moduleID>
+                <objectID>c38631d8-25e7-4405-b9e2-1132fe9eb470</objectID>
+                <propertyID>32e087ab-1491-49b6-aba7-43571b41ac2b</propertyID>
+                <extId>1</extId>
+                <version>e0cd790848ab0c459cd3458e5132d90b00000000</version>
+            </moduleID>
+            <lineNo>5</lineNo>
+            <presentation>0KHQv9GA0LDQstC+0YfQvdC40Lou0KHQv9GA0LDQstC+0YfQvdC40LoxLtCk0L7R gNC80LAu0KTQvtGA0LzQsNCt0LvQtdC80LXQvdGC0LAu0KTQvtGA0LzQsC7Qn9GA 0LjQodC+0LfQtNCw0L3QuNC40J3QsNCh0LXRgNCy0LXRgNC1KNCe0YLQutCw0Lcg PSDQm9C+0LbRjCwg0KHRgtCw0L3QtNCw0YDRgtC90LDRj9Ce0LHRgNCw0LHQvtGC 0LrQsCA9INCY0YHRgtC40L3QsCk=</presentation>
+        </debugDBGUICommands:callStack>
+    </debugRDBGRequestResponse:result>
+</response>

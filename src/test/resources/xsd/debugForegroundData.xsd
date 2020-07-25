@@ -1,0 +1,11 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.3/debugger/debugForegroundData"
+           elementFormDefault="qualified">
+    <xs:complexType name="ForegroundWindowData">
+        <xs:sequence>
+            <xs:element name="computerName" type="xs:string"/>
+            <xs:element name="hwndForeground" type="xs:string"/>
+            <xs:element name="managedWindow" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

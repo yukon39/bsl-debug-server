@@ -1,0 +1,40 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core"
+           xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugRTEInfo"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugRTEInfo"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:complexType name="CheckBPCondErrorInfo">
+        <xs:sequence>
+            <xs:element name="bpCondition" type="xs:string"/>
+            <xs:element name="exception" type="ns1:GenericException" minOccurs="0"/>
+            <xs:element name="moduleID" type="ns2:BSLModuleIdInternal" minOccurs="0"/>
+            <xs:element name="lineNo" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="ErrorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Unknown"/>
+            <xs:enumeration value="BSLCompile"/>
+            <xs:enumeration value="BSLRuntime"/>
+            <xs:enumeration value="BreakpointBSLCompile"/>
+            <xs:enumeration value="BreakpointBSLRuntime"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ErrorViewInfoData">
+        <xs:sequence>
+            <xs:element name="errorType" type="tns:ErrorType"/>
+            <xs:element name="exception" type="ns1:GenericException" minOccurs="0"/>
+            <xs:element name="moduleID" type="ns2:BSLModuleIdInternal" minOccurs="0"/>
+            <xs:element name="moduleName" type="xs:string"/>
+            <xs:element name="lineNo" type="xs:decimal"/>
+            <xs:element name="descr" type="xs:base64Binary"/>
+            <xs:element name="srcLine" type="xs:string"/>
+            <xs:element name="posInLine" type="xs:decimal"/>
+            <xs:element name="presentation" type="xs:base64Binary"/>
+            <xs:element name="longPresentation" type="xs:base64Binary"/>
+            <xs:element name="callStack" type="ns2:StackItemViewInfoData" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

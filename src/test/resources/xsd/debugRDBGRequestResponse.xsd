@@ -1,0 +1,480 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core"
+           xmlns:ns10="http://v8.1c.ru/8.3/debugger/debugArea"
+           xmlns:ns11="http://v8.1c.ru/8.3/debugger/debugCalculations"
+           xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:ns3="http://v8.1c.ru/8.3/debugger/debugRTEFilter"
+           xmlns:ns6="http://v8.1c.ru/8.3/debugger/debugAutoAttach"
+           xmlns:ns7="http://v8.1c.ru/8.3/debugger/debugForegroundData"
+           xmlns:ns8="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+           xmlns:ns9="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugRTEFilter"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugAutoAttach"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugForegroundData"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBreakpoints"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugArea"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugCalculations"/>
+    <xs:complexType name="DebuggerOptions">
+        <xs:sequence>
+            <xs:element name="foregroundAbility" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HTTPInitialDebugSettingsData">
+        <xs:sequence>
+            <xs:element name="envStateVersion" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="breakOnNextLine" type="xs:boolean"/>
+            <xs:element name="measureMode" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="serverIndependentWorkTime" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="bpWorkspace" type="ns8:BPWorkspaceInternal" minOccurs="0"/>
+            <xs:element name="bpVersion" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="rteProcessing" type="ns3:RteFilterStorage" minOccurs="0"/>
+            <xs:element name="rteProcVersion" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="inacessibleModuleID" type="ns2:BSLModuleIdInternal" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="inacessibleModuleVersion" type="ns1:UUID" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HTTPServerInitialDebugSettingsData">
+        <xs:complexContent>
+            <xs:extension base="tns:HTTPInitialDebugSettingsData">
+                <xs:sequence>
+                    <xs:element name="debugAreaInfo" type="ns10:DebugAreaInfo" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="autoAttachSettings" type="ns6:DebugAutoAttachSettings" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MiscRDbgGetAPIVerResponse">
+        <xs:sequence>
+            <xs:element name="version" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGApplyDebuggerForegroundHelperData">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="data" type="ns7:ForegroundWindowData"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGAttachDebugUIRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="credentials" type="xs:base64Binary" minOccurs="0"/>
+                    <xs:element name="options" type="tns:DebuggerOptions" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGAttachDebugUIResponse">
+        <xs:sequence>
+            <xs:element name="result" type="ns2:AttachDebugUIResult"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGAttachDetachDbgTargetResponse">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGAttachDetachDebugTargetsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="attach" type="xs:boolean"/>
+                    <xs:element name="id" type="ns2:DebugTargetIdLight" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGCheckTerminateAbilityRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="id" type="ns2:DebugTargetId"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGCheckTerminateAbilityResponse">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGDetachDebugUIRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGDetachDebugUIResponse">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGEvalExprRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="calcWaitingTime" type="xs:decimal"/>
+                    <xs:element name="targetID" type="ns2:DebugTargetIdLight"/>
+                    <xs:element name="expr" type="ns11:CalculationSourceDataStorage" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGEvalExprResponse">
+        <xs:sequence>
+            <xs:element name="result" type="ns11:CalculationResultBaseData" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGEvalLocalVariablesRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="calcWaitingTime" type="xs:decimal"/>
+                    <xs:element name="targetID" type="ns2:DebugTargetIdLight"/>
+                    <xs:element name="expr" type="ns11:CalculationSourceDataStorage" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGEvalLocalVariablesResponse">
+        <xs:sequence>
+            <xs:element name="result" type="ns11:CalculationResultBaseData" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGFinishUpdateIBRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGFinishUpdateIBResponse">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetAutoAttachSettingsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetAutoAttachSettingsResponse">
+        <xs:sequence>
+            <xs:element name="autoAttachSettings" type="ns6:DebugAutoAttachSettings" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetBreakpointsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetBreakpointsResponse">
+        <xs:sequence>
+            <xs:element name="bpWorkspace" type="ns8:BPWorkspaceInternal" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetCallStackRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="id" type="ns2:DebugTargetIdLight"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetCallStackResponse">
+        <xs:sequence>
+            <xs:element name="callStack" type="ns2:StackItemViewInfoData" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDbgAllTargetStatesRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="degugAreaName" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDbgAllTargetStatesResponse">
+        <xs:sequence>
+            <xs:element name="item" type="ns2:DbgTargetStateInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDbgTargetStateRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="id" type="ns2:DebugTargetIdLight"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDbgTargetStateResponse">
+        <xs:sequence>
+            <xs:element name="state" type="ns2:DbgTargetState"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDebugIDRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDebugIDResponse">
+        <xs:sequence>
+            <xs:element name="idOfDebugUI" type="ns1:UUID"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDebugTargetForegroundHelperRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetDebugTargetForegroundHelperResponse">
+        <xs:sequence>
+            <xs:element name="data" type="ns7:ForegroundWindowData" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetForegroundHelperDataRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetId"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetForegroundHelperDataResponse">
+        <xs:sequence>
+            <xs:element name="data" type="ns7:ForegroundWindowData" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetInaccessibleModulesRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetInaccessibleModulesResponse">
+        <xs:sequence>
+            <xs:element name="moduleID" type="ns2:BSLModuleIdInternal" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetListOfDebugAreaRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetListOfDebugAreaResponse">
+        <xs:sequence>
+            <xs:element name="debugAreaInfo" type="ns10:DebugAreaInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetRunTimeErrorProcessingRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGGetRunTimeErrorProcessingResponse">
+        <xs:sequence>
+            <xs:element name="state" type="ns3:RteFilterStorage" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGModifyValueRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetIdLight"/>
+                    <xs:element name="modifyDataPath" type="ns11:CalculationSourceDataStorage"/>
+                    <xs:element name="newValueInfo" type="ns11:NewValueInfo"/>
+                    <xs:element name="timeout" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGModifyValueResponse">
+        <xs:sequence>
+            <xs:element name="processed" type="xs:boolean"/>
+            <xs:element name="newValueState" type="ns11:CalculationResultBaseData"/>
+            <xs:element name="errorDescr" type="xs:base64Binary" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGNotifyOnFinishSeanceRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="seanceID" type="ns1:UUID" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGPingDebugUIRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="saveDataAsString" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGPingDebugUIResponse">
+        <xs:sequence>
+            <xs:element name="result" type="ns9:DBGUIExtCmdInfoBase" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGRestartRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSGetDbgTargetsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="degugAreaName" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSGetDbgTargetsResponse">
+        <xs:sequence>
+            <xs:element name="id" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetAutoAttachSettingsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="autoAttachSettings" type="ns6:DebugAutoAttachSettings" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetBreakpointsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="bpWorkspace" type="ns8:BPWorkspaceInternal" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetBreamOnNextStatementRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetDebuggerForegroundHelperDataRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="receiverID" type="ns1:UUID"/>
+                    <xs:element name="data" type="ns7:ForegroundWindowData"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetInaccessibleModulesRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="moduleID" type="ns2:BSLModuleIdInternal" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetInitialDebugSettingsRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="data" type="tns:HTTPServerInitialDebugSettingsData" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetListOfDebugAreaRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="debugAreaInfo" type="ns10:DebugAreaInfo" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetMeasureModeRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="measureModeSeanceID" type="ns1:UUID" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGSetRunTimeErrorProcessingRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="state" type="ns3:RteFilterStorage" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGStartUpdateIBRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGStartUpdateIBResponse">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGStepRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetIdLight"/>
+                    <xs:element name="action" type="ns2:DebugStepAction"/>
+                    <xs:element name="simple" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGStepResponse">
+        <xs:sequence>
+            <xs:element name="item" type="ns2:DbgTargetStateInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RDBGTerminateRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:RDbgBaseRequest">
+                <xs:sequence>
+                    <xs:element name="targetID" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RDBGTestRequest"/>
+    <xs:complexType name="RDbgBaseRequest">
+        <xs:sequence>
+            <xs:element name="infoBaseAlias" type="xs:string"/>
+            <xs:element name="idOfDebuggerUI" type="ns1:UUID"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

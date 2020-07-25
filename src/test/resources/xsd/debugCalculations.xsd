@@ -1,0 +1,137 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core" xmlns:tns="http://v8.1c.ru/8.3/debugger/debugCalculations"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugCalculations"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:complexType name="BaseValueInfoData">
+        <xs:sequence>
+            <xs:element name="typeCode" type="xs:decimal"/>
+            <xs:element name="typeName" type="xs:string"/>
+            <xs:element name="valueDecimal" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="valueString" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="valueDateTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="valueBoolean" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="pres" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="presProcessedCorrectly" type="xs:boolean"/>
+            <xs:element name="isExpandable" type="xs:boolean"/>
+            <xs:element name="isSupportIContext" type="xs:boolean"/>
+            <xs:element name="isIIndexedCollectionRO" type="xs:boolean"/>
+            <xs:element name="isSupportIEnumValue" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CalculationResultBaseData">
+        <xs:sequence>
+            <xs:element name="evalResultState" type="tns:CalculationResultState"/>
+            <xs:element name="expressionResultID" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="resultValueInfo" type="tns:BaseValueInfoData" minOccurs="0"/>
+            <xs:element name="testedAndSupportedInterface" type="tns:ViewInterface" minOccurs="0"
+                        maxOccurs="unbounded"/>
+            <xs:element name="calculationResult" type="tns:CalculationResultObjData" minOccurs="0"/>
+            <xs:element name="errorOccurred" type="xs:boolean"/>
+            <xs:element name="exceptionStr" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="localVariableName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CalculationResultContextPropertyInfo">
+        <xs:sequence>
+            <xs:element name="propInfo" type="tns:ContextPropertyData"/>
+            <xs:element name="valueInfo" type="tns:BaseValueInfoData" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CalculationResultEnumAndColPropertyInfo">
+        <xs:sequence>
+            <xs:element name="valueInfo" type="tns:BaseValueInfoData"/>
+            <xs:element name="valueOfContextPropInfo" type="tns:CalculationResultContextPropertyInfo" minOccurs="0"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CalculationResultObjData">
+        <xs:choice>
+            <xs:element name="viewInterface" type="tns:ViewInterface"/>
+            <xs:element name="valueOfContextPropInfo" type="tns:CalculationResultContextPropertyInfo" minOccurs="0"
+                        maxOccurs="unbounded"/>
+            <xs:element name="valueOfCollectionInfo" type="tns:CalculationResultEnumAndColPropertyInfo" minOccurs="0"
+                        maxOccurs="unbounded"/>
+            <xs:element name="valueOfEnumInfo" type="tns:CalculationResultEnumAndColPropertyInfo" minOccurs="0"
+                        maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:simpleType name="CalculationResultState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="undefined"/>
+            <xs:enumeration value="correctly"/>
+            <xs:enumeration value="withErrors"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="CalculationResultStorage">
+        <xs:sequence>
+            <xs:element name="evalExprResBaseData" type="tns:CalculationResultBaseData"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CalculationSourceDataStorage">
+        <xs:sequence>
+            <xs:element name="stackLevel" type="xs:decimal"/>
+            <xs:element name="srcCalcInfo" type="tns:SourceCalculationDataInfo"/>
+            <xs:element name="presOptions" type="tns:DbgPresentationOptionsOfStringValue" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ContextPropertyData">
+        <xs:sequence>
+            <xs:element name="propName" type="xs:string"/>
+            <xs:element name="isReadable" type="xs:boolean"/>
+            <xs:element name="isWritable" type="xs:boolean"/>
+            <xs:element name="isReaded" type="xs:boolean"/>
+            <xs:element name="errorStr" type="xs:base64Binary" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DbgPresentationOptionsOfStringValue">
+        <xs:sequence>
+            <xs:element name="maxTextSize" type="xs:decimal"/>
+            <xs:element name="stopOnFirstEOL" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NewValueInfo">
+        <xs:choice>
+            <xs:element name="variant" type="tns:NewValueVariant"/>
+            <xs:element name="value" minOccurs="0"/>
+            <xs:element name="valueExpression" type="xs:string" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:simpleType name="NewValueVariant">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknown"/>
+            <xs:enumeration value="val"/>
+            <xs:enumeration value="expr"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="SourceCalculationDataInfo">
+        <xs:sequence>
+            <xs:element name="expressionID" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="expressionResultID" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="calcItem" type="tns:SourceCalculationDataItem" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="interfaces" type="tns:ViewInterface" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SourceCalculationDataItem">
+        <xs:sequence>
+            <xs:element name="itemType" type="tns:SourceCalculationDataItemType"/>
+            <xs:element name="expression" type="xs:string"/>
+            <xs:element name="property" type="xs:string"/>
+            <xs:element name="index" type="xs:decimal" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="SourceCalculationDataItemType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="expression"/>
+            <xs:enumeration value="property"/>
+            <xs:enumeration value="index"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ViewInterface">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="context"/>
+            <xs:enumeration value="enum"/>
+            <xs:enumeration value="collection"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

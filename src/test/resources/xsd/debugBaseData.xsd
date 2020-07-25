@@ -1,0 +1,140 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:element name="request"/>
+    <xs:element name="response"/>
+    <xs:simpleType name="AttachDebugUIResult">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknown"/>
+            <xs:enumeration value="registered"/>
+            <xs:enumeration value="credentialsRequired"/>
+            <xs:enumeration value="ibInDebug"/>
+            <xs:enumeration value="notRegistered"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="BSLModuleIdInternal">
+        <xs:sequence>
+            <xs:element name="type" type="tns:BSLModuleType"/>
+            <xs:element name="URL" type="xs:string"/>
+            <xs:element name="extensionName" type="xs:string"/>
+            <xs:element name="objectID" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="propertyID" type="ns1:UUID" minOccurs="0"/>
+            <xs:element name="extId" type="xs:decimal"/>
+            <xs:element name="version" type="ns1:ObjectVersion" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="BSLModuleIdInternalStr">
+        <xs:restriction base="xs:base64Binary"/>
+    </xs:simpleType>
+    <xs:complexType name="BSLModuleIdUser">
+        <xs:sequence>
+            <xs:element name="type" type="tns:BSLModuleType"/>
+            <xs:element name="URL" type="xs:string"/>
+            <xs:element name="extensionName" type="xs:string"/>
+            <xs:element name="MDObject" type="xs:string"/>
+            <xs:element name="MDProperty" type="xs:string"/>
+            <xs:element name="ExtId" type="xs:decimal"/>
+            <xs:element name="Version" type="ns1:ObjectVersion" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="BSLModuleType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ConfigModule"/>
+            <xs:enumeration value="SystemFormModule"/>
+            <xs:enumeration value="SystemModule"/>
+            <xs:enumeration value="ExtMDModule"/>
+            <xs:enumeration value="ExtensionModule"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DbgTargetState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Undefined"/>
+            <xs:enumeration value="NotRegistered"/>
+            <xs:enumeration value="Registered"/>
+            <xs:enumeration value="WaitDebugger"/>
+            <xs:enumeration value="Worked"/>
+            <xs:enumeration value="StopOnNextLine"/>
+            <xs:enumeration value="Evaluating"/>
+            <xs:enumeration value="Terminating"/>
+            <xs:enumeration value="Last"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="DbgTargetStateInfo">
+        <xs:sequence>
+            <xs:element name="targetIDStr" type="tns:DebugTargetIdStr" minOccurs="0"/>
+            <xs:element name="targetID" type="tns:DebugTargetId" minOccurs="0"/>
+            <xs:element name="stateNum" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="state" type="tns:DbgTargetState" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="DebugStepAction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Unknown"/>
+            <xs:enumeration value="Step"/>
+            <xs:enumeration value="StepIn"/>
+            <xs:enumeration value="StepOut"/>
+            <xs:enumeration value="Continue"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="DebugTargetId">
+        <xs:complexContent>
+            <xs:extension base="tns:DebugTargetIdLight">
+                <xs:sequence>
+                    <xs:element name="seanceId" type="ns1:UUID"/>
+                    <xs:element name="seanceNo" type="xs:decimal"/>
+                    <xs:element name="infoBaseInstanceID" type="ns1:UUID"/>
+                    <xs:element name="infoBaseAlias" type="xs:string"/>
+                    <xs:element name="isServerInfoBase" type="tns:IsServerInfoBase"/>
+                    <xs:element name="userName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="configVersion" type="ns1:ObjectVersion"/>
+                    <xs:element name="targetType" type="tns:DebugTargetType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DebugTargetIdLight">
+        <xs:sequence>
+            <xs:element name="id" type="ns1:UUID"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="DebugTargetIdStr">
+        <xs:restriction base="xs:base64Binary"/>
+    </xs:simpleType>
+    <xs:simpleType name="DebugTargetType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Unknown"/>
+            <xs:enumeration value="Client"/>
+            <xs:enumeration value="ManagedClient"/>
+            <xs:enumeration value="WEBClient"/>
+            <xs:enumeration value="COMConnector"/>
+            <xs:enumeration value="Server"/>
+            <xs:enumeration value="ServerEmulation"/>
+            <xs:enumeration value="WEBService"/>
+            <xs:enumeration value="HTTPService"/>
+            <xs:enumeration value="OData"/>
+            <xs:enumeration value="JOB"/>
+            <xs:enumeration value="JobFileMode"/>
+            <xs:enumeration value="MobileClient"/>
+            <xs:enumeration value="MobileServer"/>
+            <xs:enumeration value="MobileJobFileMode"/>
+            <xs:enumeration value="MobileManagedClient"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IsServerInfoBase">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="undefined"/>
+            <xs:enumeration value="true"/>
+            <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="StackItemViewInfoData">
+        <xs:sequence>
+            <xs:element name="moduleIDStr" type="tns:BSLModuleIdInternalStr" minOccurs="0"/>
+            <xs:element name="moduleID" type="tns:BSLModuleIdInternal" minOccurs="0"/>
+            <xs:element name="lineNo" type="xs:decimal"/>
+            <xs:element name="presentation" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

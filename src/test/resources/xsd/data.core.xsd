@@ -1,0 +1,31 @@
+<xs:schema xmlns:tns="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.1/data/core"
+           elementFormDefault="qualified">
+    <xs:complexType name="Exception">
+        <xs:complexContent>
+            <xs:extension base="tns:GenericException">
+                <xs:sequence>
+                    <xs:element name="data" type="xs:base64Binary" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="GenericException" abstract="true">
+        <xs:sequence>
+            <xs:element name="descr" type="xs:string"/>
+            <xs:element name="inner" type="tns:GenericException" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="clsid" type="tns:UUID" use="required"/>
+        <xs:attribute name="encoded" type="xs:boolean" default="false"/>
+    </xs:complexType>
+    <xs:simpleType name="UUID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ObjectVersion">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-fA-F]{40}"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

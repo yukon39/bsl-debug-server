@@ -1,0 +1,162 @@
+<xs:schema xmlns:ns1="http://v8.1c.ru/8.1/data/core"
+           xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:ns3="http://v8.1c.ru/8.3/debugger/debugMeasure"
+           xmlns:ns4="http://v8.1c.ru/8.3/debugger/debugRTEInfo"
+           xmlns:ns5="http://v8.1c.ru/8.3/debugger/debugForegroundData"
+           xmlns:ns6="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+           xmlns:ns7="http://v8.1c.ru/8.3/debugger/debugCalculations"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.1/data/core"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugMeasure"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugRTEInfo"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugForegroundData"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBreakpoints"/>
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugCalculations"/>
+    <xs:complexType name="DBGUIExtCmdInfoBase">
+        <xs:sequence>
+            <xs:element name="cmdIDNum" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="cmdID" type="tns:DBGUIExtCmds" minOccurs="0"/>
+            <xs:element name="targetIDStr" type="ns2:DebugTargetIdStr" minOccurs="0"/>
+            <xs:element name="targetID" type="ns2:DebugTargetId" minOccurs="0"/>
+            <xs:element name="requestQueueID" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoCallStackFormed">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="stopByBP" type="xs:boolean"/>
+                    <xs:element name="callStack" type="ns2:StackItemViewInfoData" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoCorrectedBP">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="bpWorkspace" type="ns6:BPWorkspaceInternal"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoErrorViewInfo">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="requestConnection" type="xs:boolean"/>
+                    <xs:element name="addTargetIDStr" type="ns2:DebugTargetIdStr" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="addTargetID" type="ns2:DebugTargetId" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="errorInfo" type="ns4:ErrorViewInfoData" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoExprEvaluated">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="evalExprResBaseData" type="ns7:CalculationResultBaseData"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoForegroundHelperProcess">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="data" type="ns5:ForegroundWindowData" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoForegroundHelperRequest">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="senderID" type="ns1:UUID" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoForegroundHelperSet">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="data" type="ns5:ForegroundWindowData" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoMeasure">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="measureStr" type="xs:base64Binary" minOccurs="0"/>
+                    <xs:element name="measure" type="ns3:PerformanceInfoMain" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoQuit">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoRte">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="exception" type="ns1:GenericException"/>
+                    <xs:element name="callStack" type="ns2:StackItemViewInfoData" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoRteBPCondition">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="errorInfo" type="ns4:CheckBPCondErrorInfo"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoStarted">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DBGUIExtCmdInfoValueModifyResult">
+        <xs:complexContent>
+            <xs:extension base="tns:DBGUIExtCmdInfoBase">
+                <xs:sequence>
+                    <xs:element name="processed" type="xs:boolean"/>
+                    <xs:element name="newValState" type="ns7:CalculationResultBaseData" minOccurs="0"/>
+                    <xs:element name="errorStr" type="xs:base64Binary" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="DBGUIExtCmds">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unknown"/>
+            <xs:enumeration value="targetStarted"/>
+            <xs:enumeration value="targetQuit"/>
+            <xs:enumeration value="correctedBP"/>
+            <xs:enumeration value="rteProcessing"/>
+            <xs:enumeration value="rteOnBPConditionProcessing"/>
+            <xs:enumeration value="measureResultProcessing"/>
+            <xs:enumeration value="callStackFormed"/>
+            <xs:enumeration value="exprEvaluated"/>
+            <xs:enumeration value="valueModified"/>
+            <xs:enumeration value="errorViewInfo"/>
+            <xs:enumeration value="ForegroundHelperSet"/>
+            <xs:enumeration value="ForegroundHelperRequest"/>
+            <xs:enumeration value="ForegroundHelperProcess"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

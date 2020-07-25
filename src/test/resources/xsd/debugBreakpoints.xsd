@@ -1,0 +1,37 @@
+<xs:schema xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugBreakpoints" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:complexType name="BPWorkspaceInternal">
+        <xs:sequence>
+            <xs:element name="moduleBPInfo" type="tns:ModuleBPInfoInternal" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BPWorkspaceUser">
+        <xs:sequence>
+            <xs:element name="moduleBPInfo" type="tns:ModuleBPInfoUser" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BreakpointInfo">
+        <xs:sequence>
+            <xs:element name="line" type="xs:decimal"/>
+            <xs:element name="isActive" type="xs:boolean"/>
+            <xs:element name="condition" type="xs:string"/>
+            <xs:element name="temp" type="xs:boolean"/>
+            <xs:element name="user" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ModuleBPInfoInternal">
+        <xs:sequence>
+            <xs:element name="id" type="ns2:BSLModuleIdInternal"/>
+            <xs:element name="bpInfo" type="tns:BreakpointInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ModuleBPInfoUser">
+        <xs:sequence>
+            <xs:element name="id" type="ns2:BSLModuleIdUser"/>
+            <xs:element name="bpInfo" type="tns:BreakpointInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

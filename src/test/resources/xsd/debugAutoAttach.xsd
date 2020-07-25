@@ -1,0 +1,17 @@
+<xs:schema xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData"
+           xmlns:tns="http://v8.1c.ru/8.3/debugger/debugAutoAttach" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.3/debugger/debugAutoAttach"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:complexType name="DebugAutoAttachSettings">
+        <xs:sequence>
+            <xs:element name="targetType" type="ns2:DebugTargetType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="areaName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DebugAutoAttachSettingsProperty">
+        <xs:sequence>
+            <xs:element name="autoAttachSettings" type="tns:DebugAutoAttachSettings" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

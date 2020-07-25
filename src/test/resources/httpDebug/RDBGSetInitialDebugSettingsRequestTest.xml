@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+         xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+         xmlns:debugArea="http://v8.1c.ru/8.3/debugger/debugArea"
+         xmlns:debugAutoAttach="http://v8.1c.ru/8.3/debugger/debugAutoAttach"
+         xmlns:debugBreakpoints="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+         xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+         xmlns:debugRTEFilter="http://v8.1c.ru/8.3/debugger/debugRTEFilter"
+         xmlns:v8="http://v8.1c.ru/8.1/data/core"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:infoBaseAlias>DefAlias</debugRDBGRequestResponse:infoBaseAlias>
+    <debugRDBGRequestResponse:idOfDebuggerUI>dbe7b1e9-9786-4a25-8da8-304684fa2ce3</debugRDBGRequestResponse:idOfDebuggerUI>
+    <debugRDBGRequestResponse:data>
+        <debugRDBGRequestResponse:bpWorkspace/>
+        <debugRDBGRequestResponse:rteProcessing>
+            <debugRTEFilter:stopOnErrors>false</debugRTEFilter:stopOnErrors>
+            <debugRTEFilter:analyzeErrorStr>false</debugRTEFilter:analyzeErrorStr>
+        </debugRDBGRequestResponse:rteProcessing>
+    </debugRDBGRequestResponse:data>
+</request>

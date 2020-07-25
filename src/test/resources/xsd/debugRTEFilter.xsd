@@ -1,0 +1,17 @@
+<xs:schema xmlns:tns="http://v8.1c.ru/8.3/debugger/debugRTEFilter" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://v8.1c.ru/8.3/debugger/debugRTEFilter"
+           elementFormDefault="qualified">
+    <xs:complexType name="RteFilterItem">
+        <xs:sequence>
+            <xs:element name="include" type="xs:boolean"/>
+            <xs:element name="str" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RteFilterStorage">
+        <xs:sequence>
+            <xs:element name="stopOnErrors" type="xs:boolean"/>
+            <xs:element name="analyzeErrorStr" type="xs:boolean"/>
+            <xs:element name="strTemplate" type="tns:RteFilterItem" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

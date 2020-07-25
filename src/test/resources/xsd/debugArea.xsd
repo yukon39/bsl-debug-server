@@ -1,0 +1,39 @@
+<xs:schema xmlns:ns2="http://v8.1c.ru/8.3/debugger/debugBaseData" xmlns:tns="http://v8.1c.ru/8.3/debugger/debugArea"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://v8.1c.ru/8.3/debugger/debugArea"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://v8.1c.ru/8.3/debugger/debugBaseData"/>
+    <xs:complexType name="DebugAreaDSPairInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="value"/>
+            <xs:element name="use" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DebugAreaInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="useMaskOfDSArea" type="xs:boolean"/>
+            <xs:element name="dsPairInfo" type="tns:DebugAreaDSPairInfo" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="useMaskOfTargetTypes" type="xs:boolean"/>
+            <xs:element name="targetType" type="ns2:DebugTargetType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="useMaskOfUsers" type="xs:boolean"/>
+            <xs:element name="userInfo" type="tns:DebugAreaUserInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DebugAreaUserInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="use" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DebugAreas">
+        <xs:sequence>
+            <xs:element name="item" type="tns:DebugAreaInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DebugTargetFilters">
+        <xs:sequence>
+            <xs:element name="item" type="tns:DebugAreaInfo" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
