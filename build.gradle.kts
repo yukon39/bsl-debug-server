@@ -3,6 +3,7 @@ plugins {
     jacoco
     id("io.franzbecker.gradle-lombok") version "4.0.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "com.github.yukon39"
@@ -46,6 +47,14 @@ configure<JavaPluginConvention> {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+sonarqube {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.projectKey", "bsl-debug-server")
+        property("sonar.projectName", "BSL Debug Server")
+    }
+}
+
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-Xlint:unchecked")
@@ -71,5 +80,9 @@ tasks.shadowJar {
     project.configurations.implementation.get().isCanBeResolved = true
     configurations = listOf(project.configurations["implementation"])
     archiveClassifier.set("")
+}
+
+tasks.sonarqube {
+    dependsOn(tasks.test)
 }
 
