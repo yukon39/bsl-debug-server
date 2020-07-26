@@ -20,22 +20,23 @@ public class AttachRequestArguments {
 
         var stringDebuggerURL = (String) args.get("debuggerURL");
 
-        URL debuggerURL = null;
+        URL localDebuggerURL;
         try {
-            debuggerURL = new URL(stringDebuggerURL);
+            localDebuggerURL = new URL(stringDebuggerURL);
         } catch (Exception ignored) {
+            localDebuggerURL = null;
         }
-        this.debuggerURL = debuggerURL;
+        debuggerURL = localDebuggerURL;
 
         this.infobaseAlias = (String) args.get("infobaseAlias");
         this.sessionId = (String) args.get("__sessionId");
 
-        var password = (String) args.get("password");
+        var passwordString = (String) args.get("password");
 
-        if (password == null) {
-            this.password = new char[]{};
+        if (passwordString == null) {
+            password = new char[]{};
         } else {
-            this.password = password.toCharArray();
+            password = passwordString.toCharArray();
         }
 
         //        String[] targetTypesString = (String[]) args.get("targetTypes");
@@ -53,7 +54,7 @@ public class AttachRequestArguments {
 //        }
     }
 
-    public void validate(Language language) throws InvalidParameterException {
+    public void validate(Language language) {
 
         if (debuggerURL == null) {
             var msg = Resources.getResourceString(language, this.getClass(), "exceptionNoDebuggerURL");

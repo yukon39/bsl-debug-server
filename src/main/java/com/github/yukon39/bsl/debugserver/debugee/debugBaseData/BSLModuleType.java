@@ -1,12 +1,23 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugBaseData;
 
+import jakarta.xml.bind.annotation.XmlEnumValue;
+
 public enum BSLModuleType {
 
-    ConfigModule("ConfigModule"),
-    SystemFormModule("SystemFormModule"),
-    SystemModule("SystemModule"),
-    ExtMDModule("ExtMDModule"),
-    ExtensionModule("ExtensionModule");
+    @XmlEnumValue("ConfigModule")
+    CONFIG_MODULE("ConfigModule"),
+
+    @XmlEnumValue("ConfigModule")
+    SYSTEM_FORM_MODULE("SystemFormModule"),
+
+    @XmlEnumValue("ConfigModule")
+    SYSTEM_MODULE("SystemModule"),
+
+    @XmlEnumValue("ConfigModule")
+    EXT_MD_MODULE("ExtMDModule"),
+
+    @XmlEnumValue("ConfigModule")
+    EXTENSION_MODULE("ExtensionModule");
 
     private final String literal;
 

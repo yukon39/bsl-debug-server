@@ -13,6 +13,6 @@ public class DBGUIExtCmdInfoCorrectedBP extends DBGUIExtCmdInfoBase {
     private BPWorkspaceInternal bpWorkspace;
 
     public DBGUIExtCmdInfoCorrectedBP() {
-        super(DBGUIExtCmds.correctedBP);
+        super(DBGUIExtCmds.CORRECTED_BP);
     }
 }

@@ -16,6 +16,6 @@ public class DBGUIExtCmdInfoForegroundHelperRequest extends DBGUIExtCmdInfoBase 
     private UUID senderID;
 
     public DBGUIExtCmdInfoForegroundHelperRequest() {
-        super(DBGUIExtCmds.ForegroundHelperRequest);
+        super(DBGUIExtCmds.FOREGROUND_HELPER_REQUEST);
     }
 }

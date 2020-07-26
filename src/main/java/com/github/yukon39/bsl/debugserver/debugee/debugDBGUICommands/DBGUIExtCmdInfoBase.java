@@ -33,7 +33,7 @@ public abstract class DBGUIExtCmdInfoBase {
     private String requestQueueID;
 
     DBGUIExtCmdInfoBase() {
-        this(DBGUIExtCmds.unknown);
+        this(DBGUIExtCmds.UNKNOWN);
     }
 
     protected DBGUIExtCmdInfoBase(DBGUIExtCmds cmdId) {

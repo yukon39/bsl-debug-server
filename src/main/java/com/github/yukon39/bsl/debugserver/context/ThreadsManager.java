@@ -3,10 +3,7 @@ package com.github.yukon39.bsl.debugserver.context;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DbgTargetStateInfo;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
-import com.google.common.eventbus.Subscribe;
 import org.eclipse.lsp4j.debug.Thread;
-import org.eclipse.lsp4j.debug.ThreadEventArgumentsReason;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

@@ -5,31 +5,31 @@ import jakarta.xml.bind.annotation.XmlEnumValue;
 public enum DbgTargetState {
 
     @XmlEnumValue("Undefined")
-    Undefined("Undefined"),
+    UNDEFINED("Undefined"),
 
     @XmlEnumValue("NotRegistered")
-    NotRegistered("NotRegistered"),
+    NOT_REGISTERED("NotRegistered"),
 
     @XmlEnumValue("Registered")
-    Registered("Registered"),
+    REGISTERED("Registered"),
 
     @XmlEnumValue("WaitDebugger")
-    WaitDebugger("WaitDebugger"),
+    WAIT_DEBUGGER("WaitDebugger"),
 
     @XmlEnumValue("Worked")
-    Worked("Worked"),
+    WORKED("Worked"),
 
     @XmlEnumValue("StopOnNextLine")
-    StopOnNextLine("StopOnNextLine"),
+    STOP_ON_NEXT_LINE("StopOnNextLine"),
 
     @XmlEnumValue("Evaluating")
-    Evaluating("Evaluating"),
+    EVALUATING("Evaluating"),
 
     @XmlEnumValue("Terminating")
-    Terminating("Terminating"),
+    TERMINATING("Terminating"),
 
     @XmlEnumValue("Last")
-    Last("Last");
+    LAST("Last");
 
     private final String literal;
 

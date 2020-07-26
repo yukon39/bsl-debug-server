@@ -1,16 +1,13 @@
 package com.github.yukon39.bsl.debugserver.context;
 
-import com.github.yukon39.bsl.debugserver.debugee.Debugee;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
-import com.google.common.eventbus.Subscribe;
 import org.eclipse.lsp4j.debug.StackFrame;
-import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
-import org.eclipse.lsp4j.debug.Thread;
-import org.jetbrains.annotations.Debug;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StackTraceManager {
 
@@ -24,7 +21,7 @@ public class StackTraceManager {
 
     public void setStackTrace(Integer threadId, List<StackItemViewInfoData> stackItems) {
 
-        if(stackItems == null) {
+        if (stackItems == null) {
             return;
         }
 
@@ -45,7 +42,7 @@ public class StackTraceManager {
     }
 
     public List<StackFrame> getStackTrace(Integer threadId) {
-        if(stackFrames.containsKey(threadId)) {
+        if (stackFrames.containsKey(threadId)) {
             return stackFrames.get(threadId);
         } else {
             return new ArrayList<StackFrame>();

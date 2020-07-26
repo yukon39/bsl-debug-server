@@ -1,10 +1,17 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugCalculations;
 
+import jakarta.xml.bind.annotation.XmlEnumValue;
+
 public enum CalculationResultState {
 
-    undefined ("undefined"),
-    correctly ("correctly"),
-    withErrors ("withErrors");
+    @XmlEnumValue("undefined")
+    UNDEFINED("undefined"),
+
+    @XmlEnumValue("correctly")
+    CORRECTLY("correctly"),
+
+    @XmlEnumValue("withErrors")
+    WITH_ERRORS("withErrors");
 
     private final String literal;
 

@@ -11,6 +11,6 @@ import lombok.EqualsAndHashCode;
 @XmlType(name = "DBGUIExtCmdInfoStarted")
 public class DBGUIExtCmdInfoStarted extends DBGUIExtCmdInfoBase {
     public DBGUIExtCmdInfoStarted() {
-        super(DBGUIExtCmds.targetStarted);
+        super(DBGUIExtCmds.TARGET_STARTED);
     }
 }

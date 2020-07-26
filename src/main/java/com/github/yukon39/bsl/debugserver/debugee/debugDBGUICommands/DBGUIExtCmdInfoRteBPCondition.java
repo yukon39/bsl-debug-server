@@ -13,7 +13,7 @@ public class DBGUIExtCmdInfoRteBPCondition extends DBGUIExtCmdInfoBase {
     private CheckBPCondErrorInfo errorInfo;
 
     public DBGUIExtCmdInfoRteBPCondition() {
-        super(DBGUIExtCmds.rteOnBPConditionProcessing);
+        super(DBGUIExtCmds.RTE_ON_BP_CONDITION_PROCESSING);
     }
 }
 

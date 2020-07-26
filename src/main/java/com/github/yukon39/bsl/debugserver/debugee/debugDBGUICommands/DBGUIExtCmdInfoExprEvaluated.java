@@ -15,6 +15,6 @@ public class DBGUIExtCmdInfoExprEvaluated extends DBGUIExtCmdInfoBase {
     private CalculationResultBaseData evalExprResBaseData;
 
     public DBGUIExtCmdInfoExprEvaluated() {
-        super(DBGUIExtCmds.exprEvaluated);
+        super(DBGUIExtCmds.EXPR_EVALUATED);
     }
 }

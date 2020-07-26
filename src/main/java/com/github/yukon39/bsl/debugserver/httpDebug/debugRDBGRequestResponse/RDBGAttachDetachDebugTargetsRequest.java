@@ -1,7 +1,9 @@
 package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
 
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,5 +19,5 @@ public class RDBGAttachDetachDebugTargetsRequest extends RDbgBaseRequest impleme
     private Boolean attach;
 
     @XmlElement(required = true)
-    private List<DebugTargetIdLight> id;
+    private List<DebugTargetIdLight> id = new ArrayList<>();
 }

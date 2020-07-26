@@ -5,7 +5,6 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 
 import java.util.UUID;
 
@@ -36,5 +35,5 @@ public class DebugTargetId extends DebugTargetIdLight {
     private String configVersion;
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
-    private DebugTargetType targetType = DebugTargetType.Unknown;
+    private DebugTargetType targetType = DebugTargetType.UNKNOWN;
 }

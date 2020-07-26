@@ -15,6 +15,6 @@ public class DBGUIExtCmdInfoForegroundHelperSet extends DBGUIExtCmdInfoBase {
     private ForegroundWindowData data;
 
     public DBGUIExtCmdInfoForegroundHelperSet() {
-        super(DBGUIExtCmds.ForegroundHelperSet);
+        super(DBGUIExtCmds.FOREGROUND_HELPER_SET);
     }
 }

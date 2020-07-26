@@ -11,7 +11,6 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class BSLDebugServer implements IDebugProtocolServer {
@@ -77,7 +76,7 @@ public class BSLDebugServer implements IDebugProtocolServer {
         capabilities.setSupportsConfigurationDoneRequest(true);
 
         return CompletableFuture.completedFuture(capabilities);
-    };
+    }
 
     @Override
     public CompletableFuture<Void> attach(Map<String, Object> args) {
@@ -124,7 +123,7 @@ public class BSLDebugServer implements IDebugProtocolServer {
     public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 
         var response = new SetBreakpointsResponse();
-        response.setBreakpoints(new Breakpoint[] {} );
+        response.setBreakpoints(new Breakpoint[]{});
 
         return CompletableFuture.completedFuture(response);
     }
@@ -214,9 +213,6 @@ public class BSLDebugServer implements IDebugProtocolServer {
         if (eventBus != null) {
             eventBus.post(event);
         }
-    }
-
-    public class InitializeEvent {
     }
 
     public void setEventBus(EventBus eventBus) {

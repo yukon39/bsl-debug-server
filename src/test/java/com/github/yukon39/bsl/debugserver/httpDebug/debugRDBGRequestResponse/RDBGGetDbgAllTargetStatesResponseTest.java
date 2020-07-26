@@ -77,7 +77,7 @@ public class RDBGGetDbgAllTargetStatesResponseTest {
 
         var item = result.get(0);
         assertThat(item).isInstanceOf(DbgTargetStateInfo.class);
-        assertThat(item.getState()).isEqualTo(DbgTargetState.Worked);
+        assertThat(item.getState()).isEqualTo(DbgTargetState.WORKED);
         assertThat(item.getStateNum()).isEqualTo(16);
 
         var targetId = item.getTargetID();

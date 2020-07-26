@@ -19,6 +19,6 @@ public class DBGUIExtCmdInfoErrorViewInfo extends DBGUIExtCmdInfoBase {
     private ErrorViewInfoData[] errorInfo;
 
     public DBGUIExtCmdInfoErrorViewInfo() {
-        super(DBGUIExtCmds.errorViewInfo);
+        super(DBGUIExtCmds.ERROR_VIEW_INFO);
     }
 }

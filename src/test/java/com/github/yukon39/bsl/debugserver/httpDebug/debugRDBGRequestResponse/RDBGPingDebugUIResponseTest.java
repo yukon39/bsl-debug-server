@@ -32,7 +32,7 @@ public class RDBGPingDebugUIResponseTest {
         targetID.setInfoBaseAlias("DefAlias");
         targetID.setIsServerInfoBase(IsServerInfoBase.UNDEFINED);
         targetID.setConfigVersion(UUID.randomUUID().toString());
-        targetID.setTargetType(DebugTargetType.ManagedClient);
+        targetID.setTargetType(DebugTargetType.MANAGED_CLIENT);
 
         var request = new RDBGPingDebugUIResponse();
 
@@ -78,7 +78,7 @@ public class RDBGPingDebugUIResponseTest {
         assertThat(targetId.getInfoBaseAlias()).isEqualTo("DefAlias");
         assertThat(targetId.getId()).isEqualTo(UUID.fromString("0e215a1d-5230-42db-85f2-ca373357f81f"));
         assertThat(targetId.getSeanceNo()).isEqualTo(2);
-        assertThat(targetId.getTargetType()).isEqualTo(DebugTargetType.ManagedClient);
+        assertThat(targetId.getTargetType()).isEqualTo(DebugTargetType.MANAGED_CLIENT);
 
         var quit = result[1];
         assertThat(quit).isInstanceOf(DBGUIExtCmdInfoQuit.class);
