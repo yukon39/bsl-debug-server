@@ -15,7 +15,7 @@ public class BSLModuleIdUser {
     @XmlElement(name = "URL")
     private String url;
 
-    @XmlElement(name = "URL")
+    @XmlElement(name = "extensionName")
     private String extensionName;
 
     @XmlElement(name = "MDObject")
