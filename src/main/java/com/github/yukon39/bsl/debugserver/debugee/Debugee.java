@@ -49,7 +49,7 @@ public class Debugee implements Runnable {
             return;
         }
 
-        DBGUIExtCmdInfoBase[] commands;
+        List<DBGUIExtCmdInfoBase> commands;
 
         try {
             commands = ping().get();
@@ -58,12 +58,12 @@ public class Debugee implements Runnable {
             return;
         }
 
-        if (commands.length == 0) {
+        if (commands.isEmpty()) {
             log.debug("Ping result is empty");
             return;
         }
 
-        log.debug("Ping result length " + commands.length);
+        log.debug("Ping result length " + commands.size());
 
         for (DBGUIExtCmdInfoBase command : commands) {
             log.debug("Ping result type " + command.getCmdId());
@@ -147,7 +147,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public CompletableFuture<DBGUIExtCmdInfoBase[]> ping() {
+    public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
 
         try {
             var result = httpDebugClient.ping();

@@ -134,7 +134,7 @@ public class HTTPDebugClient {
         return response.getResult();
     }
 
-    public DBGUIExtCmdInfoBase[] ping() throws HTTPDebugException {
+    public List<DBGUIExtCmdInfoBase> ping() throws HTTPDebugException {
 
         var params = new RequestParameters()
                 .setCommand("pingDebugUIParams")

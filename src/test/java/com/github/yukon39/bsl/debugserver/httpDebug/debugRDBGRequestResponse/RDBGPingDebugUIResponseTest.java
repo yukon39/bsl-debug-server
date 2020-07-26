@@ -45,7 +45,9 @@ public class RDBGPingDebugUIResponseTest {
         var callstack = new DBGUIExtCmdInfoCallStackFormed();
         callstack.setStopByBP(true);
 
-        request.setResult(new DBGUIExtCmdInfoBase[]{started, quit, callstack});
+        request.getResult().add(started);
+        request.getResult().add(quit);
+        request.getResult().add(callstack);
 
         var serializer = new HTTPDebugSerializer();
 
@@ -54,7 +56,6 @@ public class RDBGPingDebugUIResponseTest {
         var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 
         assertThat(request).isEqualTo(response);
-        assertThat(response.getResult().length).isEqualTo(3);
     }
 
     @Test
@@ -68,9 +69,9 @@ public class RDBGPingDebugUIResponseTest {
         var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 
         var result = response.getResult();
-        assertThat(result.length).isEqualTo(3);
+        assertThat(result).hasSize(3);
 
-        var start = result[0];
+        var start = result.get(0);
         assertThat(start).isInstanceOf(DBGUIExtCmdInfoStarted.class);
 
         var targetId = start.getTargetID();
@@ -80,10 +81,10 @@ public class RDBGPingDebugUIResponseTest {
         assertThat(targetId.getSeanceNo()).isEqualTo(2);
         assertThat(targetId.getTargetType()).isEqualTo(DebugTargetType.MANAGED_CLIENT);
 
-        var quit = result[1];
+        var quit = result.get(1);
         assertThat(quit).isInstanceOf(DBGUIExtCmdInfoQuit.class);
 
-        var stackformed = result[2];
+        var stackformed = result.get(2);
         assertThat(stackformed).isInstanceOf(DBGUIExtCmdInfoCallStackFormed.class);
     }
 }
