@@ -13,7 +13,6 @@ repositories {
 }
 
 val junitVersion = "5.6.1"
-val jacksonVersion = "2.11.1"
 
 dependencies {
 
@@ -24,15 +23,10 @@ dependencies {
     implementation("org.slf4j", "slf4j-api", "1.8.0-beta4")
     implementation("org.slf4j", "slf4j-simple", "1.8.0-beta4")
 
-    implementation("com.fasterxml.jackson.core", "jackson-databind", jacksonVersion)
-    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", jacksonVersion)
-    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-xml", jacksonVersion)
-
     implementation("org.jetbrains", "annotations", "19.0.0")
 
-    implementation("jakarta.xml.bind", "jakarta.xml.bind-api", "+")
+    implementation("jakarta.xml.bind", "jakarta.xml.bind-api", "3.0.0-RC3")
     implementation("org.glassfish.jaxb", "jaxb-runtime", "3.0.0-M4")
-
 
     implementation("com.google.code.findbugs", "jsr305", "3.0.2")
     implementation("com.intellij", "annotations", "12.0")
