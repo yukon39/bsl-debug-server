@@ -51,6 +51,16 @@ public class HTTPDebugClient {
         return apiVersion;
     }
 
+    public void test() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("test");
+
+        var request = new RDBGTestRequest();
+
+        executeRequest(request, RDBGTestResponse.class, params);
+    }
+
     public AttachDebugUIResult attach(char[] password) throws HTTPDebugException {
 
         var params = new RequestParameters()
@@ -275,7 +285,7 @@ public class HTTPDebugClient {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("executeRequest", e);
             throw new HTTPDebugException(e);
         }
     }

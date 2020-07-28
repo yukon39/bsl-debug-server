@@ -16,6 +16,16 @@ public class DebugClientEventSubscribers {
     }
 
     @Subscribe
+    public void serverOutputErrorHandler(BSLDebugServer.OutputErrorEvent event) {
+        this.output(event.output, OutputEventArgumentsCategory.STDERR);
+    }
+
+    @Subscribe
+    public void serverTerminatedErrorHandler(BSLDebugServer.TerminatedErrorEvent event) {
+        client.terminated(new TerminatedEventArguments());
+    }
+
+    @Subscribe
     public void contextInitializeHandler(ServerContext.InitializeEvent event) {
         client.initialized();
     }

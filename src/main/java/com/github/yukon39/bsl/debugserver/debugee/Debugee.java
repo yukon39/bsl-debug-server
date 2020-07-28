@@ -6,6 +6,7 @@ import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmd
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
+import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugException;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Slf4j
 public class Debugee implements Runnable {
@@ -84,147 +86,164 @@ public class Debugee implements Runnable {
 
         httpDebugClient.configure(debuggerURI, infobaseAlias, debugSession);
 
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.runAsync(() -> {
+            try {
+                httpDebugClient.test();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Void> attach() {
 
-        try {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                var attachResult = httpDebugClient.attach(password);
+                httpDebugClient.initSettings();
+                httpDebugClient.clearBreakOnNextStatement();
+                httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
 
-            var attachResult = httpDebugClient.attach(password);
-            httpDebugClient.initSettings();
-            httpDebugClient.clearBreakOnNextStatement();
-            httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
+                attached = (attachResult == AttachDebugUIResult.REGISTERED);
 
-            attached = (attachResult == AttachDebugUIResult.REGISTERED);
-
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
-
-        return CompletableFuture.completedFuture(null);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Void> detach() {
 
-        if (attached) {
-            attached = false;
-            try {
-                httpDebugClient.detach();
-            } catch (Exception e) {
-                return CompletableFuture.failedFuture(e);
+        return CompletableFuture.runAsync(() -> {
+            if (attached) {
+                attached = false;
+                try {
+                    httpDebugClient.detach();
+                } catch (HTTPDebugException e) {
+                    throw new CompletionException(e);
+                }
             }
-        }
-
-        return CompletableFuture.completedFuture(null);
+        });
     }
 
     public CompletableFuture<Boolean> attachDebugTarget(DebugTargetIdLight target) {
 
-        try {
-            var targets = new ArrayList<DebugTargetIdLight>();
-            targets.add(target);
+        return CompletableFuture.supplyAsync(() -> {
 
-            var result = httpDebugClient.attachDetachDebugTargets(true, targets);
-            return CompletableFuture.completedFuture(result);
+            try {
+                var targets = new ArrayList<DebugTargetIdLight>();
+                targets.add(target);
 
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+                return httpDebugClient.attachDetachDebugTargets(true, targets);
+
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Boolean> detachDebugTarget(DebugTargetIdLight target) {
 
-        try {
-            var targets = new ArrayList<DebugTargetIdLight>();
-            targets.add(target);
+        return CompletableFuture.supplyAsync(() -> {
 
-            var result = httpDebugClient.attachDetachDebugTargets(false, targets);
-            return CompletableFuture.completedFuture(result);
+            try {
+                var targets = new ArrayList<DebugTargetIdLight>();
+                targets.add(target);
 
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+                return httpDebugClient.attachDetachDebugTargets(false, targets);
+
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
 
-        try {
-            var result = httpDebugClient.ping();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.ping();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> getAllTargetStates() {
 
-        try {
-            var result = httpDebugClient.getAllTargetStates();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getAllTargetStates();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<DbgTargetState> getTargetState() {
 
-        try {
-            var result = httpDebugClient.getTargetState();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getTargetState();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Void> setBreakOnNextStatement() {
 
-        try {
-            httpDebugClient.setBreakOnNextStatement();
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.runAsync(() -> {
+            try {
+                httpDebugClient.setBreakOnNextStatement();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepContinue(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepIn(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepOut(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<StackItemViewInfoData>> getCallStack(DebugTargetIdLight id) {
 
-        try {
-            var result = httpDebugClient.getCallStack(id);
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getCallStack(id);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     private void postEvent(Object event) {
