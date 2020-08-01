@@ -1,6 +1,6 @@
 # Debug Adapter Protocol implementation for 1С:Enterprise Platform
 
-This project implements [Debug Protocol Adapter](https://microsoft.github.io/debug-adapter-protocol/) for [1C:Enterprise Platform](https://1c-dn.com/) debugging.
+This project implements [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/) for [1C:Enterprise Platform](https://1c-dn.com/) debugging.
 
 Based on [Eclipse LSP4J](https://github.com/eclipse/lsp4j)
 
