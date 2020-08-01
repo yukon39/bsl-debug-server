@@ -8,8 +8,10 @@ import com.google.common.eventbus.EventBus;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.lsp4j.debug.*;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -69,7 +71,7 @@ public class BSLDebugServer implements IDebugProtocolServer {
             configuration.setSupportsRunInTerminalRequest(supportsRunInTerminalRequest);
         }
 
-        Capabilities capabilities = new Capabilities();
+        var capabilities = new Capabilities();
         capabilities.setSupportsRestartRequest(Boolean.TRUE);
         capabilities.setSupportsConfigurationDoneRequest(Boolean.TRUE);
 
@@ -80,6 +82,19 @@ public class BSLDebugServer implements IDebugProtocolServer {
                             log.error("Initialize error", e);
                             outputError("Initialize error", e); // TODO: localize this
                             postEvent(new TerminatedErrorEvent());
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
+
+        return context.configurationDone(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("ConfigurationDone error", e);
+                            outputError("ConfigurationDone error", e); // TODO: localize this
                             return null;
                         }
                 );
@@ -98,7 +113,6 @@ public class BSLDebugServer implements IDebugProtocolServer {
                             return null;
                         }
                 );
-
     }
 
     @Override
@@ -130,46 +144,11 @@ public class BSLDebugServer implements IDebugProtocolServer {
     @Override
     public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 
-        var response = new SetBreakpointsResponse();
-        response.setBreakpoints(new Breakpoint[]{});
-
-        return CompletableFuture.completedFuture(response);
-    }
-
-    @Override
-    public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
-
-        return context.configurationDone(args)
+        return context.setBreakpoints(args)
                 .exceptionally((e) ->
                         {
-                            log.error("ConfigurationDone error", e);
-                            outputError("ConfigurationDone error", e); // TODO: localize this
-                            return null;
-                        }
-                );
-    }
-
-    @Override
-    public CompletableFuture<ThreadsResponse> threads() {
-
-        return context.threads()
-                .exceptionally((e) ->
-                        {
-                            log.error("Threads error", e);
-                            outputError("Threads r error", e); // TODO: localize this
-                            return null;
-                        }
-                );
-    }
-
-    @Override
-    public CompletableFuture<Void> pause(PauseArguments args) {
-
-        return context.pause()
-                .exceptionally((e) ->
-                        {
-                            log.error("Pause error", e);
-                            outputError("Pause error", e); // TODO: localize this
+                            log.error("SetBreakpoints error", e);
+                            outputError("SetBreakpoints error", e); // TODO: localize this
                             return null;
                         }
                 );
@@ -215,6 +194,19 @@ public class BSLDebugServer implements IDebugProtocolServer {
     }
 
     @Override
+    public CompletableFuture<Void> pause(PauseArguments args) {
+
+        return context.pause()
+                .exceptionally((e) ->
+                        {
+                            log.error("Pause error", e);
+                            outputError("Pause error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
     public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
 
         return context.stackTrace(args)
@@ -227,13 +219,52 @@ public class BSLDebugServer implements IDebugProtocolServer {
                 );
     }
 
+    @Override
+    public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
+
+        return context.scopes(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Scopes error", e);
+                            outputError("Scopes error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<SourceResponse> source(SourceArguments args) {
+
+        return context.source(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Source error", e);
+                            outputError("Source error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<ThreadsResponse> threads() {
+
+        return context.threads()
+                .exceptionally((e) ->
+                        {
+                            log.error("Threads error", e);
+                            outputError("Threads r error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
     private void outputError(String msgPrefix, Throwable throwable) {
         String msg = String.format("%s: %s", msgPrefix, throwable.getLocalizedMessage());
         postEvent(new OutputErrorEvent(msg));
     }
 
     private void postEvent(Object event) {
-        if (eventBus != null) {
+        if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
     }
@@ -254,6 +285,4 @@ public class BSLDebugServer implements IDebugProtocolServer {
 
     public static class TerminatedErrorEvent {
     }
-
-    ;
 }
