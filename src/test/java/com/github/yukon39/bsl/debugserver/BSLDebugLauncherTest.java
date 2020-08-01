@@ -1,5 +1,6 @@
 package com.github.yukon39.bsl.debugserver;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class BSLDebugLauncherTest {
     void testParseError() {
 
         // given
-        String[] args = new String[]{"--error"};
+        String [] args = new String[]{"--error"};
 
         // when
         try {
