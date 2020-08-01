@@ -6,22 +6,6 @@
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <debugRDBGRequestResponse:item>
-        <targetIDStr></targetIDStr>
-        <targetID>
-            <id>2f5402e6-d918-4e10-bfb8-9e3c541c3a42</id>
-            <seanceId>426e45a4-61d3-4e6b-a277-8bab3f46d66c</seanceId>
-            <seanceNo>2</seanceNo>
-            <infoBaseInstanceID>ebac4d34-3028-4080-aa34-4019efbaf053</infoBaseInstanceID>
-            <infoBaseAlias>DefAlias</infoBaseAlias>
-            <isServerInfoBase>undefined</isServerInfoBase>
-            <configVersion>d86d5f2a402de7458d2696f4fee5eace00000000</configVersion>
-            <targetType>ServerEmulation</targetType>
-        </targetID>
-        <stateNum>16</stateNum>
-        <state>Worked</state>
-    </debugRDBGRequestResponse:item>
-    <debugRDBGRequestResponse:item>
-        <targetIDStr></targetIDStr>
         <targetID>
             <id>20f40ea7-76ce-4d56-b023-0163849e0260</id>
             <seanceId>426e45a4-61d3-4e6b-a277-8bab3f46d66c</seanceId>
