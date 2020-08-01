@@ -1,6 +1,9 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
-import jakarta.xml.bind.*;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -17,7 +20,6 @@ public class HTTPDebugSerializer {
         var qName = new QName("http://v8.1c.ru/8.3/debugger/debugBaseData", "request");
 
         var jaxbElement = new JAXBElement<>(qName, (Class<Object>) T, object);
-
 
         var jax = JAXBContext.newInstance(T);
         var marshaller = jax.createMarshaller();
@@ -53,29 +55,4 @@ public class HTTPDebugSerializer {
         var jaxbElement = unmarshaller.unmarshal(streamSource, objectType);
         return jaxbElement.getValue();
     }
-
-
-    // private final ObjectMapper mapper;
-    //    mapper = new XmlMapper();
-    //    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-    //            var jax = JAXBContext.newInstance(responseType, command.getClass());
-//            var marshaller = jax.createMarshaller();
-//
-//            var sw = new StringWriter();
-//
-//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//            marshaller.marshal(command, sw);
-//
-//            String body = sw.toString();
-
-
-    //                var xml = new XMLStreamReader();
-//
-//                var jaxResponse = JAXBContext.newInstance(responseType);
-//                var unmarshaller = jaxResponse.createUnmarshaller();
-//
-//
-//                return (T) unmarshaller.unmarshal(xml);
-    //return mapper.readValue(responseBody, responseType);
 }
