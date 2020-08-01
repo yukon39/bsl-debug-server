@@ -11,6 +11,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven ( "https://jitpack.io" )
 }
 
 val junitVersion = "5.6.1"
@@ -18,6 +19,7 @@ val junitVersion = "5.6.1"
 dependencies {
 
     implementation( "org.eclipse.lsp4j", "org.eclipse.lsp4j.debug", "0.9.0")
+    implementation( "com.github.1c-syntax", "mdclasses", "0.5.0")
 
     implementation("info.picocli", "picocli", "4.4.0")
 
@@ -62,6 +64,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.test {
+    systemProperty("file.encoding", "utf-8")
     useJUnitPlatform()
 }
 
