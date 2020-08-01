@@ -4,7 +4,9 @@ import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.context.ServerContext;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
 import com.google.common.eventbus.Subscribe;
-import org.eclipse.lsp4j.debug.*;
+import org.eclipse.lsp4j.debug.OutputEventArguments;
+import org.eclipse.lsp4j.debug.OutputEventArgumentsCategory;
+import org.eclipse.lsp4j.debug.TerminatedEventArguments;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 
 public class DebugClientEventSubscribers {
@@ -42,9 +44,7 @@ public class DebugClientEventSubscribers {
 
     @Subscribe
     public void debugeeOutputHandler(Debugee.OutputEvent event) {
-        var args = new OutputEventArguments();
-        args.setOutput(event.output + System.lineSeparator());
-        client.output(args);
+        output(event.output);
     }
 
     @Subscribe
