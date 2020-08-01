@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CalculationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="40d90f01-6080-49b4-a575-ceeabeb4c1b1">
+	<producedTypes>
+		<selectionType typeId="a68eec91-ebd2-49b7-8d54-baf3a32d4fe8" valueTypeId="e5741ac5-1336-4f50-aa2a-76c1d5000829"/>
+		<listType typeId="ee76bed9-f4b2-4da9-97bb-652d77e3dfe4" valueTypeId="6e0194e0-c747-4575-b071-8a6f2cd3eea0"/>
+		<managerType typeId="7b410948-dc03-4554-ab70-d844015981e6" valueTypeId="2ddbe104-df43-4043-ba94-7bcea7eaa38e"/>
+		<recordSetType typeId="5d81c30c-5a1f-4450-a6c4-90e8ae2e1db4" valueTypeId="2b4c1313-2381-40a7-94fb-d95d4c5a3dee"/>
+		<recordKeyType typeId="6c2415b7-2bee-4a05-8873-16b7fd76ffb1" valueTypeId="a056f4bd-df35-410d-8331-85ca5eb5c2e1"/>
+		<recordType typeId="3346b764-bf21-4b5f-b9ca-f6d63e527b37" valueTypeId="5047bb90-5e61-4d0c-99b5-463a6dbb0a58"/>
+		<recalcsType typeId="5abf11c1-a5e7-40a1-949b-6c5a4dd8e3d4" valueTypeId="1d45d68e-2915-42f0-81ce-1cb4ff17547c"/>
+	</producedTypes>
+	<name>РегистрРасчета1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<periodicity>Month</periodicity>
+	<chartOfCalculationTypes>ChartOfCalculationTypes.ПланВидовРасчета1</chartOfCalculationTypes>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<recalculations uuid="3d66b766-54c8-423d-887d-6670cfc1b8cc">
+		<producedTypes>
+			<recordType typeId="6ba7bfa7-0e46-40ca-a8d8-af762f4429a0" valueTypeId="d0771932-6cd6-4d9c-a355-c1195b4abd06"/>
+			<managerType typeId="545cc23c-dff6-41a4-aac6-440c6f8b1582" valueTypeId="b498fcf4-7abb-4b70-a685-c4460270318c"/>
+			<recordSetType typeId="d9825b8a-4ea5-4584-8fd0-8a7c1256cfc5" valueTypeId="28ec5b9f-a764-4050-a364-ee1d7011b745"/>
+		</producedTypes>
+		<name>Перерасчет1</name>
+		<dataLockControlMode>Managed</dataLockControlMode>
+	</recalculations>
+	<forms uuid="4404cd81-7559-48e1-ad7b-3d32f7bb1951">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="16bedcfe-b4b3-41a5-827f-bc9d11be683e">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>РегистрРасчета</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>CalculationRegister</value>
+		</synonym>
+	</commands>
+</mdclass:CalculationRegister>

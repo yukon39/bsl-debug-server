@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.8">
+	<ChartOfAccounts uuid="de591479-02f1-45e0-aa7a-8fbed21098d6">
+		<InternalInfo>
+			<xr:GeneratedType name="ChartOfAccountsObject.ПланСчетов1" category="Object">
+				<xr:TypeId>88dfac2a-f663-44a8-a4ea-78c3f2bbef7e</xr:TypeId>
+				<xr:ValueId>c4a79ed4-a6e3-46b5-b54d-d6910e3cc4a4</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsRef.ПланСчетов1" category="Ref">
+				<xr:TypeId>1fecdcfd-7e14-4a37-bd76-cf924ed2c063</xr:TypeId>
+				<xr:ValueId>1a1f108f-4588-46d2-9adb-da2d8ffa3de4</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsSelection.ПланСчетов1" category="Selection">
+				<xr:TypeId>abd2be37-ffb7-4236-9ca6-f98d9f6cb209</xr:TypeId>
+				<xr:ValueId>7c646c35-5e0b-462f-bf2c-61f43d906a58</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsList.ПланСчетов1" category="List">
+				<xr:TypeId>2941652a-ab62-4cee-89bb-56727d162f55</xr:TypeId>
+				<xr:ValueId>76c07431-8d4c-4dd5-bf3d-5f37d70b08b9</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsManager.ПланСчетов1" category="Manager">
+				<xr:TypeId>810ce16d-209c-4045-9b72-60dc821cbfac</xr:TypeId>
+				<xr:ValueId>5cc5d39d-2f50-4c51-a872-03a9e516b4c4</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsExtDimensionTypes.ПланСчетов1" category="ExtDimensionTypes">
+				<xr:TypeId>1199be22-09cd-4851-960f-7aa42b6b444a</xr:TypeId>
+				<xr:ValueId>d5807750-365f-4cc2-996b-59fabd9ad010</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="ChartOfAccountsExtDimensionTypesRow.ПланСчетов1" category="ExtDimensionTypesRow">
+				<xr:TypeId>eaf5b420-4e08-49e0-aff0-3615332bd794</xr:TypeId>
+				<xr:ValueId>6347815f-3cb5-4fce-a5cb-17497c84eb1f</xr:ValueId>
+			</xr:GeneratedType>
+		</InternalInfo>
+		<Properties>
+			<Name>ПланСчетов1</Name>
+			<Synonym/>
+			<Comment/>
+			<UseStandardCommands>true</UseStandardCommands>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<BasedOn/>
+			<ExtDimensionTypes/>
+			<MaxExtDimensionCount>0</MaxExtDimensionCount>
+			<CodeMask/>
+			<CodeLength>9</CodeLength>
+			<DescriptionLength>25</DescriptionLength>
+			<CodeSeries>WholeChartOfAccounts</CodeSeries>
+			<CheckUnique>true</CheckUnique>
+			<DefaultPresentation>AsCode</DefaultPresentation>
+			<Characteristics/>
+			<PredefinedDataUpdate>Auto</PredefinedDataUpdate>
+			<EditType>InDialog</EditType>
+			<QuickChoice>false</QuickChoice>
+			<ChoiceMode>BothWays</ChoiceMode>
+			<InputByString>
+				<xr:Field>ChartOfAccounts.ПланСчетов1.StandardAttribute.Description</xr:Field>
+				<xr:Field>ChartOfAccounts.ПланСчетов1.StandardAttribute.Code</xr:Field>
+			</InputByString>
+			<SearchStringModeOnInputByString>Begin</SearchStringModeOnInputByString>
+			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
+			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
+			<CreateOnInput>DontUse</CreateOnInput>
+			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
+			<DefaultObjectForm/>
+			<DefaultListForm/>
+			<DefaultChoiceForm/>
+			<AuxiliaryObjectForm/>
+			<AuxiliaryListForm/>
+			<AuxiliaryChoiceForm/>
+			<AutoOrderByCode>false</AutoOrderByCode>
+			<OrderLength>0</OrderLength>
+			<DataLockFields/>
+			<DataLockControlMode>Managed</DataLockControlMode>
+			<FullTextSearch>Use</FullTextSearch>
+			<DataHistory>DontUse</DataHistory>
+			<ObjectPresentation/>
+			<ExtendedObjectPresentation/>
+			<ListPresentation/>
+			<ExtendedListPresentation/>
+			<Explanation/>
+		</Properties>
+		<ChildObjects>
+			<Form>Форма</Form>
+			<Command uuid="911a9cef-4849-462e-a7be-ed7fe3bb6bcc">
+				<Properties>
+					<Name>Команда1</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ПланСчетов</v8:content>
+						</v8:item>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>ChartsOfAccount</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>ActionsPanelTools</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
+		</ChildObjects>
+	</ChartOfAccounts>
+</MetaDataObject>

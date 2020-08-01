@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.8">
+	<BusinessProcess uuid="8bbe4bc3-d291-4200-a218-d225aec2dc96">
+		<InternalInfo>
+			<xr:GeneratedType name="BusinessProcessObject.БизнесПроцесс1" category="Object">
+				<xr:TypeId>fedda2d8-d256-4a7c-8e2a-b6a1f586257f</xr:TypeId>
+				<xr:ValueId>7b5acc28-2054-45d6-97d7-c83b3e7de660</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="BusinessProcessRef.БизнесПроцесс1" category="Ref">
+				<xr:TypeId>f4ed0d4b-4c30-43d9-8302-b52c2eb0ad00</xr:TypeId>
+				<xr:ValueId>6363c34f-ff56-4b54-b7f5-eff1b1469c59</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="BusinessProcessSelection.БизнесПроцесс1" category="Selection">
+				<xr:TypeId>ae7da04a-c37e-400d-93ab-43e160f7bb5b</xr:TypeId>
+				<xr:ValueId>9f46dba7-dc74-40bd-ab65-7bda6a6854c3</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="BusinessProcessList.БизнесПроцесс1" category="List">
+				<xr:TypeId>25da8f4d-3d7c-4522-9370-ce5cfab2d7f4</xr:TypeId>
+				<xr:ValueId>b97f61df-b54b-40f8-9517-8b0967d2a1d0</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="BusinessProcessManager.БизнесПроцесс1" category="Manager">
+				<xr:TypeId>9580ec2e-cb8d-486c-ab68-49cd1e6b99a0</xr:TypeId>
+				<xr:ValueId>dcd250b9-6a37-48a8-86d8-09a371e5aab3</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="BusinessProcessRoutePointRef.БизнесПроцесс1" category="RoutePointRef">
+				<xr:TypeId>df4845c4-1b57-4e32-9017-dbc939b76691</xr:TypeId>
+				<xr:ValueId>a19532e0-9be9-4636-aa13-639996451be9</xr:ValueId>
+			</xr:GeneratedType>
+		</InternalInfo>
+		<Properties>
+			<Name>БизнесПроцесс1</Name>
+			<Synonym/>
+			<Comment/>
+			<UseStandardCommands>true</UseStandardCommands>
+			<EditType>InDialog</EditType>
+			<InputByString>
+				<xr:Field>BusinessProcess.БизнесПроцесс1.StandardAttribute.Number</xr:Field>
+			</InputByString>
+			<CreateOnInput>DontUse</CreateOnInput>
+			<SearchStringModeOnInputByString>Begin</SearchStringModeOnInputByString>
+			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
+			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
+			<DefaultObjectForm/>
+			<DefaultListForm/>
+			<DefaultChoiceForm/>
+			<AuxiliaryObjectForm/>
+			<AuxiliaryListForm/>
+			<AuxiliaryChoiceForm/>
+			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
+			<NumberType>String</NumberType>
+			<NumberLength>9</NumberLength>
+			<NumberAllowedLength>Variable</NumberAllowedLength>
+			<CheckUnique>true</CheckUnique>
+			<Characteristics/>
+			<Autonumbering>true</Autonumbering>
+			<BasedOn/>
+			<NumberPeriodicity>Nonperiodical</NumberPeriodicity>
+			<Task>Task.Задача1</Task>
+			<CreateTaskInPrivilegedMode>true</CreateTaskInPrivilegedMode>
+			<DataLockFields/>
+			<DataLockControlMode>Managed</DataLockControlMode>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<FullTextSearch>Use</FullTextSearch>
+			<ObjectPresentation/>
+			<ExtendedObjectPresentation/>
+			<ListPresentation/>
+			<ExtendedListPresentation/>
+			<Explanation/>
+			<DataHistory>DontUse</DataHistory>
+		</Properties>
+		<ChildObjects>
+			<Form>Форма</Form>
+			<Command uuid="66a0908d-9e0b-4f56-9610-6036a95e882a">
+				<Properties>
+					<Name>Команда1</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>БизнесПроцесс</v8:content>
+						</v8:item>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>BusinessProcess</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>ActionsPanelTools</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
+		</ChildObjects>
+	</BusinessProcess>
+</MetaDataObject>

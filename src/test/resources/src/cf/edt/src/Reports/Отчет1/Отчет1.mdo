@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="57f3e963-98fc-4481-9f63-b12253f979ab">
+	<producedTypes>
+		<objectType typeId="a9666914-4228-43e6-8528-b7068301092b" valueTypeId="6b4685c6-1f26-443e-be52-fb63f7af2d85"/>
+		<managerType typeId="62328150-2e1b-4cdf-aba6-ca478778eb8f" valueTypeId="8ad2d9ef-d6ea-4e10-b491-0be9bad132bb"/>
+	</producedTypes>
+	<name>Отчет1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<forms uuid="0fd19627-21e5-4e97-ac01-fef0d40c39b1">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="b3680775-e621-4dc9-aaf4-8b08ae2fbeba">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Отчет</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>Report</value>
+		</synonym>
+	</commands>
+</mdclass:Report>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ExchangePlan xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0e82e1c5-828d-46af-a9c2-5edc838bdc9a" thisNode="42e22f8a-96f2-46a1-bee5-03ec33944d60">
+	<producedTypes>
+		<objectType typeId="f8fb932f-85a5-4dec-9d32-c729eb5a6aab" valueTypeId="235b20d9-333b-4504-8675-14fe20c7ac6e"/>
+		<refType typeId="c1ae85aa-c69d-43af-8277-5f4b3dd2dcf7" valueTypeId="36696627-d986-4317-b5a6-c6edd9469e58"/>
+		<selectionType typeId="c0009122-7523-44b4-8342-ec86d30ecbc8" valueTypeId="f2bd051e-253b-4a81-907f-0e415ff18e6f"/>
+		<listType typeId="901ff155-3a2b-4148-bb4d-2fee2a65a1e7" valueTypeId="f8e2fc94-e304-4d0b-b714-4b3adcd8717c"/>
+		<managerType typeId="1634a7e0-a883-4e93-a2f0-70eedf83f473" valueTypeId="77d68961-55aa-4472-b654-b4d2a3cf5672"/>
+	</producedTypes>
+	<name>ПланОбмена1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>ExchangePlan.ПланОбмена1.StandardAttribute.Description</inputByString>
+	<inputByString>ExchangePlan.ПланОбмена1.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<codeLength>9</codeLength>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<descriptionLength>25</descriptionLength>
+	<defaultPresentation>AsDescription</defaultPresentation>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<forms uuid="53bc831c-d7d7-4927-8899-c4256dee0525">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="c8dc1e16-1c5d-49e2-a4a6-e4a0626f8221">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>ПланОбмена</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>ExchangePlan</value>
+		</synonym>
+	</commands>
+</mdclass:ExchangePlan>

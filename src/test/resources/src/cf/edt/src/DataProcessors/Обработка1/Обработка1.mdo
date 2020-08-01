@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f8a46f0f-16e8-4373-bf4e-c2dd13728eb0">
+	<producedTypes>
+		<objectType typeId="ca3d7df7-53d7-4cc3-938a-1c52d44242ec" valueTypeId="e592aea2-5c1d-4ffa-ad27-48174a89950c"/>
+		<managerType typeId="b83b84bd-df51-4313-8bab-f05bde24ac4b" valueTypeId="22b8756f-ee6c-4ebc-a340-96b84aac01a8"/>
+	</producedTypes>
+	<name>Обработка1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<forms uuid="934b32ea-1a0a-4b47-b71b-f10246bea67c">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="2f511c22-b00e-4730-84eb-fe6f3c3976d9">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Обработка</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>DataProcessor</value>
+		</synonym>
+	</commands>
+</mdclass:DataProcessor>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:BusinessProcess xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8bbe4bc3-d291-4200-a218-d225aec2dc96">
+	<producedTypes>
+		<objectType typeId="fedda2d8-d256-4a7c-8e2a-b6a1f586257f" valueTypeId="7b5acc28-2054-45d6-97d7-c83b3e7de660"/>
+		<refType typeId="f4ed0d4b-4c30-43d9-8302-b52c2eb0ad00" valueTypeId="6363c34f-ff56-4b54-b7f5-eff1b1469c59"/>
+		<selectionType typeId="ae7da04a-c37e-400d-93ab-43e160f7bb5b" valueTypeId="9f46dba7-dc74-40bd-ab65-7bda6a6854c3"/>
+		<listType typeId="25da8f4d-3d7c-4522-9370-ce5cfab2d7f4" valueTypeId="b97f61df-b54b-40f8-9517-8b0967d2a1d0"/>
+		<managerType typeId="9580ec2e-cb8d-486c-ab68-49cd1e6b99a0" valueTypeId="dcd250b9-6a37-48a8-86d8-09a371e5aab3"/>
+		<routePointRef typeId="df4845c4-1b57-4e32-9017-dbc939b76691" valueTypeId="a19532e0-9be9-4636-aa13-639996451be9"/>
+	</producedTypes>
+	<name>БизнесПроцесс1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>BusinessProcess.БизнесПроцесс1.StandardAttribute.Number</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<editType>InDialog</editType>
+	<numberType>String</numberType>
+	<numberLength>9</numberLength>
+	<numberAllowedLength>Variable</numberAllowedLength>
+	<checkUnique>true</checkUnique>
+	<autonumbering>true</autonumbering>
+	<task>Task.Задача1</task>
+	<createTaskInPrivilegedMode>true</createTaskInPrivilegedMode>
+	<forms uuid="b9a7ffa4-168f-4af2-a416-65a82e3ce3c9">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="66a0908d-9e0b-4f56-9610-6036a95e882a">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>БизнесПроцесс</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>BusinessProcess</value>
+		</synonym>
+	</commands>
+</mdclass:BusinessProcess>

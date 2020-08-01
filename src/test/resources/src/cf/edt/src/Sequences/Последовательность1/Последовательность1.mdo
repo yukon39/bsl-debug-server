@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Sequence xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0db152ad-7b71-42e1-bfe2-225bdf76612a">
+  <producedTypes>
+    <recordType typeId="d85d8237-4227-4b97-bf90-d31686848ebe" valueTypeId="71f0085d-a002-47b5-8c7f-8094d898a20f"/>
+    <managerType typeId="a5febf2a-2ee4-4344-a787-721f408c3b65" valueTypeId="79b01abc-6f5b-4a3b-9660-b40f77928d39"/>
+    <recordSetType typeId="a07a4d8e-7951-4088-a25a-1333136d495f" valueTypeId="e6a44e11-326c-4251-a5e7-c23ad3d560e7"/>
+  </producedTypes>
+  <name>Последовательность1</name>
+  <documents>Document.Документ1</documents>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Sequence>

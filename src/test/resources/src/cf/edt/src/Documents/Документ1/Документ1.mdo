@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="258e0f88-cfd2-42e0-b7ea-4998cddae1e1">
+	<producedTypes>
+		<objectType typeId="dabc946f-3e70-42f6-8dea-2ca95b234274" valueTypeId="07a405b4-338a-414d-9b27-70e923174f81"/>
+		<refType typeId="8dd4acbd-4c78-4757-87e1-4ee66299fb40" valueTypeId="32f2e753-9ef2-4fc1-99e0-5bc9204e1a00"/>
+		<selectionType typeId="d4ea1e4e-8b0e-4a09-9d55-de704c4f559a" valueTypeId="ca32c8e2-3847-45a1-bfd9-dea8c3cdb319"/>
+		<listType typeId="8aced795-652f-483b-ade2-562eed7ec99c" valueTypeId="c2547e3a-3fdb-4c00-b983-04e78dc1d39c"/>
+		<managerType typeId="b627e864-c1e4-491c-b385-ca386cafb1be" valueTypeId="7e8c76a2-2a3a-46a4-b674-51a24353e56b"/>
+	</producedTypes>
+	<name>Документ1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>Document.Документ1.StandardAttribute.Number</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>Use</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<numberType>String</numberType>
+	<numberLength>9</numberLength>
+	<numberAllowedLength>Variable</numberAllowedLength>
+	<checkUnique>true</checkUnique>
+	<autonumbering>true</autonumbering>
+	<registerRecords>AccumulationRegister.РегистрНакопления1</registerRecords>
+	<registerRecords>AccountingRegister.РегистрБухгалтерии1</registerRecords>
+	<registerRecords>CalculationRegister.РегистрРасчета1</registerRecords>
+	<postInPrivilegedMode>true</postInPrivilegedMode>
+	<unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+	<forms uuid="02981f5c-e666-4c89-b16d-f93c6c53add1">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="a0b06c2a-fced-4b5a-b64c-2fc9dfa00653">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Документ</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>Document</value>
+		</synonym>
+	</commands>
+</mdclass:Document>

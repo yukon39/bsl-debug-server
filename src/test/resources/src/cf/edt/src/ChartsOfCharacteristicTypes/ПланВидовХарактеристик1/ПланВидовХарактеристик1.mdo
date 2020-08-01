@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ChartOfCharacteristicTypes xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4c7385ec-ed4d-41a4-b90d-88b00948b639">
+	<producedTypes>
+		<objectType typeId="67d4fd56-34cb-4cc7-8b33-74d74dc06724" valueTypeId="89f7fbba-3f33-42b0-b819-05fea70a5bf3"/>
+		<refType typeId="dd20c55d-40ba-4ffa-8e7a-884d9d42089f" valueTypeId="096864da-3ca8-44b7-8430-876772475aa5"/>
+		<selectionType typeId="b9450ab7-9753-4c52-b2f2-2ddf59780b40" valueTypeId="adce22bb-dc9d-4dff-bb31-93513f6ea899"/>
+		<listType typeId="eb2e3fca-e13b-4320-b7dc-18fda907e06e" valueTypeId="3ae64b33-9586-4b94-9317-60239eb8f6d6"/>
+		<managerType typeId="6d625fee-662f-4ce8-b372-a0eb70b6edb2" valueTypeId="dd8f0694-b832-4f88-a930-3a016f8e0fe5"/>
+		<containerType typeId="eb9485cc-db4c-4b1a-a3d3-2e0a574264cb" valueTypeId="a498fc58-af66-4402-9f4f-938a68b860c4"/>
+	</producedTypes>
+	<name>ПланВидовХарактеристик1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>ChartOfCharacteristicTypes.ПланВидовХарактеристик1.StandardAttribute.Description</inputByString>
+	<inputByString>ChartOfCharacteristicTypes.ПланВидовХарактеристик1.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<type>
+		<types>String</types>
+		<stringQualifiers>
+			<length>10</length>
+		</stringQualifiers>
+	</type>
+	<foldersOnTop>true</foldersOnTop>
+	<codeLength>9</codeLength>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<descriptionLength>25</descriptionLength>
+	<checkUnique>true</checkUnique>
+	<autonumbering>true</autonumbering>
+	<defaultPresentation>AsDescription</defaultPresentation>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<forms uuid="3d93c6a8-0bd7-46a5-b14d-cb231540c15d">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="c26d2180-affb-4ef4-b5df-c6d820be061d">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>ПланВидовХарактеристик</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>ChartsOfCharacteristicType</value>
+		</synonym>
+	</commands>
+</mdclass:ChartOfCharacteristicTypes>

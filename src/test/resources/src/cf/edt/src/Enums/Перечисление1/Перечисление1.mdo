@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9f217d9f-f7fe-4b3f-8cba-3f430ad8f323">
+	<producedTypes>
+		<refType typeId="421178ac-ab0e-435d-83b1-b6c964965369" valueTypeId="5afb1dcc-b37c-4011-93bc-6b99fc3a1d76"/>
+		<listType typeId="07645758-de33-479c-aa9d-d68f6ad6c9e9" valueTypeId="ef6a73bd-b9e7-4a68-8cda-5f1e872e1ef7"/>
+		<managerType typeId="3bd3a386-71e9-48a4-a392-95473d473b83" valueTypeId="521b11ce-6a70-4fd9-9e1f-1d27985d9911"/>
+	</producedTypes>
+	<name>Перечисление1</name>
+	<quickChoice>true</quickChoice>
+	<choiceMode>BothWays</choiceMode>
+	<forms uuid="4130a6f0-4c97-4ba5-be76-a70e86dbd569">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="24553351-651a-49f4-ac17-463661961fb0">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Перечисление</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>Enum</value>
+		</synonym>
+	</commands>
+</mdclass:Enum>

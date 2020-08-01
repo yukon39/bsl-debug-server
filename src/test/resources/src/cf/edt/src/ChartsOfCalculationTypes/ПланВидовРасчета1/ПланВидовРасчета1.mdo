@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ChartOfCalculationTypes xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b4d88be7-0788-47b0-a682-913075a7e30f">
+	<producedTypes>
+		<objectType typeId="ddb4832d-767d-477d-82d5-70d2d4ce8ab0" valueTypeId="ec1658c4-5705-4c09-b1d3-b75622d45537"/>
+		<refType typeId="44def6e5-4cf8-48ca-8129-b909ee42db91" valueTypeId="8ce3a883-4d14-4cd8-8502-d5780d103d3b"/>
+		<selectionType typeId="4d9f45d8-bf9e-4c3c-aef1-607662025158" valueTypeId="8c4486db-1a88-4c89-8af6-7cd5ebbbbe51"/>
+		<listType typeId="30f114ae-bc64-400a-b912-361bbcfa7637" valueTypeId="660b546e-d0dc-4866-bd0c-8e2ecfa9fcd2"/>
+		<managerType typeId="176dc93b-5705-4aff-89af-e251fe335f3b" valueTypeId="8ae65452-51e3-43db-9f7d-b7c5470c8a01"/>
+		<displacingCalculationTypesType typeId="6d9b92ed-a278-4c55-8d9c-4c783f92805b" valueTypeId="6a32e111-bc32-4ba6-9ab9-bd63284714c5"/>
+		<displacingCalculationTypesRowType typeId="e3144a3e-106c-4688-b4cf-224548e2e2b0" valueTypeId="fecf34da-0334-497c-9075-7796bd6fe592"/>
+		<baseCalculationTypesType typeId="fd422b89-bb21-4830-bbf9-b62902f4e166" valueTypeId="336eb034-b85d-431f-bab3-2bcf4ac707c1"/>
+		<baseCalculationTypesRowType typeId="0bef028c-7f9c-4d1a-ac8e-94e24fd988cc" valueTypeId="aa0975e9-faa0-474b-98bd-3185ef03c935"/>
+		<leadingCalculationTypesType typeId="ad775045-22d2-4195-91d1-5ec60d1f87e6" valueTypeId="a5382a3e-67e8-4b8e-ac27-3e8dc074d374"/>
+		<leadingCalculationTypesRowType typeId="95b1dd84-8a98-4d4d-9682-61bc1e4d4ce9" valueTypeId="21b40186-8fd0-43ca-89bc-ee57e3b3930b"/>
+	</producedTypes>
+	<name>ПланВидовРасчета1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>ChartOfCalculationTypes.ПланВидовРасчета1.StandardAttribute.Description</inputByString>
+	<inputByString>ChartOfCalculationTypes.ПланВидовРасчета1.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<codeLength>9</codeLength>
+	<descriptionLength>40</descriptionLength>
+	<codeType>String</codeType>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<defaultPresentation>AsDescription</defaultPresentation>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<dependenceOnCalculationTypes>OnActionPeriod</dependenceOnCalculationTypes>
+	<baseCalculationTypes>ChartOfCalculationTypes.ПланВидовРасчета1</baseCalculationTypes>
+	<forms uuid="5d51a22b-7208-4fb0-9196-b3c028523c48">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="84a9292c-455e-44fa-b9a3-d806d9be2621">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>ПланВидовРасчета</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>ChartsOfCalculationType</value>
+		</synonym>
+	</commands>
+</mdclass:ChartOfCalculationTypes>

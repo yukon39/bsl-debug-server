@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:SettingsStorage xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="49b2fc9f-b033-4af3-97cc-5fd11e174f97">
+	<producedTypes>
+		<managerType typeId="ff2af1da-ef06-4174-8661-7c362406ca96" valueTypeId="b69f4ebf-4841-4a75-8493-e5520b1131a9"/>
+	</producedTypes>
+	<name>ХранилищеНастроек1</name>
+	<forms uuid="71c337eb-f5e5-4e21-861a-6c114f5394c0">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+</mdclass:SettingsStorage>
