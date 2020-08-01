@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debugserver.debugee.data;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlAccessType;

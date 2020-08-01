@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debugserver.debugee.data;
 
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;

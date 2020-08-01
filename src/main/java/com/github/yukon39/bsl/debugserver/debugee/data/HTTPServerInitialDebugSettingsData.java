@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debugserver.debugee.data;
 
 import com.github.yukon39.bsl.debugserver.debugee.debugArea.DebugAreaInfo;
 import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
@@ -28,4 +28,3 @@ public class HTTPServerInitialDebugSettingsData extends HTTPInitialDebugSettings
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
     private DebugAutoAttachSettings autoAttachSettings;
 }
-
