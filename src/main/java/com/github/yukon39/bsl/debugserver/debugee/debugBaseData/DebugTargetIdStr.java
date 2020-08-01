@@ -4,6 +4,7 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlValue;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class DebugTargetIdStr {
 
     @XmlValue
-    private byte[] value = new byte[] {};
+    private byte [] value = new byte[] {};
 
     @Override
     public String toString() {

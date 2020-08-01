@@ -63,7 +63,7 @@ public enum DebugTargetType {
     }
 
     @Contract(value = " -> new", pure = true)
-    public static DebugTargetType @NotNull [] allTargetTypes() {
+    public static DebugTargetType [] allTargetTypes() {
         return new DebugTargetType[]{
                 CLIENT,
                 MANAGED_CLIENT,
@@ -83,7 +83,7 @@ public enum DebugTargetType {
     }
 
     @Contract(value = " -> new", pure = true)
-    public static DebugTargetType @NotNull [] defaultTargetTypes() {
+    public static DebugTargetType [] defaultTargetTypes() {
         return new DebugTargetType[]{
                 CLIENT,
                 MANAGED_CLIENT,

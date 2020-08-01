@@ -1,6 +1,7 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands;
 
 import jakarta.xml.bind.annotation.XmlEnumValue;
+import org.jetbrains.annotations.NotNull;
 
 public enum DBGUIExtCmds {
 

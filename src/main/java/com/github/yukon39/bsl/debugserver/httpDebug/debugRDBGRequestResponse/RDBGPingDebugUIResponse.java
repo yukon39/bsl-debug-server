@@ -3,6 +3,7 @@ package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
 import jakarta.xml.bind.annotation.*;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
