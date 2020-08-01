@@ -1,6 +1,9 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
+import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
+import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
+import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
@@ -15,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -85,31 +89,30 @@ public class Debugee implements Runnable {
     public CompletableFuture<Void> configure(URL debuggerURI, String infobaseAlias, UUID debugSession) {
 
         httpDebugClient.configure(debuggerURI, infobaseAlias, debugSession);
-
-        return CompletableFuture.runAsync(() -> {
-            try {
-                httpDebugClient.test();
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        try {
+            httpDebugClient.test();
+            return CompletableFuture.completedFuture(null);
+        } catch (HTTPDebugException e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
-    public CompletableFuture<Void> attach() {
+    public CompletableFuture<AttachDebugUIResult> attach(HTTPServerInitialDebugSettingsData data) {
 
-        return CompletableFuture.runAsync(() -> {
-            try {
-                var attachResult = httpDebugClient.attach(password);
-                httpDebugClient.initSettings();
-                httpDebugClient.clearBreakOnNextStatement();
-                httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
+        var options = new DebuggerOptions();
 
-                attached = (attachResult == AttachDebugUIResult.REGISTERED);
+        try {
+            var attachResult = httpDebugClient.attach(password, options);
+            httpDebugClient.initSettings(data);
+            httpDebugClient.clearBreakOnNextStatement();
+            httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
 
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+            attached = true;
+
+            return CompletableFuture.completedFuture(attachResult);
+        } catch (HTTPDebugException e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
     public CompletableFuture<Void> detach() {
@@ -202,6 +205,19 @@ public class Debugee implements Runnable {
         });
     }
 
+    public CompletableFuture<Void> setBreakpoints(BPWorkspaceInternal bpWorkspace) {
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                httpDebugClient.setBreakpoints(bpWorkspace);
+                return null;
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
+
+    }
+
     public CompletableFuture<List<DbgTargetStateInfo>> stepContinue(DebugTargetIdLight targetID, Boolean simple) {
 
         return CompletableFuture.supplyAsync(() -> {
@@ -247,7 +263,7 @@ public class Debugee implements Runnable {
     }
 
     private void postEvent(Object event) {
-        if (eventBus != null) {
+        if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
     }
@@ -260,7 +276,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdStartedEvent {
+    public static class CmdStartedEvent {
         public final DBGUIExtCmdInfoStarted command;
 
         public CmdStartedEvent(DBGUIExtCmdInfoStarted command) {
@@ -268,7 +284,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdQuitEvent {
+    public static class CmdQuitEvent {
         public final DBGUIExtCmdInfoQuit command;
 
         public CmdQuitEvent(DBGUIExtCmdInfoQuit command) {
@@ -276,7 +292,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdCallStackFormedEvent {
+    public static class CmdCallStackFormedEvent {
         public final DBGUIExtCmdInfoCallStackFormed command;
 
         public CmdCallStackFormedEvent(DBGUIExtCmdInfoCallStackFormed command) {
