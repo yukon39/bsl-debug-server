@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccountingRegister xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="34f63163-237c-4744-bea4-36da8dc1f95a">
+	<producedTypes>
+		<selectionType typeId="b4f6b0bb-fde1-40a1-af37-49211999f77f" valueTypeId="5f6c788b-dbe2-4f84-9622-3b62e64b68b3"/>
+		<listType typeId="0324057b-2982-491f-8f2a-694fff8633d5" valueTypeId="ff9c4cd8-c79c-477c-97c5-98ce3f674c8c"/>
+		<managerType typeId="c0582167-22a8-49bf-ac6c-f18c327e8d6a" valueTypeId="cef6be50-f546-4080-94e5-7ba9c1be41c6"/>
+		<recordSetType typeId="7e78c3e8-5fa8-411d-bee4-ef8dbffb35f0" valueTypeId="dcd2b8f2-150e-46b9-9d5e-e1edf233c430"/>
+		<recordKeyType typeId="ea6936bc-14e6-4f5a-a594-e6cbbb1a24c7" valueTypeId="36044d80-ce07-4c06-8df1-c44cdb412420"/>
+		<recordType typeId="7880b250-e3a9-43de-bb1a-1e98df58b1cc" valueTypeId="0c9161e1-489f-403e-8c17-7d7a418979fc"/>
+		<extDimensionsType typeId="69bbf17e-9894-43a0-aa3c-254ebc2c042f" valueTypeId="0d33f802-eebe-4f0c-bf99-4484c7031cf4"/>
+	</producedTypes>
+	<name>РегистрБухгалтерии1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<chartOfAccounts>ChartOfAccounts.ПланСчетов1</chartOfAccounts>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<enableTotalsSplitting>true</enableTotalsSplitting>
+	<resources uuid="23756af4-83ca-42d9-b4b9-f06b05ebc84e">
+		<name>Ресурс1</name>
+		<type>
+			<types>Number</types>
+			<numberQualifiers>
+				<precision>10</precision>
+			</numberQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue"/>
+		<maxValue xsi:type="core:UndefinedValue"/>
+		<fullTextSearch>Use</fullTextSearch>
+		<balance>true</balance>
+	</resources>
+	<forms uuid="2ce1d363-f445-4db6-b7b7-998e41073ca5">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="5f73ab1d-8248-4032-a2ad-f422a92cca3c">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>РегистрБухгалтерии</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>AccountingRegister</value>
+		</synonym>
+	</commands>
+</mdclass:AccountingRegister>

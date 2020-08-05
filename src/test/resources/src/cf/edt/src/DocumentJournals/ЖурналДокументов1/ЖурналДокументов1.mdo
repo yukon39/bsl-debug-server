@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DocumentJournal xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="02c82149-2a35-4f87-b89b-bc3c37061092">
+	<producedTypes>
+		<selectionType typeId="aca898f9-313e-4644-a1ec-63e6236f56c2" valueTypeId="e6ae0069-2e55-4f73-9145-698d0cb55666"/>
+		<listType typeId="fb7890a3-e82d-447f-861d-0e47488c1915" valueTypeId="fb3b8e0e-f88f-4cb8-9dab-08bdebe83d49"/>
+		<managerType typeId="ff1f81ce-5159-4d3c-a78c-66d84c6e8602" valueTypeId="a2a202ed-3a88-41d6-8af8-7c2ffad36563"/>
+	</producedTypes>
+	<name>ЖурналДокументов1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<registeredDocuments>Document.Документ1</registeredDocuments>
+	<forms uuid="2e2e1aa7-3a88-4658-b630-3afc4423a77c">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="d3da6472-4f9d-4591-890a-bb1a27d8abe8">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>ЖурналДокументов</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>DocumentJournal</value>
+		</synonym>
+	</commands>
+</mdclass:DocumentJournal>

@@ -1,0 +1,21 @@
+{
+  "command": "setBreakpoints",
+  "arguments": {
+    "source": {
+      "name": "ManagerModule.bsl",
+      "path": "Catalogs\\\u0421\u043F\u0440\u0430\u0432\u043E\u0447\u043D\u0438\u043A1\\Ext\\ManagerModule.bsl",
+      "adapterData": {}
+    },
+    "lines": [
+      6
+    ],
+    "breakpoints": [
+      {
+        "line": 6
+      }
+    ],
+    "sourceModified": false
+  },
+  "type": "request",
+  "seq": 3
+}

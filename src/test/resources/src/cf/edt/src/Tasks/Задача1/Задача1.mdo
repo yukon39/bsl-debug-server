@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Task xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ea1342aa-cd56-4334-b0cd-9ac30c3bf2a9">
+	<producedTypes>
+		<objectType typeId="29fd2406-7dff-4802-82a9-a6a601196cd9" valueTypeId="244c7205-190b-40fd-a7f8-dc1b96b9ebab"/>
+		<refType typeId="fcb384f4-a7ea-483c-bed8-b1e4ab794434" valueTypeId="db33a4c0-0a16-4b3b-9b22-a02e79d65435"/>
+		<selectionType typeId="7b5a556a-ea5d-49ad-aa3b-fec43fe33b5e" valueTypeId="7fd8fba1-a0e4-4dff-ace7-a9d7980249da"/>
+		<listType typeId="fb02d644-1169-4873-9eab-6541b46f42d8" valueTypeId="83b875c8-4b77-4918-be97-51863cd3a38a"/>
+		<managerType typeId="c4b65cac-ccb8-4318-a7d0-0d40008b42f9" valueTypeId="aad1eaa4-831d-43d5-9854-5b9ca0886e3d"/>
+	</producedTypes>
+	<name>Задача1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>Task.Задача1.StandardAttribute.Description</inputByString>
+	<inputByString>Task.Задача1.StandardAttribute.Number</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>DontUse</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<numberType>String</numberType>
+	<numberLength>9</numberLength>
+	<numberAllowedLength>Variable</numberAllowedLength>
+	<checkUnique>true</checkUnique>
+	<autonumbering>true</autonumbering>
+	<taskNumberAutoPrefix>DontUse</taskNumberAutoPrefix>
+	<descriptionLength>25</descriptionLength>
+	<defaultPresentation>AsDescription</defaultPresentation>
+	<editType>InDialog</editType>
+	<forms uuid="0fcc2b09-6188-4573-843d-41e906660823">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="9ac5afa1-99da-4ffe-93cc-c237f76e5f32">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Задача</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>Task</value>
+		</synonym>
+	</commands>
+</mdclass:Task>

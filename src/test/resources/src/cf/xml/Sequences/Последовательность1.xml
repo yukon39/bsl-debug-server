@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.8">
+	<Sequence uuid="0db152ad-7b71-42e1-bfe2-225bdf76612a">
+		<InternalInfo>
+			<xr:GeneratedType name="SequenceRecord.Последовательность1" category="Record">
+				<xr:TypeId>d85d8237-4227-4b97-bf90-d31686848ebe</xr:TypeId>
+				<xr:ValueId>71f0085d-a002-47b5-8c7f-8094d898a20f</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="SequenceManager.Последовательность1" category="Manager">
+				<xr:TypeId>a5febf2a-2ee4-4344-a787-721f408c3b65</xr:TypeId>
+				<xr:ValueId>79b01abc-6f5b-4a3b-9660-b40f77928d39</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="SequenceRecordSet.Последовательность1" category="RecordSet">
+				<xr:TypeId>a07a4d8e-7951-4088-a25a-1333136d495f</xr:TypeId>
+				<xr:ValueId>e6a44e11-326c-4251-a5e7-c23ad3d560e7</xr:ValueId>
+			</xr:GeneratedType>
+		</InternalInfo>
+		<Properties>
+			<Name>Последовательность1</Name>
+			<Synonym/>
+			<Comment/>
+			<MoveBoundaryOnPosting>Move</MoveBoundaryOnPosting>
+			<Documents>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.Документ1</xr:Item>
+			</Documents>
+			<RegisterRecords/>
+			<DataLockControlMode>Managed</DataLockControlMode>
+		</Properties>
+		<ChildObjects/>
+	</Sequence>
+</MetaDataObject>

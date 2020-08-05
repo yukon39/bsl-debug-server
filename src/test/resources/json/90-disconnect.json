@@ -1,0 +1,8 @@
+{
+  "command": "disconnect",
+  "arguments": {
+    "restart": false
+  },
+  "type": "request",
+  "seq": 90
+}

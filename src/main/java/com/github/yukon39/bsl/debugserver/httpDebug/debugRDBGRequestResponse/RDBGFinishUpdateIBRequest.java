@@ -5,5 +5,5 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class RDBGFinishUpdateIBRequest extends RDbgBaseRequest {
+public class RDBGFinishUpdateIBRequest extends RDbgBaseRequest implements IRDBGRequest {
 }

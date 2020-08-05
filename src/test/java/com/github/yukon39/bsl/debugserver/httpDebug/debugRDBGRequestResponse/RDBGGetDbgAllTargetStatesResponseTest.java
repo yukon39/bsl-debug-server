@@ -3,85 +3,84 @@ package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
 import jakarta.xml.bind.JAXBException;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RDBGGetDbgAllTargetStatesResponseTest {
 
     @Test
-    public void serialize() throws JAXBException {
+    public void testSerialize() throws JAXBException {
 
-//        var request = new RDBGGetDbgAllTargetStatesResponse();
-//
-//        var targetID = new DebugTargetId();
-//        targetID.setId(UUID.randomUUID());
-//        targetID.setSeanceId(UUID.randomUUID());
-//        targetID.setSeanceNo(2);
-//        targetID.setInfoBaseInstanceID(UUID.randomUUID());
-//        targetID.setInfoBaseAlias("DefAlias");
-//        targetID.setIsServerInfoBase(IsServerInfoBase.UNDEFINED);
-//        targetID.setConfigVersion(UUID.randomUUID().toString());
-//        targetID.setTargetType(DebugTargetType.ServerEmulation);
-//
-//        var targetStateInfo = new DbgTargetStateInfo();
-//        targetStateInfo.setTargetID(targetID);
-//        targetStateInfo.setState(DbgTargetState.Worked);
-//        targetStateInfo.setStateNum(16);
-//
-//        request.getItem().add(targetStateInfo);
-//
-//        targetID = new DebugTargetId();
-//        targetID.setId(UUID.randomUUID());
-//        targetID.setSeanceId(UUID.randomUUID());
-//        targetID.setSeanceNo(5);
-//        targetID.setInfoBaseInstanceID(UUID.randomUUID());
-//        targetID.setInfoBaseAlias("DefAlias");
-//        targetID.setIsServerInfoBase(IsServerInfoBase.TRUE);
-//        targetID.setConfigVersion(UUID.randomUUID().toString());
-//        targetID.setTargetType(DebugTargetType.Server);
-//
-//        targetStateInfo = new DbgTargetStateInfo();
-//        targetStateInfo.setTargetID(targetID);
-//        targetStateInfo.setState(DbgTargetState.WaitDebugger);
-//        targetStateInfo.setStateNum(5);
-//
-//        request.getItem().add(targetStateInfo);
-//
-//        var serializer = new HTTPDebugSerializer();
-//
-//        var xml = serializer.serialize(request);
-//
-//        var response = serializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
-//
-//        assertThat(request).isEqualTo(response);
+        // given
+
+        var request = new RDBGGetDbgAllTargetStatesResponse();
+
+        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
+
+        var targetStateInfo = new DbgTargetStateInfo();
+        targetStateInfo.setTargetID(targetID);
+        targetStateInfo.setState(DbgTargetState.WORKED);
+        targetStateInfo.setStateNum(16);
+
+        request.getItem().add(targetStateInfo);
+
+        targetID = DebugTargetIdTest.createTestObjectServer();
+
+        targetStateInfo = new DbgTargetStateInfo();
+        targetStateInfo.setTargetID(targetID);
+        targetStateInfo.setState(DbgTargetState.WAIT_DEBUGGER);
+        targetStateInfo.setStateNum(5);
+
+        request.getItem().add(targetStateInfo);
+
+        // when
+        var serializer = new HTTPDebugSerializer();
+        var xml = serializer.serialize(request);
+        var response = serializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
+
+        // then
+        assertThat(request).isEqualTo(response);
     }
-
 
     @Test
     public void deserializeFromFile() throws IOException, JAXBException {
 
-        var serializer = new HTTPDebugSerializer();
+        // given
+        var request = new RDBGGetDbgAllTargetStatesResponse();
+
+        var targetStateInfo = new DbgTargetStateInfo();
+
+        var targetId = new DebugTargetId();
+        targetId.setId(UUID.fromString("20f40ea7-76ce-4d56-b023-0163849e0260"));
+        targetId.setSeanceId(UUID.fromString("426e45a4-61d3-4e6b-a277-8bab3f46d66c"));
+        targetId.setSeanceNo(2);
+        targetId.setInfoBaseInstanceID(UUID.fromString("ebac4d34-3028-4080-aa34-4019efbaf053"));
+        targetId.setInfoBaseAlias("DefAlias");
+        targetId.setIsServerInfoBase(IsServerInfoBase.UNDEFINED);
+        targetId.setConfigVersion("d86d5f2a402de7458d2696f4fee5eace00000000");
+        targetId.setTargetType(DebugTargetType.MANAGED_CLIENT);
+
+        targetStateInfo.setTargetID(targetId);
+        targetStateInfo.setStateNum(16);
+        targetStateInfo.setState(DbgTargetState.WORKED);
+
+        request.getItem().add(targetStateInfo);
 
         var file = new File("./src/test/resources/httpDebug/RDBGGetDbgAllTargetStatesResponse.xml");
-        var xml = Files.readAllBytes(file.toPath());
 
+        // when
+        var serializer = new HTTPDebugSerializer();
+        var xml = Files.readAllBytes(file.toPath());
         var response = serializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
 
-        var result = response.getItem();
-        assertThat(result.size()).isEqualTo(2);
-
-        var item = result.get(0);
-        assertThat(item).isInstanceOf(DbgTargetStateInfo.class);
-        assertThat(item.getState()).isEqualTo(DbgTargetState.Worked);
-        assertThat(item.getStateNum()).isEqualTo(16);
-
-        var targetId = item.getTargetID();
-        assertThat(targetId).isInstanceOf(DebugTargetId.class);
-        assertThat(targetId.getSeanceNo()).isNotNull();
+        // then
+        assertThat(request).isEqualTo(response);
     }
 }

@@ -15,6 +15,6 @@ public class DBGUIExtCmdInfoValueModifyResult extends DBGUIExtCmdInfoBase{
     private char[] errorStr;
 
     public DBGUIExtCmdInfoValueModifyResult() {
-        super(DBGUIExtCmds.valueModified);
+        super(DBGUIExtCmds.VALUE_MODIFIED);
     }
 }

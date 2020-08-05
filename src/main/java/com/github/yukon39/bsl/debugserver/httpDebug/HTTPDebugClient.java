@@ -1,7 +1,12 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
+import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
+import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
+import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
 import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.*;
 import com.github.yukon39.bsl.debugserver.utils.StringUtils;
@@ -51,7 +56,18 @@ public class HTTPDebugClient {
         return apiVersion;
     }
 
-    public AttachDebugUIResult attach(char[] password) throws HTTPDebugException {
+    public void test() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setResource("rdbgTest")
+                .setCommand("test");
+
+        var request = new RDBGTestRequest();
+
+        executeRequest(request, RDBGTestResponse.class, params);
+    }
+
+    public AttachDebugUIResult attach(char[] password, DebuggerOptions options) throws HTTPDebugException {
 
         var params = new RequestParameters()
                 .setCommand("attachDebugUI");
@@ -59,10 +75,12 @@ public class HTTPDebugClient {
         var request = new RDBGAttachDebugUIRequest();
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
-        if(password.length > 0) {
+
+        if (password.length > 0) {
             var credentials = StringUtils.toByteArray(password);
             request.setCredentials(credentials);
         }
+        request.setOptions(options);
 
         var response = executeRequest(request, RDBGAttachDebugUIResponse.class, params);
         var result = response.getResult();
@@ -89,7 +107,59 @@ public class HTTPDebugClient {
         return result;
     }
 
-    public void initSettings() throws HTTPDebugException {
+    public Boolean startUpdateIB() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("startUpdateIB");
+
+        var request = new RDBGStartUpdateIBRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+
+        var response = executeRequest(request, RDBGStartUpdateIBResponse.class, params);
+        return response.getResult();
+    }
+
+    public Boolean finishUpdateIB() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("finishUpdateIB");
+
+        var request = new RDBGFinishUpdateIBRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+
+        var response = executeRequest(request, RDBGFinishUpdateIBResponse.class, params);
+        return response.getResult();
+    }
+
+    public List<BSLModuleIdInternal> getInaccessibleModules() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("getInaccessibleModules");
+
+        var request = new RDBGGetInaccessibleModulesRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+
+        var response = executeRequest(request, RDBGGetInaccessibleModulesResponse.class, params);
+        return response.getModuleID();
+    }
+
+    public void setInaccessibleModules(List<BSLModuleIdInternal> moduleId) throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("setInaccessibleModules");
+
+        var request = new RDBGSetInaccessibleModulesRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+        request.getModuleID().addAll(moduleId);
+
+        executeRequest(request, RDBGSetInaccessibleModulesResponse.class, params);
+    }
+
+    public void initSettings(HTTPServerInitialDebugSettingsData data) throws HTTPDebugException {
 
         var params = new RequestParameters()
                 .setCommand("initSettings");
@@ -97,6 +167,7 @@ public class HTTPDebugClient {
         var request = new RDBGSetInitialDebugSettingsRequest();
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
+        request.setData(data);
 
         executeRequest(request, RDBGSetInitialDebugSettingsResponse.class, params);
     }
@@ -134,17 +205,17 @@ public class HTTPDebugClient {
         return response.getResult();
     }
 
-    public DBGUIExtCmdInfoBase[] ping() throws HTTPDebugException {
+    public void terminateDebugTargets(List<DebugTargetId> targetID) throws HTTPDebugException {
 
         var params = new RequestParameters()
-                .setCommand("pingDebugUIParams")
-                .setDebugID(debugSession);
+                .setCommand("terminateDbgTarget");
 
-        var request = new RDBGPingDebugUIRequest();
+        var request = new RDBGTerminateRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+        request.getTargetID().addAll(targetID);
 
-        var response = executeRequest(request, RDBGPingDebugUIResponse.class, params);
-
-        return response.getResult();
+        executeRequest(request, RDBGTerminateResponse.class, params);
     }
 
     public List<DbgTargetStateInfo> getAllTargetStates() throws HTTPDebugException {
@@ -159,6 +230,33 @@ public class HTTPDebugClient {
         var response = executeRequest(request, RDBGGetDbgAllTargetStatesResponse.class, params);
 
         return response.getItem();
+    }
+
+    public DbgTargetState getTargetState() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("getDbgTargetState");
+
+        var request = new RDBGGetDbgTargetStateRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+
+        var response = executeRequest(request, RDBGGetDbgTargetStateResponse.class, params);
+
+        return response.getState();
+    }
+
+    public List<DBGUIExtCmdInfoBase> ping() throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("pingDebugUIParams")
+                .setDebugID(debugSession);
+
+        var request = new RDBGPingDebugUIRequest();
+
+        var response = executeRequest(request, RDBGPingDebugUIResponse.class, params);
+
+        return response.getResult();
     }
 
     public void setBreakOnNextStatement() throws HTTPDebugException {
@@ -182,6 +280,19 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
 
         executeRequest(request, RDBGClearBreakOnNextStatementResponse.class, params);
+    }
+
+    public void setBreakpoints(BPWorkspaceInternal bpWorkspace) throws HTTPDebugException {
+
+        var params = new RequestParameters()
+                .setCommand("setBreakpoints");
+
+        var request = new RDBGSetBreakpointsRequest();
+        request.setIdOfDebuggerUI(debugSession);
+        request.setInfoBaseAlias(infobaseAlias);
+        request.setBpWorkspace(bpWorkspace);
+
+        executeRequest(request, RDBGSetBreakpointsResponse.class, params);
     }
 
     public List<DbgTargetStateInfo> step(DebugTargetIdLight targetID, DebugStepAction action, Boolean simple) throws HTTPDebugException {
@@ -215,17 +326,22 @@ public class HTTPDebugClient {
         return response.getCallStack();
     }
 
-    public DbgTargetState getTargetState() throws HTTPDebugException {
+    public CalculationResultBaseData evalLocalVariables(DebugTargetIdLight targetId,
+                                                        List<CalculationSourceDataStorage> expressions,
+                                                        Integer waitTime) throws HTTPDebugException {
 
         var params = new RequestParameters()
-                .setCommand("getDbgTargetState");
-        var request = new RDBGGetDbgTargetStateRequest();
+                .setCommand("evalLocalVariables");
+
+        var request = new RDBGEvalLocalVariablesRequest();
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
+        request.setCalcWaitingTime(waitTime);
+        request.setTargetID(targetId);
+        request.getExpr().addAll(expressions);
 
-        var response = executeRequest(request, RDBGGetDbgTargetStateResponse.class, params);
-
-        return response.getState();
+        var response = executeRequest(request, RDBGEvalLocalVariablesResponse.class, params);
+        return response.getResult();
     }
 
     private HttpClient newHttpClient() {
@@ -237,7 +353,7 @@ public class HTTPDebugClient {
 
     private <T> T executeRequest(IRDBGRequest command, Class<T> responseType, RequestParameters requestParameters) throws HTTPDebugException {
 
-        String commandURL = String.format("%s/e1crdbg/rdbg?%s", debugServerURL, requestParameters.toString());
+        String commandURL = String.format("%s/e1crdbg/%s", debugServerURL, requestParameters.toString());
 
         try {
 
@@ -275,13 +391,14 @@ public class HTTPDebugClient {
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("executeRequest", e);
             throw new HTTPDebugException(e);
         }
     }
 
     private class RequestParameters {
         private final HashMap<String, String> parameters = new HashMap<>();
+        private String resource = "rdbg";
 
         private RequestParameters setCommand(String commandName) {
             parameters.put("cmd", commandName);
@@ -293,14 +410,18 @@ public class HTTPDebugClient {
             return this;
         }
 
+        private RequestParameters setResource(String resource) {
+            this.resource = resource;
+            return this;
+        }
+
         @Override
         public String toString() {
             var result = new StringJoiner("&");
             for (var entry : parameters.entrySet()) {
                 result.add(String.format("%s=%s", entry.getKey(), entry.getValue()));
             }
-            return result.toString();
+            return resource + "?" + result.toString();
         }
     }
-
 }

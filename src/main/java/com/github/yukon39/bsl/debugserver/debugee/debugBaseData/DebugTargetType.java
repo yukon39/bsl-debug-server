@@ -9,52 +9,52 @@ import java.util.Locale;
 public enum DebugTargetType {
 
     @XmlEnumValue("Unknown")
-    Unknown("Unknown"),
+    UNKNOWN("Unknown"),
 
     @XmlEnumValue("Client")
-    Client("Client"),
+    CLIENT("Client"),
 
     @XmlEnumValue("ManagedClient")
-    ManagedClient("ManagedClient"),
+    MANAGED_CLIENT("ManagedClient"),
 
     @XmlEnumValue("WEBClient")
-    WEBClient("WEBClient"),
+    WEB_CLIENT("WEBClient"),
 
     @XmlEnumValue("COMConnector")
-    COMConnector("COMConnector"),
+    COM_CONNECTOR("COMConnector"),
 
     @XmlEnumValue("Server")
-    Server("Server"),
+    SERVER("Server"),
 
     @XmlEnumValue("ServerEmulation")
-    ServerEmulation("ServerEmulation"),
+    SERVER_EMULATION("ServerEmulation"),
 
     @XmlEnumValue("WEBService")
-    WEBService("WEBService"),
+    WEB_SERVICE("WEBService"),
 
     @XmlEnumValue("HTTPService")
-    HTTPService("HTTPService"),
+    HTTP_SERVICE("HTTPService"),
 
     @XmlEnumValue("OData")
-    OData("OData"),
+    O_DATA("OData"),
 
     @XmlEnumValue("JOB")
     JOB("JOB"),
 
     @XmlEnumValue("JobFileMode")
-    JobFileMode("JobFileMode"),
+    JOB_FILE_MODE("JobFileMode"),
 
     @XmlEnumValue("MobileClient")
-    MobileClient("MobileClient"),
+    MOBILE_CLIENT("MobileClient"),
 
     @XmlEnumValue("MobileServer")
-    MobileServer("MobileServer"),
+    MOBILE_SERVER("MobileServer"),
 
     @XmlEnumValue("MobileJobFileMode")
-    MobileJobFileMode("MobileJobFileMode"),
+    MOBILE_JOB_FILE_MODE("MobileJobFileMode"),
 
     @XmlEnumValue("MobileManagedClient")
-    MobileManagedClient("MobileManagedClient");
+    MOBILE_MANAGED_CLIENT("MobileManagedClient");
 
     private final String literal;
 
@@ -63,33 +63,33 @@ public enum DebugTargetType {
     }
 
     @Contract(value = " -> new", pure = true)
-    public static DebugTargetType @NotNull [] allTargetTypes() {
+    public static DebugTargetType [] allTargetTypes() {
         return new DebugTargetType[]{
-                Client,
-                ManagedClient,
-                WEBClient,
-                COMConnector,
-                Server,
-                ServerEmulation,
-                WEBService,
-                HTTPService,
-                OData,
+                CLIENT,
+                MANAGED_CLIENT,
+                WEB_CLIENT,
+                COM_CONNECTOR,
+                SERVER,
+                SERVER_EMULATION,
+                WEB_SERVICE,
+                HTTP_SERVICE,
+                O_DATA,
                 JOB,
-                JobFileMode,
-                MobileClient,
-                MobileServer,
-                MobileJobFileMode,
-                MobileManagedClient};
+                JOB_FILE_MODE,
+                MOBILE_CLIENT,
+                MOBILE_SERVER,
+                MOBILE_JOB_FILE_MODE,
+                MOBILE_MANAGED_CLIENT};
     }
 
     @Contract(value = " -> new", pure = true)
-    public static DebugTargetType @NotNull [] defaultTargetTypes() {
+    public static DebugTargetType [] defaultTargetTypes() {
         return new DebugTargetType[]{
-                Client,
-                ManagedClient,
-                WEBClient,
-                Server,
-                ServerEmulation
+                CLIENT,
+                MANAGED_CLIENT,
+                WEB_CLIENT,
+                SERVER,
+                SERVER_EMULATION
         };
     }
 

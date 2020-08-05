@@ -15,6 +15,6 @@ public class DBGUIExtCmdInfoRte extends DBGUIExtCmdInfoBase {
     private StackItemViewInfoData[] callStack;
 
     public DBGUIExtCmdInfoRte() {
-        super(DBGUIExtCmds.rteProcessing);
+        super(DBGUIExtCmds.RTE_PROCESSING);
     }
 }

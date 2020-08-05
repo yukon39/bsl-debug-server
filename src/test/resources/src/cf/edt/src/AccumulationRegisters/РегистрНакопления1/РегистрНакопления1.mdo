@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="24fc973d-34c1-4eae-847f-f00a20a2fa69">
+	<producedTypes>
+		<selectionType typeId="7a48369f-9f44-484f-929e-74ac67f64362" valueTypeId="3c7a7908-528b-44bf-930d-fdc2de8751b9"/>
+		<listType typeId="81ad31f8-7981-466c-86cc-7fe8e0c9a00c" valueTypeId="43b1e19c-2fe9-4589-83c2-823976ff8f12"/>
+		<managerType typeId="fe82f2f0-6b8f-4e83-90e6-7b3c071903c1" valueTypeId="add4ba0c-fbb1-491b-ad01-3f1595bbea44"/>
+		<recordSetType typeId="0c1b21fc-f0fe-4d73-b71d-1c5dc6888537" valueTypeId="19702730-da21-4956-844e-bba80c8bf1af"/>
+		<recordKeyType typeId="d6a0fe75-0bbc-4ee4-8566-ffea0f818680" valueTypeId="f8124f32-4ba4-4477-82f1-43a4bdfb9da5"/>
+		<recordType typeId="46b96d3e-2cc8-4952-9c20-b35c7b3ef543" valueTypeId="a93ec6eb-58e5-4cf2-a14c-d9b97d75e0ff"/>
+	</producedTypes>
+	<name>РегистрНакопления1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<enableTotalsSplitting>true</enableTotalsSplitting>
+	<resources uuid="8bae016c-b93c-482f-a98a-e5f97a0885c7">
+		<name>Ресурс1</name>
+		<type>
+			<types>Number</types>
+			<numberQualifiers>
+				<precision>10</precision>
+			</numberQualifiers>
+		</type>
+		<minValue xsi:type="core:UndefinedValue"/>
+		<maxValue xsi:type="core:UndefinedValue"/>
+		<fullTextSearch>Use</fullTextSearch>
+	</resources>
+	<forms uuid="226f2e9e-d260-43ed-86f7-8065e01f3b31">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="2d1bc054-1e88-49d9-b0e1-2a160e690652">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>РегистрНакопления</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>AccumulationRegister</value>
+		</synonym>
+	</commands>
+</mdclass:AccumulationRegister>

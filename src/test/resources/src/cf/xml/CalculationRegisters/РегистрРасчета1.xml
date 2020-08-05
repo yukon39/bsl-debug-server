@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.8">
+	<CalculationRegister uuid="40d90f01-6080-49b4-a575-ceeabeb4c1b1">
+		<InternalInfo>
+			<xr:GeneratedType name="CalculationRegisterRecord.РегистрРасчета1" category="Record">
+				<xr:TypeId>3346b764-bf21-4b5f-b9ca-f6d63e527b37</xr:TypeId>
+				<xr:ValueId>5047bb90-5e61-4d0c-99b5-463a6dbb0a58</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CalculationRegisterManager.РегистрРасчета1" category="Manager">
+				<xr:TypeId>7b410948-dc03-4554-ab70-d844015981e6</xr:TypeId>
+				<xr:ValueId>2ddbe104-df43-4043-ba94-7bcea7eaa38e</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CalculationRegisterSelection.РегистрРасчета1" category="Selection">
+				<xr:TypeId>a68eec91-ebd2-49b7-8d54-baf3a32d4fe8</xr:TypeId>
+				<xr:ValueId>e5741ac5-1336-4f50-aa2a-76c1d5000829</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CalculationRegisterList.РегистрРасчета1" category="List">
+				<xr:TypeId>ee76bed9-f4b2-4da9-97bb-652d77e3dfe4</xr:TypeId>
+				<xr:ValueId>6e0194e0-c747-4575-b071-8a6f2cd3eea0</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CalculationRegisterRecordSet.РегистрРасчета1" category="RecordSet">
+				<xr:TypeId>5d81c30c-5a1f-4450-a6c4-90e8ae2e1db4</xr:TypeId>
+				<xr:ValueId>2b4c1313-2381-40a7-94fb-d95d4c5a3dee</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CalculationRegisterRecordKey.РегистрРасчета1" category="RecordKey">
+				<xr:TypeId>6c2415b7-2bee-4a05-8873-16b7fd76ffb1</xr:TypeId>
+				<xr:ValueId>a056f4bd-df35-410d-8331-85ca5eb5c2e1</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="RecalculationsManager.РегистрРасчета1" category="Recalcs">
+				<xr:TypeId>5abf11c1-a5e7-40a1-949b-6c5a4dd8e3d4</xr:TypeId>
+				<xr:ValueId>1d45d68e-2915-42f0-81ce-1cb4ff17547c</xr:ValueId>
+			</xr:GeneratedType>
+		</InternalInfo>
+		<Properties>
+			<Name>РегистрРасчета1</Name>
+			<Synonym/>
+			<Comment/>
+			<UseStandardCommands>true</UseStandardCommands>
+			<DefaultListForm/>
+			<AuxiliaryListForm/>
+			<Periodicity>Month</Periodicity>
+			<ActionPeriod>false</ActionPeriod>
+			<BasePeriod>false</BasePeriod>
+			<Schedule/>
+			<ScheduleValue/>
+			<ScheduleDate/>
+			<ChartOfCalculationTypes>ChartOfCalculationTypes.ПланВидовРасчета1</ChartOfCalculationTypes>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<DataLockControlMode>Managed</DataLockControlMode>
+			<FullTextSearch>DontUse</FullTextSearch>
+			<ListPresentation/>
+			<ExtendedListPresentation/>
+			<Explanation/>
+		</Properties>
+		<ChildObjects>
+			<Recalculation>Перерасчет1</Recalculation>
+			<Form>Форма</Form>
+			<Command uuid="16bedcfe-b4b3-41a5-827f-bc9d11be683e">
+				<Properties>
+					<Name>Команда1</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>РегистрРасчета</v8:content>
+						</v8:item>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>CalculationRegister</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>ActionsPanelTools</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
+		</ChildObjects>
+	</CalculationRegister>
+</MetaDataObject>

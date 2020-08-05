@@ -1,10 +1,17 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugCalculations;
 
+import jakarta.xml.bind.annotation.XmlEnumValue;
+
 public enum SourceCalculationDataItemType {
 
-    expression ("expression"),
-    property ("property"),
-    index ("index");
+    @XmlEnumValue("expression")
+    EXPRESSION("expression"),
+
+    @XmlEnumValue("property")
+    PROPERTY("property"),
+
+    @XmlEnumValue("index")
+    INDEX("index");
 
     private final String literal;
 

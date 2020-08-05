@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3bf89955-e598-45e7-aabf-9a7f63a888b1">
+	<producedTypes>
+		<objectType typeId="17cefbb5-a327-4b30-b131-2b6bf1b214a7" valueTypeId="764477ae-5aa2-4d0a-bc5f-113ee74cd6e8"/>
+		<refType typeId="7ebb5faa-5317-452a-bedb-5be631a790b3" valueTypeId="adfc6902-4f3f-4c83-8fd4-f723db7cf58d"/>
+		<selectionType typeId="af9b043c-c70b-4c90-8466-84a5cf85fb28" valueTypeId="882bb92b-af1e-47fd-a266-1636830a6246"/>
+		<listType typeId="3762fdc1-57a0-4901-a11d-c6c37ec5e7ef" valueTypeId="435a00b7-257c-4c5a-bee2-501d55826466"/>
+		<managerType typeId="f8c9433f-a141-423b-914e-803d039f48f0" valueTypeId="2c01bd9c-6b46-4579-969d-a9e08dd31f65"/>
+	</producedTypes>
+	<name>Справочник1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<inputByString>Catalog.Справочник1.StandardAttribute.Description</inputByString>
+	<inputByString>Catalog.Справочник1.StandardAttribute.Code</inputByString>
+	<fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+	<createOnInput>Use</createOnInput>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<fullTextSearch>Use</fullTextSearch>
+	<levelCount>2</levelCount>
+	<foldersOnTop>true</foldersOnTop>
+	<codeLength>9</codeLength>
+	<descriptionLength>25</descriptionLength>
+	<codeType>String</codeType>
+	<codeAllowedLength>Variable</codeAllowedLength>
+	<checkUnique>true</checkUnique>
+	<autonumbering>true</autonumbering>
+	<defaultPresentation>AsDescription</defaultPresentation>
+	<editType>InDialog</editType>
+	<choiceMode>BothWays</choiceMode>
+	<forms uuid="6643f567-5b51-44f4-bb39-526a3f2b72a0">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="f558b7c6-3024-468e-b000-a510b3d1921e">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>Справочник</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>Catalog</value>
+		</synonym>
+	</commands>
+</mdclass:Catalog>

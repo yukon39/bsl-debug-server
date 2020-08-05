@@ -14,6 +14,6 @@ public class DBGUIExtCmdInfoMeasure extends DBGUIExtCmdInfoBase {
     private PerformanceInfoMain measure;
 
     public DBGUIExtCmdInfoMeasure() {
-        super(DBGUIExtCmds.measureResultProcessing);
+        super(DBGUIExtCmds.MEASURE_RESULT_PROCESSING);
     }
 }

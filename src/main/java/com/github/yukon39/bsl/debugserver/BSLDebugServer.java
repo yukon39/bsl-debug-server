@@ -8,10 +8,11 @@ import com.google.common.eventbus.EventBus;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.lsp4j.debug.*;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class BSLDebugServer implements IDebugProtocolServer {
@@ -70,153 +71,202 @@ public class BSLDebugServer implements IDebugProtocolServer {
             configuration.setSupportsRunInTerminalRequest(supportsRunInTerminalRequest);
         }
 
-        context.initialize();
+        var capabilities = new Capabilities();
+        capabilities.setSupportsRestartRequest(Boolean.TRUE);
+        capabilities.setSupportsConfigurationDoneRequest(Boolean.TRUE);
 
-        Capabilities capabilities = new Capabilities();
-        capabilities.setSupportsRestartRequest(true);
-        capabilities.setSupportsConfigurationDoneRequest(true);
+        return context.initialize(configuration)
+                .thenApplyAsync(s -> capabilities)
+                .exceptionally((e) ->
+                        {
+                            log.error("Initialize error", e);
+                            outputError("Initialize error", e); // TODO: localize this
+                            postEvent(new TerminatedErrorEvent());
+                            return null;
+                        }
+                );
+    }
 
-        return CompletableFuture.completedFuture(capabilities);
-    };
+    @Override
+    public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
+
+        return context.configurationDone(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("ConfigurationDone error", e);
+                            outputError("ConfigurationDone error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
 
     @Override
     public CompletableFuture<Void> attach(Map<String, Object> args) {
 
         var requestArgs = new AttachRequestArguments(args);
-
-        try {
-            requestArgs.validate(configuration.getLanguage());
-            context.attach(requestArgs);
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            log.error("Attach error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
+        return context.attach(requestArgs)
+                .exceptionally((e) ->
+                        {
+                            log.error("Attach error", e);
+                            outputError("Attach error", e); // TODO: localize this
+                            postEvent(new TerminatedErrorEvent());
+                            return null;
+                        }
+                );
     }
 
     @Override
     public CompletableFuture<Void> restart(RestartArguments args) {
 
-        try {
-            context.restart(args);
-        } catch (Exception e) {
-            log.error("Restart error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
-
-        return CompletableFuture.completedFuture(null);
+        return context.restart(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Restart error", e);
+                            outputError("Restart error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
     public CompletableFuture<Void> disconnect(DisconnectArguments args) {
 
-        try {
-            context.disconnect(args);
-        } catch (Exception e) {
-            log.error("Disconnect error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
-
-        return CompletableFuture.completedFuture(null);
+        return context.disconnect(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Disconnect error", e);
+                            outputError("Disconnect error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
     public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 
-        var response = new SetBreakpointsResponse();
-        response.setBreakpoints(new Breakpoint[] {} );
-
-        return CompletableFuture.completedFuture(response);
+        return context.setBreakpoints(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("SetBreakpoints error", e);
+                            outputError("SetBreakpoints error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
-    public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
-        try {
-            context.configurationDone(args);
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            log.error("Configuration done error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
+    public CompletableFuture<ContinueResponse> continue_(ContinueArguments args) {
+
+        return context.stepContinue(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Step continue error", e);
+                            outputError("Step continue error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
-    public CompletableFuture<ThreadsResponse> threads() {
+    public CompletableFuture<Void> stepIn(StepInArguments args) {
 
-        try {
-            var response = context.threads();
-            return CompletableFuture.completedFuture(response);
-        } catch (Exception e) {
-            log.error("Threads error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
+        return context.stepIn(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Step in error", e);
+                            outputError("Step in error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<Void> stepOut(StepOutArguments args) {
+
+        return context.stepOut(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Step out error", e);
+                            outputError("Step out error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
     public CompletableFuture<Void> pause(PauseArguments args) {
 
-        try {
-            context.pause();
-        } catch (Exception e) {
-            log.error("Pause error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
-
-        return CompletableFuture.completedFuture(null);
-    }
-
-    @Override
-    public CompletableFuture<ContinueResponse> continue_(ContinueArguments args) {
-        try {
-            var response = context.stepContinue(args);
-            return CompletableFuture.completedFuture(response);
-        } catch (Exception e) {
-            log.error("Step continue error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
-    }
-
-    @Override
-    public CompletableFuture<Void> stepIn(StepInArguments args) {
-        try {
-            context.stepIn(args);
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            log.error("Step in error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
-    }
-
-    @Override
-    public CompletableFuture<Void> stepOut(StepOutArguments args) {
-        try {
-            context.stepOut(args);
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            log.error("Step out error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
+        return context.pause()
+                .exceptionally((e) ->
+                        {
+                            log.error("Pause error", e);
+                            outputError("Pause error", e); // TODO: localize this
+                            return null;
+                        }
+                );
     }
 
     @Override
     public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
 
-        try {
-            var result = context.stackTrace(args);
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            log.error("Stacktrace error: " + e.getMessage());
-            return CompletableFuture.failedFuture(e);
-        }
+        return context.stackTrace(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Stacktrace error", e);
+                            outputError("Stacktrace error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
+
+        return context.scopes(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Scopes error", e);
+                            outputError("Scopes error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<SourceResponse> source(SourceArguments args) {
+
+        return context.source(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Source error", e);
+                            outputError("Source error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<ThreadsResponse> threads() {
+
+        return context.threads()
+                .exceptionally((e) ->
+                        {
+                            log.error("Threads error", e);
+                            outputError("Threads r error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    private void outputError(String msgPrefix, Throwable throwable) {
+        String msg = String.format("%s: %s", msgPrefix, throwable.getLocalizedMessage());
+        postEvent(new OutputErrorEvent(msg));
     }
 
     private void postEvent(Object event) {
-        if (eventBus != null) {
+        if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
-    }
-
-    public class InitializeEvent {
     }
 
     public void setEventBus(EventBus eventBus) {
@@ -225,7 +275,7 @@ public class BSLDebugServer implements IDebugProtocolServer {
         eventBus.register(new DebugServerEventSubscribers(this));
     }
 
-    public class OutputErrorEvent {
+    public static class OutputErrorEvent {
         public final String output;
 
         public OutputErrorEvent(String output) {
@@ -233,4 +283,6 @@ public class BSLDebugServer implements IDebugProtocolServer {
         }
     }
 
+    public static class TerminatedErrorEvent {
+    }
 }

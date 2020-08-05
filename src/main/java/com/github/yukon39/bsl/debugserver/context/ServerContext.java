@@ -1,14 +1,21 @@
 package com.github.yukon39.bsl.debugserver.context;
 
+import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
+import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
+import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
+import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import org.eclipse.lsp4j.debug.Thread;
 import org.eclipse.lsp4j.debug.*;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.nio.file.Path;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -16,115 +23,198 @@ public class ServerContext {
 
     private final ThreadsManager threadsManager = new ThreadsManager(this);
     private final BreakpointsManager breakpointsManager = new BreakpointsManager();
-    private final StackTraceManager stackTraceManager = new StackTraceManager(this);
-
+    private final StackTraceManager stackTraceManager = new StackTraceManager();
+    private final SourceManager sourceManager = SourceManager.create();
     @Getter
     private final Debugee debugee = new Debugee();
+    private boolean configured = false;
+    private DebugServerConfiguration configuration;
     private ScheduledExecutorService executor;
 
     private EventBus eventBus;
 
-    public void initialize() {
+    public CompletableFuture<Void> initialize(DebugServerConfiguration configuration) {
+
+        this.configuration = configuration;
 
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(debugee, 1L, 1L, TimeUnit.SECONDS);
+
+        configured = false;
+
+        stackTraceManager.setSourceManager(sourceManager);
+
+        return CompletableFuture.completedFuture(null);
     }
 
-    public void attach(AttachRequestArguments args) throws ExecutionException, InterruptedException {
-        debugee.configure(args.getDebuggerURL(), args.getInfobaseAlias(), UUID.randomUUID()).get();
-        postEvent(new InitializeEvent());
+    public CompletableFuture<Void> attach(AttachRequestArguments args) {
+
+        var configurationPath = Path.of(args.getSourcePath());
+
+        if (!configurationPath.isAbsolute()) {
+            configurationPath = Path.of(args.getCwd(), args.getSourcePath());
+        }
+
+        sourceManager.setConfigurationSource(configurationPath);
+
+        var data = new HTTPServerInitialDebugSettingsData();
+
+        return CompletableFuture
+                .completedFuture(null)
+                .thenCompose(v -> debugee.configure(args.getDebuggerURL(), args.getInfobaseAlias(), UUID.randomUUID()))
+                .thenCompose(v -> debugee.attach(data))
+                .thenRun(() -> postEvent(new InitializeEvent()));
     }
 
-    public void restart(RestartArguments args) throws ExecutionException, InterruptedException {
-        debugee.detach().get();
-        debugee.attach().get();
+    public CompletableFuture<Void> restart(RestartArguments args) {
+
+        var data = new HTTPServerInitialDebugSettingsData();
+
+        return debugee.detach()
+                .thenAccept(v -> debugee.attach(data));
     }
 
-    public void disconnect(DisconnectArguments args) throws ExecutionException, InterruptedException {
-        if (args.getRestart() == false) {
-            debugee.detach().get();
+    public CompletableFuture<Void> disconnect(DisconnectArguments args) {
+        if (args.getRestart()) {
+            return CompletableFuture.completedFuture(null);
+        } else {
+            return debugee.detach();
         }
     }
 
-    public void configurationDone(ConfigurationDoneArguments args) throws ExecutionException, InterruptedException {
-        debugee.attach().get();
-    }
+    public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 
-    public ThreadsResponse threads() throws ExecutionException, InterruptedException {
+        var source = sourceManager.getSource(args.getSource().getPath());
+        breakpointsManager.setBreakpoints(source, args.getBreakpoints());
 
-        var targets = debugee.getAllTargetStates().get();
-        threadsManager.synchronizeDebugTargetStates(targets);
+        var breakpoints = breakpointsManager.getBreakpoints(source);
 
-        var threads = threadsManager.getThreads();
+        Breakpoint[] array = new Breakpoint[breakpoints.size()];
+        breakpoints.toArray(array);
 
-        Thread[] array = new Thread[threads.size()];
-        threads.toArray(array);
+        var result = new SetBreakpointsResponse();
+        result.setBreakpoints(array);
 
-        var response = new ThreadsResponse();
-        response.setThreads(array);
-        return response;
-    }
+        if (configured) {
 
-    public void pause() throws ExecutionException, InterruptedException {
-        debugee.setBreakOnNextStatement().get();
-    }
+            var moduleBPInfo = breakpointsManager.getModuleBPInfo();
+            var bpWorkspace = new BPWorkspaceInternal();
+            bpWorkspace.getModuleBPInfo().addAll(moduleBPInfo);
 
-    public ContinueResponse stepContinue(ContinueArguments args) throws ExecutionException, InterruptedException {
+            return CompletableFuture
+                    .completedFuture(bpWorkspace)
+                    .thenAccept(debugee::setBreakpoints)
+                    .thenApply(v -> result);
 
-        var threadId = args.getThreadId();
-        var debugTargetId = threadsManager.getDebugTargetId(threadId);
-
-        if (debugTargetId != null) {
-            debugee.stepContinue(debugTargetId, true).get();
+        } else {
+            return CompletableFuture.completedFuture(result);
         }
 
-        var result = new ContinueResponse();
-        result.setAllThreadsContinued(false);
-        return result;
     }
 
-    public void stepIn(StepInArguments args) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
 
-        var threadId = args.getThreadId();
-        var debugTargetId = threadsManager.getDebugTargetId(threadId);
+        configured = true;
 
-        if (debugTargetId != null) {
-            debugee.stepIn(debugTargetId, true).get();
-        }
+        var moduleBPInfo = breakpointsManager.getModuleBPInfo();
+        var bpWorkspace = new BPWorkspaceInternal();
+        bpWorkspace.getModuleBPInfo().addAll(moduleBPInfo);
+
+        return CompletableFuture
+                .completedFuture(bpWorkspace)
+                .thenAccept(debugee::setBreakpoints);
     }
 
-    public void stepOut(StepOutArguments args) throws ExecutionException, InterruptedException {
+    public CompletableFuture<ThreadsResponse> threads() {
 
-        var threadId = args.getThreadId();
-        var debugTargetId = threadsManager.getDebugTargetId(threadId);
+        return debugee.getAllTargetStates()
+                .thenApply((targets) -> {
+                    threadsManager.synchronizeDebugTargetStates(targets);
+                    var threads = threadsManager.getThreads();
 
-        if (debugTargetId != null) {
-            debugee.stepOut(debugTargetId, true).get();
-        }
+                    Thread [] array = new Thread[threads.size()];
+                    threads.toArray(array);
+
+                    var response = new ThreadsResponse();
+                    response.setThreads(array);
+                    return response;
+                });
     }
 
-    public StackTraceResponse stackTrace(StackTraceArguments args) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Void> pause() {
+        return debugee.setBreakOnNextStatement();
+    }
 
-        var threadId = args.getThreadId();
-        var debugTargetId = threadsManager.getDebugTargetId(threadId);
-        if (debugTargetId == null) {
-            return new StackTraceResponse();
-        }
+    public CompletableFuture<ContinueResponse> stepContinue(ContinueArguments args) {
 
-        // var callStack = debugee.getCallStack(debugTargetId).get();
-        // stackTraceManager.setStackTrace(threadId, callStack);
-        var stackFrames = stackTraceManager.getStackTrace(threadId);
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    var threadId = args.getThreadId();
+                    return threadsManager.getDebugTargetId(threadId);
+                })
+                .thenAccept(debugTargetId -> debugee.stepContinue(debugTargetId, true))
+                .thenApply(list -> {
+                    var result = new ContinueResponse();
+                    result.setAllThreadsContinued(false);
+                    return result;
+                });
+    }
 
-        // .subList(0, Math.min(callStack.size(), levels))
+    public CompletableFuture<Void> stepIn(StepInArguments args) {
 
-        StackFrame[] array = new StackFrame[stackFrames.size()];
-        stackFrames.toArray(array);
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    var threadId = args.getThreadId();
+                    return threadsManager.getDebugTargetId(threadId);
+                })
+                .thenAccept(debugTargetId -> debugee.stepIn(debugTargetId, true));
+    }
 
-        var result = new StackTraceResponse();
-        result.setStackFrames(array);
-        result.setTotalFrames(stackFrames.size());
+    public CompletableFuture<Void> stepOut(StepOutArguments args) {
 
-        return result;
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    var threadId = args.getThreadId();
+                    return threadsManager.getDebugTargetId(threadId);
+                })
+                .thenAccept(debugTargetId -> debugee.stepOut(debugTargetId, true));
+    }
+
+    public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
+
+        return CompletableFuture.supplyAsync(() -> {
+
+            var threadId = args.getThreadId();
+            var debugTargetId = threadsManager.getDebugTargetId(threadId);
+            if (Objects.isNull(debugTargetId)) {
+                return new StackTraceResponse();
+            }
+
+            // var callStack = debugee.getCallStack(debugTargetId).get();
+            // stackTraceManager.setStackTrace(threadId, callStack);
+            var stackFrames = stackTraceManager.getStackTrace(threadId);
+
+            StackFrame [] array = new StackFrame[stackFrames.size()];
+            stackFrames.toArray(array);
+
+            var result = new StackTraceResponse();
+            result.setStackFrames(array);
+            result.setTotalFrames(stackFrames.size());
+
+            return result;
+        });
+    }
+
+    public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
+
+        var result = new ScopesResponse();
+        result.setScopes(new Scope[]{});
+
+        return CompletableFuture.completedFuture(result);
+    }
+
+    public CompletableFuture<SourceResponse> source(SourceArguments args) {
+        return CompletableFuture.completedFuture(new SourceResponse());
     }
 
     public void debugTargetStarted(DBGUIExtCmdInfoStarted command) {
@@ -159,7 +249,7 @@ public class ServerContext {
 
         var thread = threadsManager.getThread(command.getTargetID());
 
-        if (thread == null) {
+        if (Objects.isNull(thread)) {
             return;
         }
 
@@ -171,9 +261,16 @@ public class ServerContext {
         var stackFrames = stackTraceManager.getStackTrace(thread.getId());
 
         var event = new StoppedEvent();
-        event.args.setReason(StoppedEventArgumentsReason.PAUSE);
         event.args.setThreadId(thread.getId());
-        event.args.setDescription("Paused!!!"); // TODO: localize this
+
+        if (command.getStopByBP()) {
+            event.args.setReason(StoppedEventArgumentsReason.BREAKPOINT);
+            event.args.setDescription("Breakpoint hit"); // TODO: localize this
+
+        } else {
+            event.args.setReason(StoppedEventArgumentsReason.PAUSE);
+            event.args.setDescription("Paused!!!"); // TODO: localize this
+        }
 
         postEvent(event);
 
@@ -199,15 +296,15 @@ public class ServerContext {
     }
 
     private void postEvent(Object event) {
-        if (eventBus != null) {
+        if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
     }
 
-    public class InitializeEvent {
+    public static class InitializeEvent {
     }
 
-    public class ThreadEvent {
+    public static class ThreadEvent {
         public final ThreadEventArguments args;
 
         ThreadEvent(Integer id, String reason) {
@@ -217,7 +314,7 @@ public class ServerContext {
         }
     }
 
-    public class StoppedEvent {
+    public static class StoppedEvent {
         public final StoppedEventArguments args = new StoppedEventArguments();
     }
 }

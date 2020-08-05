@@ -1,11 +1,15 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
+import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
+import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
+import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
+import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugException;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Slf4j
 public class Debugee implements Runnable {
@@ -49,7 +55,7 @@ public class Debugee implements Runnable {
             return;
         }
 
-        DBGUIExtCmdInfoBase[] commands;
+        List<DBGUIExtCmdInfoBase> commands;
 
         try {
             commands = ping().get();
@@ -58,12 +64,12 @@ public class Debugee implements Runnable {
             return;
         }
 
-        if (commands.length == 0) {
+        if (commands.isEmpty()) {
             log.debug("Ping result is empty");
             return;
         }
 
-        log.debug("Ping result length " + commands.length);
+        log.debug("Ping result length " + commands.size());
 
         for (DBGUIExtCmdInfoBase command : commands) {
             log.debug("Ping result type " + command.getCmdId());
@@ -83,152 +89,181 @@ public class Debugee implements Runnable {
     public CompletableFuture<Void> configure(URL debuggerURI, String infobaseAlias, UUID debugSession) {
 
         httpDebugClient.configure(debuggerURI, infobaseAlias, debugSession);
-
-        return CompletableFuture.completedFuture(null);
+        try {
+            httpDebugClient.test();
+            return CompletableFuture.completedFuture(null);
+        } catch (HTTPDebugException e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
-    public CompletableFuture<Void> attach() {
+    public CompletableFuture<AttachDebugUIResult> attach(HTTPServerInitialDebugSettingsData data) {
+
+        var options = new DebuggerOptions();
 
         try {
-
-            var attachResult = httpDebugClient.attach(password);
-            httpDebugClient.initSettings();
+            var attachResult = httpDebugClient.attach(password, options);
+            httpDebugClient.initSettings(data);
             httpDebugClient.clearBreakOnNextStatement();
             httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
 
-            attached = (attachResult == AttachDebugUIResult.REGISTERED);
+            attached = true;
 
-        } catch (Exception e) {
+            return CompletableFuture.completedFuture(attachResult);
+        } catch (HTTPDebugException e) {
             return CompletableFuture.failedFuture(e);
         }
-
-        return CompletableFuture.completedFuture(null);
     }
 
     public CompletableFuture<Void> detach() {
 
-        if (attached) {
-            attached = false;
-            try {
-                httpDebugClient.detach();
-            } catch (Exception e) {
-                return CompletableFuture.failedFuture(e);
+        return CompletableFuture.runAsync(() -> {
+            if (attached) {
+                attached = false;
+                try {
+                    httpDebugClient.detach();
+                } catch (HTTPDebugException e) {
+                    throw new CompletionException(e);
+                }
             }
-        }
-
-        return CompletableFuture.completedFuture(null);
+        });
     }
 
     public CompletableFuture<Boolean> attachDebugTarget(DebugTargetIdLight target) {
 
-        try {
-            var targets = new ArrayList<DebugTargetIdLight>();
-            targets.add(target);
+        return CompletableFuture.supplyAsync(() -> {
 
-            var result = httpDebugClient.attachDetachDebugTargets(true, targets);
-            return CompletableFuture.completedFuture(result);
+            try {
+                var targets = new ArrayList<DebugTargetIdLight>();
+                targets.add(target);
 
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+                return httpDebugClient.attachDetachDebugTargets(true, targets);
+
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Boolean> detachDebugTarget(DebugTargetIdLight target) {
 
-        try {
-            var targets = new ArrayList<DebugTargetIdLight>();
-            targets.add(target);
+        return CompletableFuture.supplyAsync(() -> {
 
-            var result = httpDebugClient.attachDetachDebugTargets(false, targets);
-            return CompletableFuture.completedFuture(result);
+            try {
+                var targets = new ArrayList<DebugTargetIdLight>();
+                targets.add(target);
 
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+                return httpDebugClient.attachDetachDebugTargets(false, targets);
+
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
-    public CompletableFuture<DBGUIExtCmdInfoBase[]> ping() {
+    public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
 
-        try {
-            var result = httpDebugClient.ping();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.ping();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> getAllTargetStates() {
 
-        try {
-            var result = httpDebugClient.getAllTargetStates();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getAllTargetStates();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<DbgTargetState> getTargetState() {
 
-        try {
-            var result = httpDebugClient.getTargetState();
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getTargetState();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<Void> setBreakOnNextStatement() {
 
-        try {
-            httpDebugClient.setBreakOnNextStatement();
-            return CompletableFuture.completedFuture(null);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.runAsync(() -> {
+            try {
+                httpDebugClient.setBreakOnNextStatement();
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public CompletableFuture<Void> setBreakpoints(BPWorkspaceInternal bpWorkspace) {
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                httpDebugClient.setBreakpoints(bpWorkspace);
+                return null;
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
+
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepContinue(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepIn(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepOut(DebugTargetIdLight targetID, Boolean simple) {
-        try {
-            var result = httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
 
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     public CompletableFuture<List<StackItemViewInfoData>> getCallStack(DebugTargetIdLight id) {
 
-        try {
-            var result = httpDebugClient.getCallStack(id);
-            return CompletableFuture.completedFuture(result);
-        } catch (Exception e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return httpDebugClient.getCallStack(id);
+            } catch (HTTPDebugException e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     private void postEvent(Object event) {
-        if (eventBus != null) {
+        if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
     }
@@ -241,7 +276,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdStartedEvent {
+    public static class CmdStartedEvent {
         public final DBGUIExtCmdInfoStarted command;
 
         public CmdStartedEvent(DBGUIExtCmdInfoStarted command) {
@@ -249,7 +284,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdQuitEvent {
+    public static class CmdQuitEvent {
         public final DBGUIExtCmdInfoQuit command;
 
         public CmdQuitEvent(DBGUIExtCmdInfoQuit command) {
@@ -257,7 +292,7 @@ public class Debugee implements Runnable {
         }
     }
 
-    public class CmdCallStackFormedEvent {
+    public static class CmdCallStackFormedEvent {
         public final DBGUIExtCmdInfoCallStackFormed command;
 
         public CmdCallStackFormedEvent(DBGUIExtCmdInfoCallStackFormed command) {

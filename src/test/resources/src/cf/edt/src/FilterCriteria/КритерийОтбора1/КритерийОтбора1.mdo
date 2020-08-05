@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FilterCriterion xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5e802e95-b163-4858-ac68-a7bcbcbf456b">
+	<producedTypes>
+		<listType typeId="9fbb5f19-0b4f-4512-9b2a-de8e32aecd9b" valueTypeId="1ac0e971-5d89-4fbe-a25b-1420eb0fd235"/>
+		<managerType typeId="dc7b5489-ef7d-45d7-af71-24d9cd666e3d" valueTypeId="507583cf-48ee-4ffc-a4d2-ecb97c02a68c"/>
+	</producedTypes>
+	<name>КритерийОтбора1</name>
+	<type/>
+	<useStandardCommands>true</useStandardCommands>
+	<forms uuid="cd995a65-2174-4bf2-bdca-f642f8853bab">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="2834a667-29c2-4f4c-9393-88e4da34ee10">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>КритерийОтбора</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>FilterCriteria</value>
+		</synonym>
+	</commands>
+</mdclass:FilterCriterion>

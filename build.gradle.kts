@@ -3,36 +3,33 @@ plugins {
     jacoco
     id("io.franzbecker.gradle-lombok") version "4.0.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "com.github.yukon39"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven ( "https://jitpack.io" )
 }
 
 val junitVersion = "5.6.1"
-val jacksonVersion = "2.11.1"
 
 dependencies {
 
     implementation( "org.eclipse.lsp4j", "org.eclipse.lsp4j.debug", "0.9.0")
+    implementation( "com.github.1c-syntax", "mdclasses", "0.5.0")
 
     implementation("info.picocli", "picocli", "4.4.0")
 
     implementation("org.slf4j", "slf4j-api", "1.8.0-beta4")
     implementation("org.slf4j", "slf4j-simple", "1.8.0-beta4")
 
-    implementation("com.fasterxml.jackson.core", "jackson-databind", jacksonVersion)
-    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", jacksonVersion)
-    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-xml", jacksonVersion)
-
     implementation("org.jetbrains", "annotations", "19.0.0")
 
-    implementation("jakarta.xml.bind", "jakarta.xml.bind-api", "+")
+    implementation("jakarta.xml.bind", "jakarta.xml.bind-api", "3.0.0-RC3")
     implementation("org.glassfish.jaxb", "jaxb-runtime", "3.0.0-M4")
-
 
     implementation("com.google.code.findbugs", "jsr305", "3.0.2")
     implementation("com.intellij", "annotations", "12.0")
@@ -52,6 +49,14 @@ configure<JavaPluginConvention> {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+sonarqube {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.projectKey", "bsl-debug-server")
+        property("sonar.projectName", "BSL Debug Server")
+    }
+}
+
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-Xlint:unchecked")
@@ -59,6 +64,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.test {
+    systemProperty("file.encoding", "utf-8")
     useJUnitPlatform()
 }
 
@@ -77,5 +83,9 @@ tasks.shadowJar {
     project.configurations.implementation.get().isCanBeResolved = true
     configurations = listOf(project.configurations["implementation"])
     archiveClassifier.set("")
+}
+
+tasks.sonarqube {
+    dependsOn(tasks.test)
 }
 

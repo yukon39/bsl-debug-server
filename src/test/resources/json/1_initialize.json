@@ -1,0 +1,18 @@
+{
+  "command": "initialize",
+  "arguments": {
+    "clientID": "vscode",
+    "clientName": "Visual Studio Code",
+    "adapterID": "bsldbgs",
+    "pathFormat": "path",
+    "linesStartAt1": true,
+    "columnsStartAt1": true,
+    "supportsVariableType": true,
+    "supportsVariablePaging": true,
+    "supportsRunInTerminalRequest": true,
+    "locale": "ru",
+    "supportsProgressReporting": true
+  },
+  "type": "request",
+  "seq": 1
+}

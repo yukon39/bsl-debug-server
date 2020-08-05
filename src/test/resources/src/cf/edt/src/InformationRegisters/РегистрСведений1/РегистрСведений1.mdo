@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="923d1448-436c-4d3d-b835-17210184b0a4">
+	<producedTypes>
+		<selectionType typeId="02e79e52-42e7-4b49-bcfa-c356b8cb3380" valueTypeId="b451cbc1-f7ef-4f2c-a96b-0f73074d8f64"/>
+		<listType typeId="9ab6ecb7-9c22-4dc9-b57e-4714f0117418" valueTypeId="98b1e3bb-a769-422b-9b9d-b4a0393e2441"/>
+		<managerType typeId="17136f52-3295-49b2-85d2-c0e1c9c78854" valueTypeId="7c2f0d2b-8d3f-4ef0-9602-5c36ff05653a"/>
+		<recordSetType typeId="20d4e9c9-b18e-4c8f-b1bd-8ba35c0f5c54" valueTypeId="1cc81d42-2353-4ac2-a086-243bf0fea1eb"/>
+		<recordKeyType typeId="d157e297-cc31-4c6c-b3d1-01e419b40ef7" valueTypeId="a67b1b3c-197c-4985-adb8-2ce066bb2afa"/>
+		<recordType typeId="c190e285-31a1-4abc-87db-8507692fcc43" valueTypeId="8e0fa14f-f683-4c9f-8ae1-6fd7a1b5c334"/>
+		<recordManagerType typeId="3e4d7a6c-3f19-4a1f-8dfe-a7717b5f7ccf" valueTypeId="fcf4f7b9-0338-4710-822b-17596bb1defc"/>
+	</producedTypes>
+	<name>РегистрСведений1</name>
+	<useStandardCommands>true</useStandardCommands>
+	<editType>InDialog</editType>
+	<dataLockControlMode>Managed</dataLockControlMode>
+	<dimensions uuid="2d89ed16-47c3-4473-9787-4c3852de629e">
+		<name>Измерение1</name>
+		<type>
+			<types>CatalogRef.Справочник1</types>
+		</type>
+		<minValue xsi:type="core:UndefinedValue"/>
+		<maxValue xsi:type="core:UndefinedValue"/>
+		<fullTextSearch>Use</fullTextSearch>
+		<dataHistory>Use</dataHistory>
+		<fillValue xsi:type="core:UndefinedValue"/>
+		<mainFilter>true</mainFilter>
+	</dimensions>
+	<forms uuid="7c278227-dd7d-4c99-894b-d6c0dd386102">
+		<name>Форма</name>
+		<synonym>
+			<key>ru</key>
+			<value>Форма</value>
+		</synonym>
+		<usePurposes>PersonalComputer</usePurposes>
+		<usePurposes>MobileDevice</usePurposes>
+		<synonym>
+			<key>en</key>
+			<value>Form</value>
+		</synonym>
+	</forms>
+	<commands uuid="999c8fe1-1c9f-4334-84f7-80b2355d3c07">
+		<name>Команда1</name>
+		<synonym>
+			<key>ru</key>
+			<value>РегистрСведений</value>
+		</synonym>
+		<group>ActionsPanelTools</group>
+		<commandParameterType/>
+		<representation>Auto</representation>
+		<shortcut/>
+		<synonym>
+			<key>en</key>
+			<value>InformationRegister</value>
+		</synonym>
+	</commands>
+</mdclass:InformationRegister>

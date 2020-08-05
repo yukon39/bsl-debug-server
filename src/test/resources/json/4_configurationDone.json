@@ -1,0 +1,5 @@
+{
+  "command": "configurationDone",
+  "type": "request",
+  "seq": 4
+}

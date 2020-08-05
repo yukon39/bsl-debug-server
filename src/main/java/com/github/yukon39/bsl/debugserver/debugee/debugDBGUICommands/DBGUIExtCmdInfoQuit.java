@@ -14,6 +14,6 @@ import lombok.EqualsAndHashCode;
 @XmlType(name = "DBGUIExtCmdInfoQuit")
 public class DBGUIExtCmdInfoQuit extends DBGUIExtCmdInfoBase {
     public DBGUIExtCmdInfoQuit() {
-        super(DBGUIExtCmds.targetQuit);
+        super(DBGUIExtCmds.TARGET_QUIT);
     }
 }

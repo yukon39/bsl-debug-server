@@ -1,12 +1,23 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugRTEInfo;
 
+import jakarta.xml.bind.annotation.XmlEnumValue;
+
 public enum ErrorType {
 
-    Unknown("Unknown"),
-    BSLCompile("BSLCompile"),
-    BSLRuntime("BSLRuntime"),
-    BreakpointBSLCompile("BreakpointBSLCompile"),
-    BreakpointBSLRuntime("BreakpointBSLRuntime");
+    @XmlEnumValue("Unknown")
+    UNKNOWN("Unknown"),
+
+    @XmlEnumValue("BSLCompile")
+    BSL_COMPILE("BSLCompile"),
+
+    @XmlEnumValue("BSLRuntime")
+    BSL_RUNTIME("BSLRuntime"),
+
+    @XmlEnumValue("BreakpointBSLCompile")
+    BREAKPOINT_BSL_COMPILE("BreakpointBSLCompile"),
+
+    @XmlEnumValue("BreakpointBSLRuntime")
+    BREAKPOINT_BSL_RUNTIME("BreakpointBSLRuntime");
 
     private final String literal;
 

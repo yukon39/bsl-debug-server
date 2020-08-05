@@ -15,6 +15,11 @@ public class StringUtils {
         return byteBuffer.array();
     }
 
+    @Contract("_ -> new")
+    public static byte[] toByteArray(@NotNull String string) {
+        return toByteArray(string.toCharArray());
+    }
+
     @Contract(value = "_ -> new", pure = true)
     public static @NotNull String toString(byte[] byteArray) {
         return new String(byteArray, StandardCharsets.UTF_8);

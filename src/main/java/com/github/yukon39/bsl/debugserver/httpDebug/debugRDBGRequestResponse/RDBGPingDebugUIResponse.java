@@ -3,6 +3,10 @@ package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
 import jakarta.xml.bind.annotation.*;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @XmlRootElement()
@@ -24,5 +28,5 @@ import lombok.Data;
 public class RDBGPingDebugUIResponse implements IRDBGResponse {
 
     @XmlElement
-    private DBGUIExtCmdInfoBase[] result = new DBGUIExtCmdInfoBase[]{};
+    private List<DBGUIExtCmdInfoBase> result = new ArrayList<>();
 }

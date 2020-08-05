@@ -16,6 +16,6 @@ public class DBGUIExtCmdInfoForegroundHelperProcess extends DBGUIExtCmdInfoBase 
     private ForegroundWindowData data;
 
     public DBGUIExtCmdInfoForegroundHelperProcess() {
-        super(DBGUIExtCmds.ForegroundHelperProcess);
+        super(DBGUIExtCmds.FOREGROUND_HELPER_PROCESS);
     }
 }

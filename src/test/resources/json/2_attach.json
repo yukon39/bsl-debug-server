@@ -1,0 +1,16 @@
+{
+  "command": "attach",
+  "arguments": {
+    "name": "Debug 1C:Enterprise",
+    "type": "bsldbgs",
+    "request": "attach",
+    "debuggerURL": "http://localhost:8888",
+    "infobaseAlias": "DefAlias",
+    "sources": {
+      "path": "src/test/resources/src/cf/xml"
+    },
+    "__sessionId": "4a38f5bf-516a-45ed-81f4-4a3b26d34416"
+  },
+  "type": "request",
+  "seq": 2
+}

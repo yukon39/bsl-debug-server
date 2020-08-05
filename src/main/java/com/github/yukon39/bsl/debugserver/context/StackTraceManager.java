@@ -1,30 +1,24 @@
 package com.github.yukon39.bsl.debugserver.context;
 
-import com.github.yukon39.bsl.debugserver.debugee.Debugee;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
-import com.google.common.eventbus.Subscribe;
+import lombok.Setter;
+import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.StackFrame;
-import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
-import org.eclipse.lsp4j.debug.Thread;
-import org.jetbrains.annotations.Debug;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class StackTraceManager {
 
-    private final ServerContext serverContext;
+    @Setter
+    private SourceManager sourceManager;
 
     private final Map<Integer, List<StackFrame>> stackFrames = new HashMap<>();
 
-    public StackTraceManager(ServerContext serverContext) {
-        this.serverContext = serverContext;
-    }
-
     public void setStackTrace(Integer threadId, List<StackItemViewInfoData> stackItems) {
 
-        if(stackItems == null) {
+        if (Objects.isNull(stackItems)) {
             return;
         }
 
@@ -34,9 +28,16 @@ public class StackTraceManager {
 
             var presentation = new String(stackItem.getPresentation(), StandardCharsets.UTF_8);
 
+            var source = sourceManager.getSource(stackItem.getModuleID());
+            if(Objects.isNull(source.getAdapterData())) {
+                source.setAdapterData(stackItem.getModuleID());
+            }
+
             var stackFrame = new StackFrame();
             stackFrame.setLine(stackItem.getLineNo());
             stackFrame.setName(presentation);
+
+            stackFrame.setSource(source);
 
             frames.add(stackFrame);
         });
@@ -45,7 +46,7 @@ public class StackTraceManager {
     }
 
     public List<StackFrame> getStackTrace(Integer threadId) {
-        if(stackFrames.containsKey(threadId)) {
+        if (stackFrames.containsKey(threadId)) {
             return stackFrames.get(threadId);
         } else {
             return new ArrayList<StackFrame>();

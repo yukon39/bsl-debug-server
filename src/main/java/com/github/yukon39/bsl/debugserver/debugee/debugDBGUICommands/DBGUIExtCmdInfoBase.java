@@ -4,6 +4,7 @@ import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdStr;
 import jakarta.xml.bind.annotation.*;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 @Data
 @XmlSeeAlso({
@@ -33,7 +34,7 @@ public abstract class DBGUIExtCmdInfoBase {
     private String requestQueueID;
 
     DBGUIExtCmdInfoBase() {
-        this(DBGUIExtCmds.unknown);
+        this(DBGUIExtCmds.UNKNOWN);
     }
 
     protected DBGUIExtCmdInfoBase(DBGUIExtCmds cmdId) {
