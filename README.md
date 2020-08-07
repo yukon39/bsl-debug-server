@@ -78,7 +78,7 @@ java -Dfile.encoding=UTF-8 -jar bsl-debug-server.jar --dap
 | pause                   | [х] |
 | stackTrace              | [х] |
 | scopes                  | [х] |
-| variables               | [ ] |
+| variables               | [х] |
 | setVariable             | [ ] |
 | source                  | [х] |
 | threads                 | [х] |
