@@ -1,14 +1,17 @@
 package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
 
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
+import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternalTest;
+import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdTest;
+import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
+import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
 import jakarta.xml.bind.JAXBException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -55,16 +58,17 @@ public class RDBGPingDebugUIResponseTest {
 
         // given
         var request = new RDBGPingDebugUIResponse();
+        var requestResult = request.getResult();
 
         var targetID = DebugTargetIdTest.createTestObjectManagedClient();
 
         var cmdStarted = new DBGUIExtCmdInfoStarted();
         cmdStarted.setTargetID(targetID);
-        request.getResult().add(cmdStarted);
+        requestResult.add(cmdStarted);
 
         var cmdQuit = new DBGUIExtCmdInfoQuit();
         cmdQuit.setTargetID(targetID);
-        request.getResult().add(cmdQuit);
+        requestResult.add(cmdQuit);
 
         var callStack = new StackItemViewInfoData();
         callStack.setModuleID(BSLModuleIdInternalTest.createTestObjectCommonModule());
@@ -74,7 +78,41 @@ public class RDBGPingDebugUIResponseTest {
         cmdCallStackFormed.setTargetID(targetID);
         cmdCallStackFormed.setStopByBP(false);
         cmdCallStackFormed.getCallStack().add(callStack);
-        request.getResult().add(cmdCallStackFormed);
+        requestResult.add(cmdCallStackFormed);
+
+        var resultValueInfo = new BaseValueInfoData();
+        resultValueInfo.setTypeCode(100);
+        resultValueInfo.setIsExpandable(true);
+        resultValueInfo.setIsSupportIContext(true);
+
+        var propInfo = new ContextPropertyData();
+        propInfo.setPropName("Cancel");
+        propInfo.setIsReaded(true);
+
+        var valueInfo = new BaseValueInfoData();
+        valueInfo.setTypeCode(DebugValueTypeCode.BOOLEAN.getTypeCode());
+        valueInfo.setTypeName(DebugValueTypeCode.BOOLEAN.getTypeName());
+        valueInfo.setValueBoolean(false);
+
+        var valueOfContextPropInfo = new CalculationResultContextPropertyInfo();
+        valueOfContextPropInfo.setPropInfo(propInfo);
+        valueOfContextPropInfo.setValueInfo(valueInfo);
+
+        var calculationResult = new CalculationResultObjData();
+        calculationResult.setViewInterface(ViewInterface.CONTEXT);
+        calculationResult.getValueOfContextPropInfo().add(valueOfContextPropInfo);
+
+        var evalExprResBaseData = new CalculationResultBaseData();
+        evalExprResBaseData.setEvalResultState(CalculationResultState.CORRECTLY);
+        evalExprResBaseData.setExpressionResultID(UUID.fromString("c843e036-8caf-4a3d-85d5-b96225ed17da"));
+        evalExprResBaseData.setResultValueInfo(resultValueInfo);
+        evalExprResBaseData.getTestedAndSupportedInterface().add(ViewInterface.NONE);
+        evalExprResBaseData.setCalculationResult(calculationResult);
+
+        var cmdCmdInfoExprEvaluated = new DBGUIExtCmdInfoExprEvaluated();
+        cmdCmdInfoExprEvaluated.setTargetID(targetID);
+        cmdCmdInfoExprEvaluated.setEvalExprResBaseData(evalExprResBaseData);
+        requestResult.add(cmdCmdInfoExprEvaluated);
 
         var file = new File("./src/test/resources/httpDebug/RDBGPingDebugUIResponseTest.xml");
 
@@ -84,6 +122,13 @@ public class RDBGPingDebugUIResponseTest {
         var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 
         // then
+        var responseResult = response.getResult();
+        assertThat(responseResult).hasSize(4);
+        assertThat(cmdStarted).isEqualTo(responseResult.get(0));
+        assertThat(cmdQuit).isEqualTo(responseResult.get(1));
+        assertThat(cmdCallStackFormed).isEqualTo(responseResult.get(2));
+        assertThat(cmdCmdInfoExprEvaluated).isEqualTo(responseResult.get(3));
+
         assertThat(request).isEqualTo(response);
     }
 }

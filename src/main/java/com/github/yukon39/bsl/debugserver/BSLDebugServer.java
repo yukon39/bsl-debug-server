@@ -10,9 +10,12 @@ import org.eclipse.lsp4j.debug.*;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 @Slf4j
 public class BSLDebugServer implements IDebugProtocolServer {
@@ -246,20 +249,40 @@ public class BSLDebugServer implements IDebugProtocolServer {
     }
 
     @Override
+    public CompletableFuture<VariablesResponse> variables(VariablesArguments args) {
+        return context.variables(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Variables error", e);
+                            outputError("Variables error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
     public CompletableFuture<ThreadsResponse> threads() {
 
         return context.threads()
                 .exceptionally((e) ->
                         {
                             log.error("Threads error", e);
-                            outputError("Threads r error", e); // TODO: localize this
+                            outputError("Threads error", e); // TODO: localize this
                             return null;
                         }
                 );
     }
 
     private void outputError(String msgPrefix, Throwable throwable) {
-        String msg = String.format("%s: %s", msgPrefix, throwable.getLocalizedMessage());
+
+        var sw = new StringWriter();
+        var pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+
+        String msg = String.format("%s: %s\n%s",
+                msgPrefix,
+                throwable.getLocalizedMessage(),
+                sw.toString());
         postEvent(new OutputErrorEvent(msg));
     }
 

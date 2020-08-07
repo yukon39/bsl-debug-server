@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public enum ModulePropertyId {
 
+    UNKNOWN("00000000-0000-0000-0000-000000000000"),
     COMMON_MODULE("d5963243-262e-4398-b4d7-fb16d06484f6"),
     OBJECT_MODULE("a637f77f-3840-441d-a1c3-699c8c5cb7e0"),
     MANAGER_MODULE("d1b64a2c-8078-4982-8190-8f81aefda192"),

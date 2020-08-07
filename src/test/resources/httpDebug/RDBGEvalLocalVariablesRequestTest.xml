@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns:calculations="http://v8.1c.ru/8.3/debugger/debugCalculations"
+         xmlns:data="http://v8.1c.ru/8.3/debugger/debugBaseData"
+         xmlns:response="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse">
+    <response:infoBaseAlias>DefAlias</response:infoBaseAlias>
+    <response:idOfDebuggerUI>4fb00e47-aaba-49e3-9160-c6c3db20671e</response:idOfDebuggerUI>
+    <response:calcWaitingTime>100</response:calcWaitingTime>
+    <response:targetID>
+        <data:id>3f80453e-0fa5-4ebd-9400-09bf96d0939f</data:id>
+    </response:targetID>
+    <response:expr>
+        <calculations:stackLevel>0</calculations:stackLevel>
+        <calculations:srcCalcInfo>
+            <calculations:expressionID>00000000-0000-0000-0000-000000000000</calculations:expressionID>
+            <calculations:expressionResultID>389d3855-eb30-47ea-a6c8-8bcd2881c0dc</calculations:expressionResultID>
+            <calculations:interfaces>context</calculations:interfaces>
+        </calculations:srcCalcInfo>
+        <calculations:presOptions>
+            <calculations:maxTextSize>100</calculations:maxTextSize>
+            <calculations:stopOnFirstEOL>true</calculations:stopOnFirstEOL>
+        </calculations:presOptions>
+    </response:expr>
+</request>

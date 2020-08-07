@@ -64,4 +64,42 @@
             <lineNo>5</lineNo>
         </debugDBGUICommands:callStack>
     </debugRDBGRequestResponse:result>
+    <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoExprEvaluated">
+        <debugDBGUICommands:cmdIDNum>8</debugDBGUICommands:cmdIDNum>
+        <debugDBGUICommands:cmdID>exprEvaluated</debugDBGUICommands:cmdID>
+        <debugDBGUICommands:targetID>
+            <id>0e215a1d-5230-42db-85f2-ca373357f81f</id>
+            <seanceId>fdbd8b88-8a7f-4674-8f4f-945cbefe90f5</seanceId>
+            <seanceNo>2</seanceNo>
+            <infoBaseInstanceID>1945345b-e6a5-4183-ac6e-a6cf4e6085ed</infoBaseInstanceID>
+            <infoBaseAlias>DefAlias</infoBaseAlias>
+            <isServerInfoBase>undefined</isServerInfoBase>
+            <configVersion>e6fd5c7d56a8824bbf34499f7696645f00000000</configVersion>
+            <targetType>ManagedClient</targetType>
+        </debugDBGUICommands:targetID>
+        <debugDBGUICommands:evalExprResBaseData>
+            <debugCalculations:evalResultState>correctly</debugCalculations:evalResultState>
+            <debugCalculations:expressionResultID>c843e036-8caf-4a3d-85d5-b96225ed17da</debugCalculations:expressionResultID>
+            <debugCalculations:resultValueInfo>
+                <debugCalculations:typeCode>100</debugCalculations:typeCode>
+                <debugCalculations:isExpandable>true</debugCalculations:isExpandable>
+                <debugCalculations:isSupportIContext>true</debugCalculations:isSupportIContext>
+            </debugCalculations:resultValueInfo>
+            <debugCalculations:testedAndSupportedInterface>none</debugCalculations:testedAndSupportedInterface>
+            <debugCalculations:calculationResult>
+                <debugCalculations:viewInterface>context</debugCalculations:viewInterface>
+                <debugCalculations:valueOfContextPropInfo>
+                    <debugCalculations:propInfo>
+                        <debugCalculations:propName>Cancel</debugCalculations:propName>
+                        <debugCalculations:isReaded>true</debugCalculations:isReaded>
+                    </debugCalculations:propInfo>
+                    <debugCalculations:valueInfo>
+                        <debugCalculations:typeCode>2</debugCalculations:typeCode>
+                        <debugCalculations:typeName>Boolean</debugCalculations:typeName>
+                        <debugCalculations:valueBoolean>false</debugCalculations:valueBoolean>
+                    </debugCalculations:valueInfo>
+                </debugCalculations:valueOfContextPropInfo>
+            </debugCalculations:calculationResult>
+        </debugDBGUICommands:evalExprResBaseData>
+    </debugRDBGRequestResponse:result>
 </response>

@@ -1,13 +1,13 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
+import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
 import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
 import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugException;
 import com.google.common.eventbus.EventBus;
@@ -16,17 +16,18 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 @Slf4j
 public class Debugee implements Runnable {
 
+    private static long WAIT_POLL = 500L;
+
     private final HTTPDebugClient httpDebugClient;
+
+    private final Map<UUID, CalculationResultBaseData> calculatedExpressions = new HashMap<>();
 
     @Getter
     private boolean attached = false;
@@ -75,13 +76,16 @@ public class Debugee implements Runnable {
             log.debug("Ping result type " + command.getCmdId());
 
             if (command instanceof DBGUIExtCmdInfoStarted) {
-                postEvent(new CmdStartedEvent((DBGUIExtCmdInfoStarted) command));
+                targetStartedEvent((DBGUIExtCmdInfoStarted) command);
 
             } else if (command instanceof DBGUIExtCmdInfoQuit) {
-                postEvent(new CmdQuitEvent((DBGUIExtCmdInfoQuit) command));
+                targetQuitEvent((DBGUIExtCmdInfoQuit) command);
 
             } else if (command instanceof DBGUIExtCmdInfoCallStackFormed) {
-                postEvent(new CmdCallStackFormedEvent((DBGUIExtCmdInfoCallStackFormed) command));
+                callStackFormedEvent((DBGUIExtCmdInfoCallStackFormed) command);
+
+            } else if (command instanceof DBGUIExtCmdInfoExprEvaluated) {
+                expressionEvaluatedEvent((DBGUIExtCmdInfoExprEvaluated) command);
             }
         }
     }
@@ -262,10 +266,104 @@ public class Debugee implements Runnable {
         });
     }
 
+    public CompletableFuture<CalculationResultBaseData> getLocalVariables(
+            DebugTargetIdLight targetId, List<CalculationSourceDataStorage> expr) {
+
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        return httpDebugClient.evalLocalVariables(targetId, expr, 100);
+                    } catch (HTTPDebugException e) {
+                        throw new CompletionException(e);
+                    }
+                })
+                .thenApply(calculatedData -> {
+                    if (Objects.isNull(calculatedData)) {
+
+                        var resultId = expr.get(0).getSrcCalcInfo().getExpressionResultID();
+                        synchronized (calculatedExpressions) {
+                            while (!calculatedExpressions.containsKey(resultId)) {
+
+                                try {
+                                    calculatedExpressions.wait(WAIT_POLL);
+                                } catch (Exception e) {
+                                    log.error("getLocalVariables", e);
+                                    throw new CompletionException(e);
+                                }
+                            }
+                            calculatedData = calculatedExpressions.remove(resultId);
+                        }
+                    }
+                    return calculatedData;
+                });
+    }
+
     private void postEvent(Object event) {
         if (Objects.nonNull(eventBus)) {
             eventBus.post(event);
         }
+    }
+
+    private void targetStartedEvent(DBGUIExtCmdInfoStarted command) {
+
+        var targetId = command.getTargetID();
+
+        attachDebugTarget(targetId)
+                .whenComplete((v, e) -> {
+                            if (Objects.isNull(e)) {
+                                postEvent(new CmdStartedEvent(command));
+                            }
+                        }
+                );
+    }
+
+    private void targetQuitEvent(DBGUIExtCmdInfoQuit command) {
+
+        var targetId = command.getTargetID();
+
+        detachDebugTarget(targetId)
+                .whenComplete((v, e) -> {
+                            if (Objects.isNull(e)) {
+                                postEvent(new CmdQuitEvent(command));
+                            }
+                        }
+                );
+    }
+
+    private void callStackFormedEvent(DBGUIExtCmdInfoCallStackFormed command) {
+
+        postEvent(new CmdCallStackFormedEvent(command));
+
+//        var targetId = command.getTargetID();
+//
+//        getCallStack(targetId)
+//                .thenApply(list -> command.getCallStack().addAll(list))
+//                .whenComplete((v, e) -> {
+//                            if (Objects.isNull(e)) {
+//                                postEvent(new CmdCallStackFormedEvent(command));
+//                            } else {
+//                                throw new CompletionException(e);
+//                            }
+//                        }
+//                );
+    }
+
+    private void expressionEvaluatedEvent(DBGUIExtCmdInfoExprEvaluated command) {
+
+        var calculatedData = command.getEvalExprResBaseData();
+
+        if (Objects.isNull(calculatedData)) {
+            return;
+        }
+
+        var resultId = calculatedData.getExpressionResultID();
+        log.trace("[expressionEvaluatedEvent] resultId={}", resultId);
+
+        synchronized (calculatedExpressions) {
+            calculatedExpressions.put(resultId, calculatedData);
+        }
+
+        postEvent(new CmdExprEvaluated(command));
     }
 
     public static class OutputEvent {
@@ -296,6 +394,14 @@ public class Debugee implements Runnable {
         public final DBGUIExtCmdInfoCallStackFormed command;
 
         public CmdCallStackFormedEvent(DBGUIExtCmdInfoCallStackFormed command) {
+            this.command = command;
+        }
+    }
+
+    public static class CmdExprEvaluated {
+        public final DBGUIExtCmdInfoExprEvaluated command;
+
+        public CmdExprEvaluated(DBGUIExtCmdInfoExprEvaluated command) {
             this.command = command;
         }
     }

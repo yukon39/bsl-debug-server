@@ -14,4 +14,13 @@ public class DbgPresentationOptionsOfStringValue {
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
     private Boolean stopOnFirstEOL;
+
+    public static DbgPresentationOptionsOfStringValue defaultOptions() {
+
+        var options = new DbgPresentationOptionsOfStringValue();
+        options.setMaxTextSize(100);
+        options.setStopOnFirstEOL(true);
+
+        return options;
+    }
 }

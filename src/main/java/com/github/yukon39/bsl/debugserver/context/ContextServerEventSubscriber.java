@@ -24,4 +24,9 @@ public class ContextServerEventSubscriber {
     public void debugeeCallStackFormed(Debugee.CmdCallStackFormedEvent event) {
         context.debugCallStackFormed(event.command);
     }
+
+    @Subscribe
+    public void debugeeExprEvaluated(Debugee.CmdExprEvaluated event) {
+        context.debugExprEvaluated(event.command);
+    }
 }

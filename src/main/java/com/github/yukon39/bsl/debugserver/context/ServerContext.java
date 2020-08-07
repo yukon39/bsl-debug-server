@@ -1,20 +1,25 @@
 package com.github.yukon39.bsl.debugserver.context;
 
+import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
 import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.DbgPresentationOptionsOfStringValue;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.SourceCalculationDataInfo;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.ViewInterface;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
+import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import org.eclipse.lsp4j.debug.Thread;
 import org.eclipse.lsp4j.debug.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.*;
@@ -25,6 +30,8 @@ public class ServerContext {
     private final BreakpointsManager breakpointsManager = new BreakpointsManager();
     private final StackTraceManager stackTraceManager = new StackTraceManager();
     private final SourceManager sourceManager = SourceManager.create();
+    private final VariablesManager variablesManager = new VariablesManager();
+
     @Getter
     private final Debugee debugee = new Debugee();
     private boolean configured = false;
@@ -132,7 +139,7 @@ public class ServerContext {
                     threadsManager.synchronizeDebugTargetStates(targets);
                     var threads = threadsManager.getThreads();
 
-                    Thread [] array = new Thread[threads.size()];
+                    Thread[] array = new Thread[threads.size()];
                     threads.toArray(array);
 
                     var response = new ThreadsResponse();
@@ -190,11 +197,9 @@ public class ServerContext {
                 return new StackTraceResponse();
             }
 
-            // var callStack = debugee.getCallStack(debugTargetId).get();
-            // stackTraceManager.setStackTrace(threadId, callStack);
             var stackFrames = stackTraceManager.getStackTrace(threadId);
 
-            StackFrame [] array = new StackFrame[stackFrames.size()];
+            StackFrame[] array = new StackFrame[stackFrames.size()];
             stackFrames.toArray(array);
 
             var result = new StackTraceResponse();
@@ -207,10 +212,101 @@ public class ServerContext {
 
     public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
 
-        var result = new ScopesResponse();
-        result.setScopes(new Scope[]{});
+        var stackFrameContext = stackTraceManager.getStackFrameContext(args.getFrameId());
+        if (Objects.isNull(stackFrameContext)) {
+            return CompletableFuture.completedFuture(null);
+        }
 
-        return CompletableFuture.completedFuture(result);
+        var thread = stackFrameContext.getThread();
+        if (Objects.isNull(thread)) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        var targetId = threadsManager.getDebugTargetId(thread);
+        if (Objects.isNull(targetId)) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        var variablesContext = variablesManager.createVariablesContext();
+        variablesContext.setStackFrameContext(stackFrameContext);
+
+        var expressions = new ArrayList<CalculationSourceDataStorage>();
+
+        var calculationInfo = new SourceCalculationDataInfo();
+        calculationInfo.setExpressionID(variablesContext.getResultId()); //"00000000-0000-0000-0000-000000000000"
+        calculationInfo.setExpressionResultID(variablesContext.getResultId());
+        calculationInfo.getInterfaces().add(ViewInterface.CONTEXT);
+
+        var expression = new CalculationSourceDataStorage();
+        expression.setStackLevel(stackFrameContext.getStackLevel());
+        expression.setSrcCalcInfo(calculationInfo);
+        expression.setPresOptions(DbgPresentationOptionsOfStringValue.defaultOptions());
+        expressions.add(expression);
+
+        var stackFrame = stackFrameContext.getStackFrame();
+
+        return debugee.getLocalVariables(targetId, expressions)
+                .thenApply(calculation -> {
+
+                    var namedVariables = 0;
+
+                    if (Objects.nonNull(calculation)) {
+                        variablesManager.setCalculationData(variablesContext, calculation);
+                        namedVariables = calculation.getCalculationResult().getValueOfContextPropInfo().size();
+                    }
+
+                    var scopes = new ArrayList<Scope>();
+
+                    if (namedVariables > 0) {
+                        var scope = new Scope();
+                        scope.setName("Locals"); // TODO: localize this
+                        scope.setPresentationHint(ScopePresentationHint.LOCALS);
+                        scope.setSource(stackFrame.getSource());
+                        scope.setLine(stackFrame.getLine());
+                        scope.setVariablesReference(variablesContext.getReference());
+                        scope.setNamedVariables(namedVariables);
+
+                        scopes.add(scope);
+                    }
+
+                    Scope[] array = new Scope[scopes.size()];
+                    scopes.toArray(array);
+
+                    var response = new ScopesResponse();
+                    response.setScopes(array);
+
+                    return response;
+                });
+    }
+
+    public CompletableFuture<VariablesResponse> variables(VariablesArguments args) {
+
+        return CompletableFuture.supplyAsync(() -> {
+            var reference = args.getVariablesReference();
+            var variablesContext = variablesManager.getVariablesContext(reference);
+
+            if (Objects.isNull(variablesContext)) {
+                return null;
+            }
+
+            synchronized (variablesContext) {
+                if (!variablesContext.isReceived()) {
+                    try {
+                        variablesContext.wait(10000L);
+                    } catch (Exception e) {
+                        throw new CompletionException(e);
+                    }
+                }
+            }
+            var variables = variablesContext.getVariables();
+
+            Variable[] array = new Variable[variables.size()];
+            variables.toArray(array);
+
+            var response = new VariablesResponse();
+            response.setVariables(array);
+            return response;
+        });
     }
 
     public CompletableFuture<SourceResponse> source(SourceArguments args) {
@@ -220,13 +316,6 @@ public class ServerContext {
     public void debugTargetStarted(DBGUIExtCmdInfoStarted command) {
 
         var targetId = command.getTargetID();
-
-        try {
-            debugee.attachDebugTarget(targetId).get();
-        } catch (Exception e) {
-            // TODO: write log
-        }
-
         var thread = threadsManager.addDebugTarget(targetId);
         postEvent(new ThreadEvent(thread.getId(), ThreadEventArgumentsReason.STARTED));
     }
@@ -234,31 +323,21 @@ public class ServerContext {
     public void debugTargetQuit(DBGUIExtCmdInfoQuit command) {
 
         var targetId = command.getTargetID();
-
-        try {
-            debugee.detachDebugTarget(targetId).get();
-        } catch (Exception e) {
-            // TODO: write log
-        }
-
         var thread = threadsManager.removeDebugTarget(targetId);
         postEvent(new ThreadEvent(thread.getId(), ThreadEventArgumentsReason.EXITED));
     }
 
     public void debugCallStackFormed(DBGUIExtCmdInfoCallStackFormed command) {
 
-        var thread = threadsManager.getThread(command.getTargetID());
-
+        var targetId = command.getTargetID();
+        var thread = threadsManager.getThread(targetId);
         if (Objects.isNull(thread)) {
             return;
         }
 
-        // try {
-
         var callStack = command.getCallStack();
 
-        stackTraceManager.setStackTrace(thread.getId(), callStack);
-        var stackFrames = stackTraceManager.getStackTrace(thread.getId());
+        stackTraceManager.setStackTrace(thread, callStack);
 
         var event = new StoppedEvent();
         event.args.setThreadId(thread.getId());
@@ -273,16 +352,24 @@ public class ServerContext {
         }
 
         postEvent(event);
+    }
 
-        // } catch (Exception e) {
-        //
-        // var sw = new StringWriter();
-        // e.printStackTrace(new PrintWriter(sw));
-        // String exceptionAsString = sw.toString();
-        //
-        // postEvent(new Debugee.OutputEvent(e.getMessage() + System.lineSeparator() +
-        // exceptionAsString));
-        // }
+    public void debugExprEvaluated(DBGUIExtCmdInfoExprEvaluated command) {
+
+        var calculationData = command.getEvalExprResBaseData();
+        if (Objects.isNull(calculationData)) {
+            return;
+        }
+
+        var variablesContext = variablesManager.getVariablesContext(calculationData.getExpressionResultID());
+        if (Objects.isNull(variablesContext)) {
+            return;
+        }
+
+        synchronized (variablesContext) {
+            variablesManager.setCalculationData(variablesContext, calculationData);
+            variablesContext.notifyAll();
+        }
     }
 
     public void shutdown() {

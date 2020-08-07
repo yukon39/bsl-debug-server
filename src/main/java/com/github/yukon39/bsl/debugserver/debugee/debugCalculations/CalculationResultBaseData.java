@@ -41,6 +41,7 @@ public class CalculationResultBaseData {
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
     private Boolean errorOccurred;
+
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
     private byte[] exceptionStr;
 

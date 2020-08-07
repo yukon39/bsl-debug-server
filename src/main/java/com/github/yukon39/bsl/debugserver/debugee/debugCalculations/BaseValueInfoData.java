@@ -1,5 +1,6 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugCalculations;
 
+import com.github.yukon39.bsl.debugserver.utils.StringUtils;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -46,4 +47,8 @@ public class BaseValueInfoData {
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
     private Boolean isSupportIEnumValue;
+
+    public String getPresentation() {
+        return StringUtils.toString(pres);
+    }
 }

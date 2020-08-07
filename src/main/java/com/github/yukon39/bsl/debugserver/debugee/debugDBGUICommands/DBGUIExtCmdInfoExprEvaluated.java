@@ -1,17 +1,17 @@
 package com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands;
 
 import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "DBGUIExtCmdInfoExprEvaluated")
 public class DBGUIExtCmdInfoExprEvaluated extends DBGUIExtCmdInfoBase {
+
+    @XmlElement
     private CalculationResultBaseData evalExprResBaseData;
 
     public DBGUIExtCmdInfoExprEvaluated() {

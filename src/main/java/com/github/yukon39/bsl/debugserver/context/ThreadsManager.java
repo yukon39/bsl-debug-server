@@ -5,6 +5,7 @@ import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
 import org.eclipse.lsp4j.debug.Thread;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -51,10 +52,21 @@ public class ThreadsManager {
         return threads.get(debugTargetId.getId());
     }
 
-    public DebugTargetIdLight getDebugTargetId(Integer threadId) {
+    public @Nullable DebugTargetIdLight getDebugTargetId(Integer threadId) {
 
         for (var entry : threads.entrySet()) {
             if (entry.getValue().getId() == threadId) {
+                var id = new DebugTargetIdLight();
+                id.setId(entry.getKey());
+                return id;
+            }
+        }
+        return null;
+    }
+
+    public @Nullable DebugTargetIdLight getDebugTargetId(Thread thread) {
+        for (var entry : threads.entrySet()) {
+            if (entry.getValue().equals(thread)) {
                 var id = new DebugTargetIdLight();
                 id.setId(entry.getKey());
                 return id;
