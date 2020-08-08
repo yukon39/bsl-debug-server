@@ -1,5 +1,6 @@
-package com.github.yukon39.bsl.debugserver.context;
+package com.github.yukon39.bsl.debugserver.context.managers;
 
+import com.github.yukon39.bsl.debugserver.context.data.VariablesContext;
 import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
 import org.eclipse.lsp4j.debug.Variable;
 import org.jetbrains.annotations.Nullable;
