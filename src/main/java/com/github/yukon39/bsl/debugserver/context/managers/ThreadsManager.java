@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.context;
+package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github.yukon39.bsl.debugserver.context.data.ThreadContext;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DbgTargetStateInfo;
