@@ -1,6 +1,5 @@
 package com.github.yukon39.bsl.debugserver.context;
 
-import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
 import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
@@ -15,6 +14,7 @@ import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmd
 import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.lsp4j.debug.Thread;
 import org.eclipse.lsp4j.debug.*;
 
@@ -24,9 +24,10 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.*;
 
+@Slf4j
 public class ServerContext {
 
-    private final ThreadsManager threadsManager = new ThreadsManager(this);
+    private final ThreadsManager threadsManager = new ThreadsManager();
     private final BreakpointsManager breakpointsManager = new BreakpointsManager();
     private final StackTraceManager stackTraceManager = new StackTraceManager();
     private final SourceManager sourceManager = SourceManager.create();
@@ -154,48 +155,47 @@ public class ServerContext {
 
     public CompletableFuture<ContinueResponse> stepContinue(ContinueArguments args) {
 
+        var threadId = args.getThreadId();
+
         return CompletableFuture
-                .supplyAsync(() -> {
-                    var threadId = args.getThreadId();
-                    return threadsManager.getDebugTargetId(threadId);
-                })
-                .thenAccept(debugTargetId -> debugee.stepContinue(debugTargetId, true))
-                .thenApply(list -> {
+                .supplyAsync(() -> threadsManager.getThreadContext(threadId))
+                .thenCompose(threadContext -> debugee.stepContinue(threadContext.getTargetId(), true))
+                .thenApply(v -> {
+                    log.debug("stepContinue for threadId={}", threadId);
+
                     var result = new ContinueResponse();
-                    result.setAllThreadsContinued(false);
+                    result.setAllThreadsContinued(true);
                     return result;
                 });
     }
 
     public CompletableFuture<Void> stepIn(StepInArguments args) {
 
+        var threadId = args.getThreadId();
+
         return CompletableFuture
-                .supplyAsync(() -> {
-                    var threadId = args.getThreadId();
-                    return threadsManager.getDebugTargetId(threadId);
-                })
-                .thenAccept(debugTargetId -> debugee.stepIn(debugTargetId, true));
+                .supplyAsync(() -> threadsManager.getThreadContext(threadId))
+                .thenCompose(threadContext -> debugee.stepIn(threadContext.getTargetId(), true))
+                .thenAccept(v -> log.debug("stepIn for threadId={}", threadId));
     }
 
     public CompletableFuture<Void> stepOut(StepOutArguments args) {
 
+        var threadId = args.getThreadId();
+
         return CompletableFuture
-                .supplyAsync(() -> {
-                    var threadId = args.getThreadId();
-                    return threadsManager.getDebugTargetId(threadId);
-                })
-                .thenAccept(debugTargetId -> debugee.stepOut(debugTargetId, true));
+                .supplyAsync(() -> threadsManager.getThreadContext(threadId))
+                .thenCompose(threadContext -> debugee.stepOut(threadContext.getTargetId(), true))
+                .thenAccept(v -> log.debug("stepOut success for threadId={}", threadId));
     }
 
     public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
 
+        var threadId = args.getThreadId();
         return CompletableFuture.supplyAsync(() -> {
 
-            var threadId = args.getThreadId();
-            var debugTargetId = threadsManager.getDebugTargetId(threadId);
-            if (Objects.isNull(debugTargetId)) {
-                return new StackTraceResponse();
-            }
+            var threadContext = threadsManager.getThreadContext(threadId);
+            var debugTargetId = threadContext.getTargetId();
 
             var stackFrames = stackTraceManager.getStackTrace(threadId);
 
@@ -222,10 +222,8 @@ public class ServerContext {
             return CompletableFuture.completedFuture(null);
         }
 
-        var targetId = threadsManager.getDebugTargetId(thread);
-        if (Objects.isNull(targetId)) {
-            return CompletableFuture.completedFuture(null);
-        }
+        var threadContext = threadsManager.getThreadContext(thread);
+        var targetId = threadContext.getTargetId();
 
         var variablesContext = variablesManager.createVariablesContext();
         variablesContext.setStackFrameContext(stackFrameContext);
@@ -316,24 +314,22 @@ public class ServerContext {
     public void debugTargetStarted(DBGUIExtCmdInfoStarted command) {
 
         var targetId = command.getTargetID();
-        var thread = threadsManager.addDebugTarget(targetId);
-        postEvent(new ThreadEvent(thread.getId(), ThreadEventArgumentsReason.STARTED));
+        var threadContext = threadsManager.createThreadContext(targetId);
+        postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.STARTED));
     }
 
     public void debugTargetQuit(DBGUIExtCmdInfoQuit command) {
 
         var targetId = command.getTargetID();
-        var thread = threadsManager.removeDebugTarget(targetId);
-        postEvent(new ThreadEvent(thread.getId(), ThreadEventArgumentsReason.EXITED));
+        var threadContext = threadsManager.removeThreadContext(targetId);
+        postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.EXITED));
     }
 
     public void debugCallStackFormed(DBGUIExtCmdInfoCallStackFormed command) {
 
         var targetId = command.getTargetID();
-        var thread = threadsManager.getThread(targetId);
-        if (Objects.isNull(thread)) {
-            return;
-        }
+        var threadContext = threadsManager.getThreadContext(targetId);
+        var thread = threadContext.getThread();
 
         var callStack = command.getCallStack();
 
@@ -394,9 +390,9 @@ public class ServerContext {
     public static class ThreadEvent {
         public final ThreadEventArguments args;
 
-        ThreadEvent(Integer id, String reason) {
+        ThreadEvent(Thread thread, String reason) {
             this.args = new ThreadEventArguments();
-            this.args.setThreadId(id);
+            this.args.setThreadId(thread.getId());
             this.args.setReason(reason);
         }
     }

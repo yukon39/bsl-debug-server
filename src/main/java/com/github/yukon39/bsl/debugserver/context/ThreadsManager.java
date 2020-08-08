@@ -1,105 +1,121 @@
 package com.github.yukon39.bsl.debugserver.context;
 
+import com.github.yukon39.bsl.debugserver.context.data.ThreadContext;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DbgTargetStateInfo;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
 import org.eclipse.lsp4j.debug.Thread;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class ThreadsManager {
 
-    private final ServerContext serverContext;
-    private final Map<UUID, Thread> threads = new HashMap<>();
-    private Integer counter = 0;
+    private final Map<Integer, ThreadContext> threads = new HashMap<>();
+    private final Map<UUID, ThreadContext> debugTargets = new HashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(1);
+    private final ReentrantLock updateLock = new ReentrantLock();
 
-    public ThreadsManager(ServerContext serverContext) {
-        this.serverContext = serverContext;
+    public ThreadContext createThreadContext(DebugTargetId debugTargetId) {
+
+        var thread = createThread(debugTargetId);
+        var threadContext = new ThreadContext(thread, debugTargetId);
+
+        updateLock.lock();
+        try {
+
+            threads.put(thread.getId(), threadContext);
+            debugTargets.put(debugTargetId.getId(), threadContext);
+
+        } finally {
+            updateLock.unlock();
+        }
+
+        return threadContext;
     }
 
-    public @NotNull Thread addDebugTarget(DebugTargetId debugTargetId) {
+    public ThreadContext getThreadContext(DebugTargetId debugTargetId) {
 
-        var id = debugTargetId.getId();
-        synchronized (threads) {
-            if (threads.containsKey(id)) {
-                return threads.get(id);
+        var threadContext = debugTargets.get(debugTargetId.getId());
 
-            } else {
-                var thread = createThread(debugTargetId);
-                threads.put(id, thread);
-                return thread;
+        if (Objects.isNull(threadContext)) {
+            throw new IllegalArgumentException("Unknown debugTargetId.Id=" + debugTargetId.getId());
+        }
+
+        return threadContext;
+    }
+
+    public ThreadContext getThreadContext(Thread thread) {
+        return getThreadContext(thread.getId());
+    }
+
+    public ThreadContext getThreadContext(Integer threadId) {
+
+        var threadContext = threads.get(threadId);
+
+        if (Objects.isNull(threadContext)) {
+            throw new IllegalArgumentException("Unknown threadId=" + threadId);
+        }
+
+        return threadContext;
+    }
+
+    public ThreadContext removeThreadContext(DebugTargetId debugTargetId) {
+
+        updateLock.lock();
+        try {
+            var threadContext = debugTargets.remove(debugTargetId.getId());
+
+            if (Objects.isNull(threadContext)) {
+                throw new IllegalArgumentException("Unknown debugTargetId.Id=" + debugTargetId.getId());
             }
+
+            threads.remove(threadContext.getThread().getId());
+
+            return threadContext;
+
+        } finally {
+            updateLock.unlock();
         }
     }
 
-    public @NotNull Thread removeDebugTarget(DebugTargetId debugTargetId) {
+    public void synchronizeDebugTargetStates(List<DbgTargetStateInfo> debugTargetsStates) {
 
-        var id = debugTargetId.getId();
-        synchronized (threads) {
-            if (threads.containsKey(id)) {
-                var thread = threads.get(id);
-                threads.remove(id);
-                return thread;
-            } else {
-                return createThread(debugTargetId);
-            }
-        }
-    }
+        updateLock.lock();
+        try {
 
-    public Thread getThread(DebugTargetId debugTargetId) {
-        return threads.get(debugTargetId.getId());
-    }
+            var copy = new HashMap<>(debugTargets);
 
-    public @Nullable DebugTargetIdLight getDebugTargetId(Integer threadId) {
-
-        for (var entry : threads.entrySet()) {
-            if (entry.getValue().getId() == threadId) {
-                var id = new DebugTargetIdLight();
-                id.setId(entry.getKey());
-                return id;
-            }
-        }
-        return null;
-    }
-
-    public @Nullable DebugTargetIdLight getDebugTargetId(Thread thread) {
-        for (var entry : threads.entrySet()) {
-            if (entry.getValue().equals(thread)) {
-                var id = new DebugTargetIdLight();
-                id.setId(entry.getKey());
-                return id;
-            }
-        }
-        return null;
-    }
-
-    public void synchronizeDebugTargetStates(List<DbgTargetStateInfo> debugTargets) {
-
-        synchronized (threads) {
-            var copy = new HashMap<UUID, Thread>(threads);
             threads.clear();
-            debugTargets.forEach(dbgTargetStateInfo -> {
+            debugTargets.clear();
 
-                var debugTargetId = dbgTargetStateInfo.getTargetID();
-                var id = debugTargetId.getId();
-                if (copy.containsKey(id)) {
-                    threads.put(id, copy.get(id));
-                } else {
-                    threads.put(id, createThread(debugTargetId));
-                }
-            });
+            debugTargetsStates.stream()
+                    .map(DbgTargetStateInfo::getTargetID)
+                    .forEach(debugTargetId -> {
+
+                        var threadContext = copy.remove(debugTargetId.getId());
+                        if (Objects.isNull(threadContext)) {
+                            var thread = createThread(debugTargetId);
+                            threadContext = new ThreadContext(thread, debugTargetId);
+                        }
+
+                        threads.put(threadContext.getThread().getId(), threadContext);
+                        debugTargets.put(debugTargetId.getId(), threadContext);
+                    });
+
+        } finally {
+            updateLock.unlock();
         }
     }
 
     public List<Thread> getThreads() {
-        var list = new ArrayList<Thread>();
-        threads.forEach((uuid, thread) -> {
-            list.add(thread);
-        });
 
-        return list;
+        return threads.values()
+                .stream()
+                .map(ThreadContext::getThread)
+                .collect(Collectors.toList());
     }
 
     private @NotNull Thread createThread(DebugTargetId debugTarget) {
@@ -107,7 +123,7 @@ public class ThreadsManager {
         var threadName = threadName(debugTarget);
 
         var thread = new Thread();
-        thread.setId(counter++);
+        thread.setId(counter.getAndIncrement());
         thread.setName(threadName);
         return thread;
     }
