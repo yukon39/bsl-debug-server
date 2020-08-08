@@ -1,6 +1,7 @@
 package com.github.yukon39.bsl.debugserver.context;
 
 import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
+import com.github.yukon39.bsl.debugserver.context.managers.BreakpointsManager;
 import com.github.yukon39.bsl.debugserver.context.managers.SourceManager;
 import com.github.yukon39.bsl.debugserver.context.managers.ThreadsManager;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
