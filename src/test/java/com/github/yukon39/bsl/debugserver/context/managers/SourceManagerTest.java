@@ -38,9 +38,7 @@ public class SourceManagerTest {
         // then
         assertThat(source).isNotNull();
         assertThat(source.getName()).isEqualTo("ManagerModule.bsl");
-
-        var adapterData = (BSLModuleIdInternal) source.getAdapterData();
-        assertThat(moduleId.isEqualModuleId(adapterData)).isTrue();
+        assertThat(moduleId).isEqualTo(source.getAdapterData());
 
         // when
         source = sourceManager.getSource(moduleId);
@@ -64,9 +62,7 @@ public class SourceManagerTest {
         // then
         assertThat(source).isNotNull();
         assertThat(source.getName()).isEqualTo("ManagerModule.bsl");
-
-        var adapterData = (BSLModuleIdInternal) source.getAdapterData();
-        assertThat(moduleId.isEqualModuleId(adapterData)).isTrue();
+        assertThat(moduleId).isEqualTo(source.getAdapterData());
 
         // when
         source = sourceManager.getSource(moduleId);

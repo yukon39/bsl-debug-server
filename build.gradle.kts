@@ -19,7 +19,7 @@ val junitVersion = "5.6.1"
 dependencies {
 
     implementation( "org.eclipse.lsp4j", "org.eclipse.lsp4j.debug", "0.9.0")
-    implementation( "com.github.1c-syntax", "mdclasses", "0.5.0")
+    implementation( "com.github.1c-syntax", "mdclasses", "0.6.0")
 
     implementation("info.picocli", "picocli", "4.4.0")
 

@@ -33,54 +33,54 @@ public enum ModulePropertyId {
         this.id = UUID.fromString(id);
     }
 
-    public static @Nullable UUID getPropertyId(MDObjectBase metadataObject, ModuleType moduleType) {
+    public static ModulePropertyId getPropertyId(MDObjectBase metadataObject, ModuleType moduleType) {
 
         var mdoType = metadataObject.getType();
 
         switch (moduleType) {
 
             case OrdinaryApplicationModule:
-                return ORDINARY_APPLICATION_MODULE.id;
+                return ORDINARY_APPLICATION_MODULE;
 
             case ManagedApplicationModule:
-                return MANAGED_APPLICATION_MODULE.id;
+                return MANAGED_APPLICATION_MODULE;
 
             case ExternalConnectionModule:
-                return EXTERNAL_CONNECTION_MODULE.id;
+                return EXTERNAL_CONNECTION_MODULE;
 
             case SessionModule:
-                return SESSION_MODULE.id;
+                return SESSION_MODULE;
 
             case CommonModule:
             case WEBServiceModule:
             case HTTPServiceModule:
-                return COMMON_MODULE.id;
+                return COMMON_MODULE;
 
             case ValueManagerModule:
-                return VALUE_MANAGER_MODULE.id;
+                return VALUE_MANAGER_MODULE;
 
             case ManagerModule:
                 switch (mdoType) {
                     case SETTINGS_STORAGE:
-                        return SETTINGS_STORE_MANAGER_MODULE.id;
+                        return SETTINGS_STORE_MANAGER_MODULE;
                     default:
-                        return MANAGER_MODULE.id;
+                        return MANAGER_MODULE;
                 }
 
             case ObjectModule:
-                return OBJECT_MODULE.id;
+                return OBJECT_MODULE;
 
             case RecordSetModule:
-                return RECORDSET_MODULE.id;
+                return RECORDSET_MODULE;
 
             case FormModule:
-                return FORM_MODULE.id;
+                return FORM_MODULE;
 
             case CommandModule:
-                return COMMAND_MODULE.id;
+                return COMMAND_MODULE;
 
             default:
-                return null;
+                return UNKNOWN;
         }
     }
 
