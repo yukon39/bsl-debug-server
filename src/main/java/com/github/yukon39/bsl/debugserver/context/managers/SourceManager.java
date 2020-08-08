@@ -1,11 +1,11 @@
-package com.github.yukon39.bsl.debugserver.context;
+package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github._1c_syntax.mdclasses.metadata.Configuration;
+import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleType;
 import org.eclipse.lsp4j.debug.Source;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
