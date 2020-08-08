@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.context;
+package com.github.yukon39.bsl.debugserver.context.data;
 
 import lombok.Data;
 import org.eclipse.lsp4j.debug.StackFrame;

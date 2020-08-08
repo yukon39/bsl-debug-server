@@ -1,7 +1,5 @@
 package com.github.yukon39.bsl.debugserver.context.data;
 
-import com.github.yukon39.bsl.debugserver.context.StackFrameContext;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
 import lombok.Data;
 import org.eclipse.lsp4j.debug.Variable;
 
