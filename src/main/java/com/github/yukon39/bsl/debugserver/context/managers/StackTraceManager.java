@@ -19,7 +19,7 @@ public class StackTraceManager {
 
     @Setter
     private SourceManager sourceManager;
-    private AtomicInteger counter = new AtomicInteger(0);
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     public void setStackTrace(Thread thread, @Nullable List<StackItemViewInfoData> stackItems) {
 
@@ -35,10 +35,8 @@ public class StackTraceManager {
 
             var presentation = new String(stackItem.getPresentation(), StandardCharsets.UTF_8);
 
-            var source = sourceManager.getSource(stackItem.getModuleID());
-            if (Objects.isNull(source.getAdapterData())) {
-                source.setAdapterData(stackItem.getModuleID());
-            }
+            var sourceContext = sourceManager.getSourceContext(stackItem.getModuleID());
+            var source = sourceContext.getSource();
 
             var stackFrame = new StackFrame();
             stackFrame.setId(counter.getAndIncrement());

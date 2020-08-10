@@ -1,5 +1,6 @@
 package com.github.yukon39.bsl.debugserver.context;
 
+import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
 import com.github.yukon39.bsl.debugserver.context.managers.*;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
@@ -31,7 +32,7 @@ public class ServerContext {
     private final ThreadsManager threadsManager = new ThreadsManager();
     private final BreakpointsManager breakpointsManager = new BreakpointsManager();
     private final StackTraceManager stackTraceManager = new StackTraceManager();
-    private final SourceManager sourceManager = SourceManager.create();
+    private final SourceManager sourceManager = new SourceManager();
     private final VariablesManager variablesManager = new VariablesManager();
 
     @Getter
@@ -93,7 +94,9 @@ public class ServerContext {
 
     public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 
-        var source = sourceManager.getSource(args.getSource().getPath());
+        var sourceContext = sourceManager.getSourceContext(args.getSource());
+        var source = sourceContext.getSource();
+
         breakpointsManager.setBreakpoints(source, args.getBreakpoints());
 
         var breakpoints = breakpointsManager.getBreakpoints(source);
@@ -314,41 +317,61 @@ public class ServerContext {
 
     public void debugTargetStarted(DBGUIExtCmdInfoStarted command) {
 
-        var targetId = command.getTargetID();
-        var threadContext = threadsManager.createThreadContext(targetId);
-        postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.STARTED));
+        try {
+
+            var targetId = command.getTargetID();
+            var threadContext = threadsManager.createThreadContext(targetId);
+            postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.STARTED));
+
+        } catch (Exception e) {
+            log.error("debugTargetStarted", e);
+        }
     }
 
     public void debugTargetQuit(DBGUIExtCmdInfoQuit command) {
 
-        var targetId = command.getTargetID();
-        var threadContext = threadsManager.removeThreadContext(targetId);
-        postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.EXITED));
+        try {
+
+            var targetId = command.getTargetID();
+            var threadContext = threadsManager.removeThreadContext(targetId);
+            postEvent(new ThreadEvent(threadContext.getThread(), ThreadEventArgumentsReason.EXITED));
+
+        } catch (Exception e) {
+            log.error("debugTargetQuit", e);
+        }
     }
 
     public void debugCallStackFormed(DBGUIExtCmdInfoCallStackFormed command) {
 
-        var targetId = command.getTargetID();
-        var threadContext = threadsManager.getThreadContext(targetId);
-        var thread = threadContext.getThread();
+        try {
 
-        var callStack = command.getCallStack();
+            var targetId = command.getTargetID();
+            var threadContext = threadsManager.getThreadContext(targetId);
+            var thread = threadContext.getThread();
 
-        stackTraceManager.setStackTrace(thread, callStack);
+            var callStack = command.getCallStack();
 
-        var event = new StoppedEvent();
-        event.args.setThreadId(thread.getId());
+            stackTraceManager.setStackTrace(thread, callStack);
 
-        if (command.getStopByBP()) {
-            event.args.setReason(StoppedEventArgumentsReason.BREAKPOINT);
-            event.args.setDescription("Breakpoint hit"); // TODO: localize this
+            var event = new StoppedEvent();
+            event.args.setThreadId(thread.getId());
 
-        } else {
-            event.args.setReason(StoppedEventArgumentsReason.PAUSE);
-            event.args.setDescription("Paused!!!"); // TODO: localize this
+            if (command.getStopByBP()) {
+                event.args.setReason(StoppedEventArgumentsReason.BREAKPOINT);
+                event.args.setDescription("Breakpoint hit"); // TODO: localize this
+
+            } else {
+                event.args.setReason(StoppedEventArgumentsReason.PAUSE);
+                event.args.setDescription("Paused!!!"); // TODO: localize this
+            }
+
+            postEvent(event);
+
+        } catch (Exception e) {
+            log.error("debugCallStackFormed", e);
+            var event = new BSLDebugServer.OutputErrorEvent(e.getMessage());
+            postEvent(event);
         }
-
-        postEvent(event);
     }
 
     public void debugExprEvaluated(DBGUIExtCmdInfoExprEvaluated command) {

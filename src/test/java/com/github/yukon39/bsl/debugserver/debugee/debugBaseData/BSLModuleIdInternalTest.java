@@ -4,8 +4,6 @@ import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class BSLModuleIdInternalTest {
 
     public static BSLModuleIdInternal createTestObjectCommonModule() {
@@ -16,6 +14,16 @@ public class BSLModuleIdInternalTest {
         moduleId.setPropertyID(ModulePropertyId.COMMON_MODULE.getId());
         moduleId.setExtId(1);
         moduleId.setVersion("e0cd790848ab0c459cd3458e5132d90b00000000");
+
+        return moduleId;
+    }
+
+    public static BSLModuleIdInternal createTestObjectCatalogManagerModule() {
+
+        var moduleId = new BSLModuleIdInternal();
+        moduleId.setType(BSLModuleType.CONFIG_MODULE);
+        moduleId.setObjectID(UUID.fromString("3bf89955-e598-45e7-aabf-9a7f63a888b1"));
+        moduleId.setPropertyID(ModulePropertyId.MANAGER_MODULE.getId());
 
         return moduleId;
     }

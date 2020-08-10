@@ -338,15 +338,17 @@ public class Debugee implements Runnable {
 //
 //        getCallStack(targetId)
 //                .thenApply(list -> command.getCallStack().addAll(list))
+//        CompletableFuture
+//                .supplyAsync(command::getCallStack)
 //                .whenComplete((v, e) -> {
-//                            if (Objects.isNull(e)) {
+//                           if (Objects.isNull(e)) {
 //                                postEvent(new CmdCallStackFormedEvent(command));
 //                            } else {
 //                                throw new CompletionException(e);
 //                            }
 //                        }
 //                );
-    }
+  }
 
     private void expressionEvaluatedEvent(DBGUIExtCmdInfoExprEvaluated command) {
 

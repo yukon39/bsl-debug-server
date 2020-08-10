@@ -1,50 +1,36 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
-import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
-import com.github.yukon39.bsl.debugserver.context.managers.SourceManager;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleType;
+import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternalTest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SourceManagerTest {
-
-    private static BSLModuleIdInternal moduleIdCatalog() {
-
-        var moduleId = new BSLModuleIdInternal();
-        moduleId.setType(BSLModuleType.CONFIG_MODULE);
-        moduleId.setObjectID(UUID.fromString("3bf89955-e598-45e7-aabf-9a7f63a888b1"));
-        moduleId.setPropertyID(ModulePropertyId.MANAGER_MODULE.getId());
-
-        return moduleId;
-    }
 
     @Test
     void testSourceXMLConfiguration() {
 
         // given
         File srcPath = new File("src/test/resources/src/cf/xml");
-        var sourceManager = SourceManager.create();
+        var sourceManager = new SourceManager();
         sourceManager.setConfigurationSource(srcPath.toPath().toAbsolutePath());
-        var moduleId = moduleIdCatalog();
+        var moduleId = BSLModuleIdInternalTest.createTestObjectCatalogManagerModule();
 
         // when
-        var source = sourceManager.getSource("Catalogs/Справочник1/Ext/ManagerModule.bsl");
+        var sourceContext = sourceManager.getSourceContext("Catalogs/Справочник1/Ext/ManagerModule.bsl");
 
         // then
-        assertThat(source).isNotNull();
+        var source = sourceContext.getSource();
         assertThat(source.getName()).isEqualTo("ManagerModule.bsl");
-        assertThat(moduleId).isEqualTo(source.getAdapterData());
+        assertThat(sourceContext.getModuleId()).isEqualTo(moduleId);
 
         // when
-        source = sourceManager.getSource(moduleId);
+        var sourceContextModuleId = sourceManager.getSourceContext(moduleId);
 
         // then
-        assertThat(source).isNotNull();
+        assertThat(sourceContextModuleId).isEqualTo(sourceContext);
     }
 
     @Test
@@ -52,22 +38,22 @@ public class SourceManagerTest {
 
         // given
         File srcPath = new File("src/test/resources/src/cf/edt");
-        var sourceManager = SourceManager.create();
+        var sourceManager = new SourceManager();
         sourceManager.setConfigurationSource(srcPath.toPath().toAbsolutePath());
-        var moduleId = moduleIdCatalog();
+        var moduleId = BSLModuleIdInternalTest.createTestObjectCatalogManagerModule();
 
         // when
-        var source = sourceManager.getSource("src/Catalogs/Справочник1/ManagerModule.bsl");
+        var sourceContext = sourceManager.getSourceContext("src/Catalogs/Справочник1/ManagerModule.bsl");
 
         // then
-        assertThat(source).isNotNull();
+        var source = sourceContext.getSource();
         assertThat(source.getName()).isEqualTo("ManagerModule.bsl");
-        assertThat(moduleId).isEqualTo(source.getAdapterData());
+        assertThat(sourceContext.getModuleId()).isEqualTo(moduleId);
 
         // when
-        source = sourceManager.getSource(moduleId);
+        var sourceContextModuleId = sourceManager.getSourceContext(moduleId);
 
         // then
-        assertThat(source).isNotNull();
+        assertThat(sourceContextModuleId).isEqualTo(sourceContext);
     }
 }
