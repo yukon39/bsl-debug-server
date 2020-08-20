@@ -52,6 +52,8 @@ configure<JavaPluginConvention> {
 sonarqube {
     properties {
         property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.organization", "yukon39")
         property("sonar.projectKey", "bsl-debug-server")
         property("sonar.projectName", "BSL Debug Server")
     }
