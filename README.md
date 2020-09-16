@@ -68,7 +68,7 @@ java -Dfile.encoding=UTF-8 -jar bsl-debug-server.jar --dap
 | dataBreakpointInfo      | [ ] |
 | setDataBreakpoints      | [ ] |
 | continue                | [х] |
-| next                    | [ ] |
+| next                    | [x] |
 | stepIn                  | [х] |
 | stepOut                 | [х] |
 | stepBack                | [ ] |
