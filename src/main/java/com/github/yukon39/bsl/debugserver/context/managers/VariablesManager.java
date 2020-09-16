@@ -1,17 +1,17 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github.yukon39.bsl.debugserver.context.data.VariablesContext;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
+import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
 import org.eclipse.lsp4j.debug.Variable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class VariablesManager {
 
     private final Map<Integer, VariablesContext> list = new HashMap<>();
+    private final Map<UUID, VariablesContext> resultList = new HashMap<>();
 
     public VariablesContext createVariablesContext() {
 
@@ -26,6 +26,7 @@ public class VariablesManager {
         var calculationResults = calculation.getCalculationResult();
 
         var variables = variablesContext.getVariables();
+        var stackFrameContext = variablesContext.getStackFrameContext();
 
         calculationResults
                 .getValueOfContextPropInfo()
@@ -35,13 +36,68 @@ public class VariablesManager {
 
                     var variable = new Variable();
                     variable.setName(propertyInfo.getPropName());
-                    variable.setValue(propertyValue.getPresentation());
                     variable.setType(propertyValue.getTypeName());
+
+                    if (propertyValue.getTypeCode().equals(DebugValueTypeCode.UNDEFINED.getTypeCode())) {
+                        variable.setValue("Undefined"); // TODO: Localize this!
+                    } else {
+                        variable.setValue(propertyValue.getPresentation());
+                    }
+
+                    if (propertyValue.isSupportIEnumValue() || propertyValue.isIIndexedCollectionRO()) {
+                        var contextVariable = createVariablesContext();
+                        contextVariable.setExpandable(true);
+                        contextVariable.setVariableName(propertyInfo.getPropName());
+                        contextVariable.setContextVariable(propertyValue.isSupportIContext());
+                        contextVariable.setEnumVariable(propertyValue.isSupportIEnumValue());
+                        contextVariable.setCollection(propertyValue.isIIndexedCollectionRO());
+                        contextVariable.setStackFrameContext(stackFrameContext);
+
+                        variable.setVariablesReference(contextVariable.getReference());
+//                        variable.setIndexedVariables();
+///                        variable.setNamedVariables();
+                    }
 
                     variables.add(variable);
                 });
 
         variablesContext.setReceived(true);
+    }
+
+    public CalculationSourceDataStorage getCalculationSource(VariablesContext variablesContext) {
+
+        var calculationInfo = new SourceCalculationDataInfo();
+        calculationInfo.setExpressionID(variablesContext.getResultId()); //"00000000-0000-0000-0000-000000000000"
+        calculationInfo.setExpressionResultID(variablesContext.getResultId());
+
+        var interfaces = calculationInfo.getInterfaces();
+
+        if (variablesContext.isContextVariable()) {
+            interfaces.add(ViewInterface.CONTEXT);
+
+            var variableName = variablesContext.getVariableName();
+            if (!variableName.isEmpty()) {
+                var calcItem = new SourceCalculationDataItem();
+                calcItem.setItemType(SourceCalculationDataItemType.EXPRESSION);
+                calcItem.setExpression(variableName);
+                calculationInfo.getCalcItem().add(calcItem);
+            }
+        }
+
+        if (variablesContext.isEnumVariable()) {
+            interfaces.add(ViewInterface.ENUM);
+        }
+
+        if (variablesContext.isCollection()) {
+            interfaces.add(ViewInterface.COLLECTION);
+        }
+
+        var expression = new CalculationSourceDataStorage();
+        expression.setStackLevel(variablesContext.getStackFrameContext().getStackLevel());
+        expression.setSrcCalcInfo(calculationInfo);
+        expression.setPresOptions(DbgPresentationOptionsOfStringValue.defaultOptions());
+
+        return expression;
     }
 
     public @Nullable VariablesContext getVariablesContext(Integer reference) {

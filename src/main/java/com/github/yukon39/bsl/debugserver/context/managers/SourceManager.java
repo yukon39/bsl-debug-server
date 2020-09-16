@@ -24,20 +24,18 @@ public class SourceManager {
     private final ReentrantLock updateLock = new ReentrantLock();
 
     private Configuration configuration;
+    private Path rootPath;
 
     public void setConfigurationSource(Path rootPath) {
 
+        this.rootPath = rootPath;
         this.configuration = Configuration.create(rootPath);
         configuration.getModulesByObject().forEach(this::addSourceContext);
     }
 
     public SourceContext getSourceContext(String path) {
 
-        var rootPath = configuration.getRootPath();
-        if (rootPath.isEmpty()) {
-            throw new IllegalArgumentException("Invalid configuration path");
-        }
-        var srcPath = normalizePath(rootPath.get(), Path.of(path));
+        var srcPath = normalizePath(Path.of(path));
 
         var sourceContext = sources.get(srcPath);
 
@@ -68,7 +66,8 @@ public class SourceManager {
     private void addSourceContext(URI uri, MDObjectBase mdObject) {
 
         var sourcePath = Path.of(uri);
-        var source = createSource(Path.of(uri));
+        var srcPath = normalizePath(sourcePath);
+        var source = createSource(srcPath);
 
         var moduleType = configuration.getModuleType(uri);
         var propertyId = ModulePropertyId.getPropertyId(mdObject, moduleType);
@@ -84,7 +83,7 @@ public class SourceManager {
 
         updateLock.lock();
         try {
-            sources.put(sourcePath, sourceContext);
+            sources.put(srcPath, sourceContext);
             moduleIds.put(moduleIdLight, sourceContext);
         } finally {
             updateLock.unlock();
@@ -100,7 +99,7 @@ public class SourceManager {
         return source;
     }
 
-    private Path normalizePath(Path rootPath, Path path) {
+    private Path normalizePath(Path path) {
 
         if (path.isAbsolute()) {
             var relPath = rootPath.relativize(path);

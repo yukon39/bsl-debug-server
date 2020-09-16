@@ -1,11 +1,12 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github.yukon39.bsl.debugserver.context.data.StackFrameContext;
+import com.github.yukon39.bsl.debugserver.context.data.ThreadContext;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
+import com.google.common.collect.Lists;
 import lombok.Setter;
 import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackFramePresentationHint;
-import org.eclipse.lsp4j.debug.Thread;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
@@ -16,24 +17,22 @@ public class StackTraceManager {
 
     private final Map<Integer, List<StackFrame>> stackFrames = new HashMap<>();
     private final Map<Integer, StackFrameContext> stackFrameContexts = new HashMap<>();
-
+    private final AtomicInteger counter = new AtomicInteger(0);
     @Setter
     private SourceManager sourceManager;
-    private final AtomicInteger counter = new AtomicInteger(0);
 
-    public void setStackTrace(Thread thread, @Nullable List<StackItemViewInfoData> stackItems) {
+    public void setStackTrace(ThreadContext threadContext, List<StackItemViewInfoData> stackItems) {
 
-        if (Objects.isNull(stackItems) || stackItems.isEmpty()) {
+        if (stackItems.isEmpty()) {
             return;
         }
 
+        var thread = threadContext.getThread();
         var frames = new ArrayList<StackFrame>();
 
         AtomicInteger stackLevel = new AtomicInteger(0);
 
-        stackItems.forEach(stackItem -> {
-
-            var presentation = new String(stackItem.getPresentation(), StandardCharsets.UTF_8);
+        Lists.reverse(stackItems).forEach(stackItem -> {
 
             var sourceContext = sourceManager.getSourceContext(stackItem.getModuleID());
             var source = sourceContext.getSource();
@@ -41,19 +40,19 @@ public class StackTraceManager {
             var stackFrame = new StackFrame();
             stackFrame.setId(counter.getAndIncrement());
             stackFrame.setLine(stackItem.getLineNo());
-            stackFrame.setName(presentation);
+            stackFrame.setName(stackItem.getUserPresentation());
             stackFrame.setSource(source);
             stackFrame.setPresentationHint(StackFramePresentationHint.NORMAL);
             frames.add(stackFrame);
 
-            var stackFrameContext = new StackFrameContext(thread,
+            var stackFrameContext = new StackFrameContext(threadContext,
                     stackLevel.getAndIncrement(),
                     stackFrame);
 
             stackFrameContexts.put(stackFrame.getId(), stackFrameContext);
         });
 
-        stackFrames.put((int) thread.getId(), frames);
+        stackFrames.put(thread.getId(), frames);
     }
 
     public @Nullable StackFrameContext getStackFrameContext(Integer stackFrameId) {
