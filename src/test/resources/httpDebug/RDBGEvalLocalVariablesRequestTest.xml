@@ -3,7 +3,7 @@
          xmlns:data="http://v8.1c.ru/8.3/debugger/debugBaseData"
          xmlns:response="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse">
     <response:infoBaseAlias>DefAlias</response:infoBaseAlias>
-    <response:idOfDebuggerUI>4fb00e47-aaba-49e3-9160-c6c3db20671e</response:idOfDebuggerUI>
+    <response:idOfDebuggerUI>dbe7b1e9-9786-4a25-8da8-304684fa2ce3</response:idOfDebuggerUI>
     <response:calcWaitingTime>100</response:calcWaitingTime>
     <response:targetID>
         <data:id>3f80453e-0fa5-4ebd-9400-09bf96d0939f</data:id>

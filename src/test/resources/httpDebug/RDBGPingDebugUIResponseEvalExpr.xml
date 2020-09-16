@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData" xmlns:bsch="http://v8.1c.ru/8.2/data/bsl"
+          xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+          xmlns:debugBreakpoints="http://v8.1c.ru/8.3/debugger/debugBreakpoints"
+          xmlns:debugCalculations="http://v8.1c.ru/8.3/debugger/debugCalculations"
+          xmlns:debugDBGUICommands="http://v8.1c.ru/8.3/debugger/debugDBGUICommands"
+          xmlns:debugMeasure="http://v8.1c.ru/8.3/debugger/debugMeasure"
+          xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+          xmlns:debugRTEInfo="http://v8.1c.ru/8.3/debugger/debugRTEInfo" xmlns:v8="http://v8.1c.ru/8.1/data/core"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:result xsi:type="debugDBGUICommands:DBGUIExtCmdInfoExprEvaluated">
+        <debugDBGUICommands:cmdIDNum>8</debugDBGUICommands:cmdIDNum>
+        <debugDBGUICommands:cmdID>exprEvaluated</debugDBGUICommands:cmdID>
+        <debugDBGUICommands:targetID>
+            <id>84ae33d0-3c9b-410e-b0d5-cc2bd4b6b51c</id>
+            <seanceId>4b133738-26e0-4e78-9695-485553c87d2c</seanceId>
+            <seanceNo>2</seanceNo>
+            <infoBaseInstanceID>16a7dde8-bffb-4772-a065-f29818ffeeea</infoBaseInstanceID>
+            <infoBaseAlias>DefAlias</infoBaseAlias>
+            <isServerInfoBase>undefined</isServerInfoBase>
+            <configVersion>64232d552d58d741b8ef9bbd7101408c00000000</configVersion>
+            <targetType>ServerEmulation</targetType>
+        </debugDBGUICommands:targetID>
+        <debugDBGUICommands:evalExprResBaseData>
+            <debugCalculations:evalResultState>correctly</debugCalculations:evalResultState>
+            <debugCalculations:expressionResultID>12219964-cb7a-4866-a6e8-32ad547e2555</debugCalculations:expressionResultID>
+            <debugCalculations:resultValueInfo>
+                <debugCalculations:typeCode>100</debugCalculations:typeCode>
+                <debugCalculations:typeName>Структура</debugCalculations:typeName>
+                <debugCalculations:pres>0KHRgtGA0YPQutGC0YPRgNCw</debugCalculations:pres>
+                <debugCalculations:isExpandable>true</debugCalculations:isExpandable>
+                <debugCalculations:isSupportIContext>true</debugCalculations:isSupportIContext>
+                <debugCalculations:isSupportIEnumValue>true</debugCalculations:isSupportIEnumValue>
+            </debugCalculations:resultValueInfo>
+            <debugCalculations:testedAndSupportedInterface>none</debugCalculations:testedAndSupportedInterface>
+            <debugCalculations:testedAndSupportedInterface>none</debugCalculations:testedAndSupportedInterface>
+            <debugCalculations:calculationResult>
+                <debugCalculations:viewInterface>context</debugCalculations:viewInterface>
+                <debugCalculations:valueOfContextPropInfo>
+                    <debugCalculations:propInfo>
+                        <debugCalculations:propName>Definition</debugCalculations:propName>
+                        <debugCalculations:isReaded>true</debugCalculations:isReaded>
+                    </debugCalculations:propInfo>
+                    <debugCalculations:valueInfo>
+                        <debugCalculations:typeName>Неопределено</debugCalculations:typeName>
+                    </debugCalculations:valueInfo>
+                </debugCalculations:valueOfContextPropInfo>
+            </debugCalculations:calculationResult>
+        </debugDBGUICommands:evalExprResBaseData>
+    </debugRDBGRequestResponse:result>
+</response>

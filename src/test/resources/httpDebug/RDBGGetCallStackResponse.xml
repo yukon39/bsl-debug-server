@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+          xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+          xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+          xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:callStack>
+        <moduleID>
+            <type>ConfigModule</type>
+            <objectID>3bf89955-e598-45e7-aabf-9a7f63a888b1</objectID>
+            <propertyID>d1b64a2c-8078-4982-8190-8f81aefda192</propertyID>
+        </moduleID>
+        <lineNo>5</lineNo>
+    </debugRDBGRequestResponse:callStack>
+</response>

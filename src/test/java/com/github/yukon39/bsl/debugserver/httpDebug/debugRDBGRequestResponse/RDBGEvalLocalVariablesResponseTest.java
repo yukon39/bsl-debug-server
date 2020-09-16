@@ -28,8 +28,8 @@ class RDBGEvalLocalVariablesResponseTest {
 
         var resultValueInfo = new BaseValueInfoData();
         resultValueInfo.setTypeCode(100);
-        resultValueInfo.setIsExpandable(true);
-        resultValueInfo.setIsSupportIContext(true);
+        resultValueInfo.setExpandable(true);
+        resultValueInfo.setSupportIContext(true);
         result.setResultValueInfo(resultValueInfo);
 
         var calculationResult = new CalculationResultObjData();
@@ -58,8 +58,8 @@ class RDBGEvalLocalVariablesResponseTest {
         valueInfo = new BaseValueInfoData();
         valueInfo.setTypeCode(DebugValueTypeCode.VALUE_LIST_ITEM.getTypeCode());
         valueInfo.setTypeName(DebugValueTypeCode.VALUE_LIST_ITEM.getTypeNameRU());
-        valueInfo.setIsExpandable(true);
-        valueInfo.setIsSupportIContext(true);
+        valueInfo.setExpandable(true);
+        valueInfo.setSupportIContext(true);
         valueOfContextPropInfo.setValueInfo(valueInfo);
 
         calculationResult.getValueOfContextPropInfo().add(valueOfContextPropInfo);

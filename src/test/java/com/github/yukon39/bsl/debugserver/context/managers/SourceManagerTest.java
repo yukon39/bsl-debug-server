@@ -1,6 +1,7 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternalTest;
+import org.eclipse.lsp4j.debug.Source;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -55,5 +56,5 @@ public class SourceManagerTest {
 
         // then
         assertThat(sourceContextModuleId).isEqualTo(sourceContext);
-    }
+      }
 }

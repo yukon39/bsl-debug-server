@@ -34,27 +34,4 @@ public class RDBGAttachDebugUIRequestTest {
         // then
         assertThat(request).isEqualTo(response);
     }
-
-    @Test
-    void testDeserializeFromFile() throws IOException, JAXBException {
-
-        // given
-        var options = new DebuggerOptions();
-        options.setForegroundAbility(true);
-
-        var request = new RDBGAttachDebugUIRequest();
-        request.setInfoBaseAlias("DefAlias");
-        request.setIdOfDebuggerUI(UUID.fromString("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
-        request.setOptions(options);
-
-        var file = new File("./src/test/resources/httpDebug/RDBGAttachDebugUIRequestTest.xml");
-
-        // when
-        var serializer = new HTTPDebugSerializer();
-        var xml = Files.readAllBytes(file.toPath());
-        var response = serializer.deserialize(xml, RDBGAttachDebugUIRequest.class);
-
-        // then
-        assertThat(request).isEqualTo(response);
-    }
 }

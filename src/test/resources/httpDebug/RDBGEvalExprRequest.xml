@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+         xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+         xmlns:debugCalculations="http://v8.1c.ru/8.3/debugger/debugCalculations"
+         xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+         xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:infoBaseAlias>DefAlias</debugRDBGRequestResponse:infoBaseAlias>
+    <debugRDBGRequestResponse:idOfDebuggerUI>dbe7b1e9-9786-4a25-8da8-304684fa2ce3</debugRDBGRequestResponse:idOfDebuggerUI>
+    <debugRDBGRequestResponse:calcWaitingTime>100</debugRDBGRequestResponse:calcWaitingTime>
+    <debugRDBGRequestResponse:targetID>
+        <id>4b695855-1aad-4592-9dd7-0761d7c4f57a</id>
+    </debugRDBGRequestResponse:targetID>
+    <debugRDBGRequestResponse:expr>
+        <debugCalculations:srcCalcInfo>
+            <debugCalculations:expressionID>ff869450-1841-45ce-b6cc-d9bcee4e4ffa</debugCalculations:expressionID>
+            <debugCalculations:expressionResultID>3eeccc82-daf2-4f3e-9869-502cd9681998</debugCalculations:expressionResultID>
+            <debugCalculations:calcItem>
+                <debugCalculations:itemType>expression</debugCalculations:itemType>
+                <debugCalculations:expression>Max(1,0)</debugCalculations:expression>
+            </debugCalculations:calcItem>
+        </debugCalculations:srcCalcInfo>
+        <debugCalculations:presOptions>
+            <debugCalculations:maxTextSize>10240</debugCalculations:maxTextSize>
+        </debugCalculations:presOptions>
+    </debugRDBGRequestResponse:expr>
+</request>

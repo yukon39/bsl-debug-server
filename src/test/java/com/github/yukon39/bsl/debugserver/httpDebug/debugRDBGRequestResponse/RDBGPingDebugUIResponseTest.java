@@ -82,8 +82,8 @@ public class RDBGPingDebugUIResponseTest {
 
         var resultValueInfo = new BaseValueInfoData();
         resultValueInfo.setTypeCode(100);
-        resultValueInfo.setIsExpandable(true);
-        resultValueInfo.setIsSupportIContext(true);
+        resultValueInfo.setExpandable(true);
+        resultValueInfo.setSupportIContext(true);
 
         var propInfo = new ContextPropertyData();
         propInfo.setPropName("Cancel");

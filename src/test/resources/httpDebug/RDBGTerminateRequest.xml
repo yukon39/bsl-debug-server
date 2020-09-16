@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns="http://v8.1c.ru/8.3/debugger/debugBaseData"
+         xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config"
+         xmlns:debugRDBGRequestResponse="http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse"
+         xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <debugRDBGRequestResponse:infoBaseAlias>DefAlias</debugRDBGRequestResponse:infoBaseAlias>
+    <debugRDBGRequestResponse:idOfDebuggerUI>dbe7b1e9-9786-4a25-8da8-304684fa2ce3</debugRDBGRequestResponse:idOfDebuggerUI>
+    <debugRDBGRequestResponse:targetID>
+        <id>0e215a1d-5230-42db-85f2-ca373357f81f</id>
+        <seanceId>fdbd8b88-8a7f-4674-8f4f-945cbefe90f5</seanceId>
+        <seanceNo>2</seanceNo>
+        <infoBaseInstanceID>1945345b-e6a5-4183-ac6e-a6cf4e6085ed</infoBaseInstanceID>
+        <infoBaseAlias>DefAlias</infoBaseAlias>
+        <isServerInfoBase>undefined</isServerInfoBase>
+        <configVersion>e6fd5c7d56a8824bbf34499f7696645f00000000</configVersion>
+        <targetType>ManagedClient</targetType>
+    </debugRDBGRequestResponse:targetID>
+</request>
