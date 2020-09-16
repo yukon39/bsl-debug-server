@@ -4,5 +4,4 @@ import lombok.Data;
 
 @Data
 public class RDBGAttachDetachDebugTargetsResponse implements IRDBGResponse {
-    private Boolean result;
 }
