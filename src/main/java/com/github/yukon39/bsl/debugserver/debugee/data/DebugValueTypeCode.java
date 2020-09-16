@@ -3,8 +3,12 @@ package com.github.yukon39.bsl.debugserver.debugee.data;
 import lombok.Getter;
 
 public enum DebugValueTypeCode {
+    UNDEFINED(0, "Undefinded", "Неопределено"),
+
     BOOLEAN (2, "Boolean", "Булево"),
     NUMBER(3, "Number", "Число"),
+    STRING(4, "String", "Строка"),
+    DATE(5, "Date", "Дата"),
     VALUE_LIST_ITEM(100, "ValueListItem", "ЭлементСпискаЗначений"),
     ITEM_HORIZONTAL_LOCATION(100, "ItemHorizontalLocation", "ГоризонтальноеПоложениеЭлемента"),
     ITEM_VERTICAL_ALIGN(100, "ItemVerticalAlign", "ВертикальноеПоложениеЭлемента"),

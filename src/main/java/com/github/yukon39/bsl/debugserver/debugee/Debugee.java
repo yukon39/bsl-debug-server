@@ -1,8 +1,8 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
-import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
 import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
+import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
 import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
 import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
@@ -11,6 +11,7 @@ import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugException;
 import com.google.common.eventbus.EventBus;
+import com.sun.source.tree.AnnotatedTypeTree;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,27 +20,33 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Debugee implements Runnable {
 
     private static long WAIT_POLL = 500L;
 
-    private final HTTPDebugClient httpDebugClient;
+    HTTPDebugClient httpDebugClient;
 
     private final Map<UUID, CalculationResultBaseData> calculatedExpressions = new HashMap<>();
+    private final ReentrantLock calculationsLock = new ReentrantLock();
+    private final Condition updateCondition = calculationsLock.newCondition();
 
     @Getter
-    private boolean attached = false;
+    boolean attached = false;
 
     @Setter
     private char[] password = new char[]{};
 
     @Setter
-    private DebugTargetType[] targetTypes = DebugTargetType.defaultTargetTypes();
+    private List<DebugTargetType> targetTypes = DebugTargetType.defaultTargetTypes();
 
     @Setter
-    private String[] areaNames = new String[]{};
+    private List<String> areaNames = new ArrayList<>();
 
     @Setter
     private EventBus eventBus;
@@ -93,209 +100,187 @@ public class Debugee implements Runnable {
     public CompletableFuture<Void> configure(URL debuggerURI, String infobaseAlias, UUID debugSession) {
 
         httpDebugClient.configure(debuggerURI, infobaseAlias, debugSession);
-        try {
-            httpDebugClient.test();
-            return CompletableFuture.completedFuture(null);
-        } catch (HTTPDebugException e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        return httpDebugClient.test();
+
     }
 
     public CompletableFuture<AttachDebugUIResult> attach(HTTPServerInitialDebugSettingsData data) {
 
         var options = new DebuggerOptions();
 
-        try {
-            var attachResult = httpDebugClient.attach(password, options);
-            httpDebugClient.initSettings(data);
-            httpDebugClient.clearBreakOnNextStatement();
-            httpDebugClient.setAutoAttachSettings(targetTypes, areaNames);
+        var autoAttachSettings = new DebugAutoAttachSettings();
+        autoAttachSettings.getTargetType().addAll(targetTypes);
+        autoAttachSettings.getAreaName().addAll(areaNames);
 
-            attached = true;
+        var attach = httpDebugClient.attach(password, options);
 
-            return CompletableFuture.completedFuture(attachResult);
-        } catch (HTTPDebugException e) {
-            return CompletableFuture.failedFuture(e);
-        }
+        var attachActions = CompletableFuture.allOf(
+                httpDebugClient.initSettings(data),
+                httpDebugClient.clearBreakOnNextStatement(),
+                httpDebugClient.setAutoAttachSettings(autoAttachSettings)
+        );
+
+        return attach
+                .thenCombine(attachActions, (attachResult, aVoid) -> {
+                    attached = (attachResult == AttachDebugUIResult.REGISTERED);
+                    return attachResult;
+                });
     }
 
     public CompletableFuture<Void> detach() {
 
-        return CompletableFuture.runAsync(() -> {
-            if (attached) {
-                attached = false;
-                try {
-                    httpDebugClient.detach();
-                } catch (HTTPDebugException e) {
-                    throw new CompletionException(e);
-                }
-            }
-        });
+        if (attached) {
+            return httpDebugClient.detach()
+                    .thenAccept(attachResult -> attached = false);
+        } else {
+            return CompletableFuture.completedFuture(null);
+        }
     }
 
-    public CompletableFuture<Boolean> attachDebugTarget(DebugTargetIdLight target) {
+    public CompletableFuture<Void> attachDebugTarget(DebugTargetIdLight target) {
 
-        return CompletableFuture.supplyAsync(() -> {
+        var targets = new ArrayList<DebugTargetIdLight>();
+        targets.add(target);
 
-            try {
-                var targets = new ArrayList<DebugTargetIdLight>();
-                targets.add(target);
-
-                return httpDebugClient.attachDetachDebugTargets(true, targets);
-
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.attachDetachDebugTargets(true, targets);
     }
 
-    public CompletableFuture<Boolean> detachDebugTarget(DebugTargetIdLight target) {
+    public CompletableFuture<Void> detachDebugTarget(DebugTargetIdLight target) {
 
-        return CompletableFuture.supplyAsync(() -> {
+        var targets = new ArrayList<DebugTargetIdLight>();
+        targets.add(target);
 
-            try {
-                var targets = new ArrayList<DebugTargetIdLight>();
-                targets.add(target);
-
-                return httpDebugClient.attachDetachDebugTargets(false, targets);
-
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.attachDetachDebugTargets(false, targets);
     }
 
     public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.ping();
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.ping();
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> getAllTargetStates() {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.getAllTargetStates();
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.getAllTargetStates();
     }
 
-    public CompletableFuture<DbgTargetState> getTargetState() {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.getTargetState();
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+    public CompletableFuture<DbgTargetState> getTargetState(DebugTargetIdLight id) {
+        return httpDebugClient.getTargetState(id);
     }
 
     public CompletableFuture<Void> setBreakOnNextStatement() {
-
-        return CompletableFuture.runAsync(() -> {
-            try {
-                httpDebugClient.setBreakOnNextStatement();
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.setBreakOnNextStatement();
     }
 
     public CompletableFuture<Void> setBreakpoints(BPWorkspaceInternal bpWorkspace) {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                httpDebugClient.setBreakpoints(bpWorkspace);
-                return null;
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
-
+        return httpDebugClient.setBreakpoints(bpWorkspace);
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepContinue(DebugTargetIdLight targetID, Boolean simple) {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.step(targetID, DebugStepAction.CONTINUE, simple);
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepIn(DebugTargetIdLight targetID, Boolean simple) {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.step(targetID, DebugStepAction.STEP_IN, simple);
     }
 
     public CompletableFuture<List<DbgTargetStateInfo>> stepOut(DebugTargetIdLight targetID, Boolean simple) {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.step(targetID, DebugStepAction.STEP_OUT, simple);
     }
 
     public CompletableFuture<List<StackItemViewInfoData>> getCallStack(DebugTargetIdLight id) {
-
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return httpDebugClient.getCallStack(id);
-            } catch (HTTPDebugException e) {
-                throw new CompletionException(e);
-            }
-        });
+        return httpDebugClient.getCallStack(id);
     }
 
     public CompletableFuture<CalculationResultBaseData> getLocalVariables(
+            DebugTargetIdLight targetId, CalculationSourceDataStorage expression) {
+
+        var expressions = new ArrayList<CalculationSourceDataStorage>();
+        expressions.add(expression);
+
+        return httpDebugClient.evalLocalVariables(targetId, expressions, 100)
+                .thenApply(calculatedData -> {
+                    if (Objects.nonNull(calculatedData)) {
+                        return calculatedData;
+                    } else {
+                        var resultId = expression.getSrcCalcInfo().getExpressionResultID();
+                        return getCalculationFromQueue(resultId);
+                    }
+                });
+    }
+
+    public CompletableFuture<List<CalculationResultBaseData>> evaluateExpressions(
             DebugTargetIdLight targetId, List<CalculationSourceDataStorage> expr) {
 
-        return CompletableFuture
-                .supplyAsync(() -> {
-                    try {
-                        return httpDebugClient.evalLocalVariables(targetId, expr, 100);
-                    } catch (HTTPDebugException e) {
-                        throw new CompletionException(e);
-                    }
-                })
-                .thenApply(calculatedData -> {
-                    if (Objects.isNull(calculatedData)) {
+        return httpDebugClient.evalExpression(targetId, expr, 100)
+                .thenApply(calculatedDataList -> {
 
-                        var resultId = expr.get(0).getSrcCalcInfo().getExpressionResultID();
-                        synchronized (calculatedExpressions) {
-                            while (!calculatedExpressions.containsKey(resultId)) {
+                    if (calculatedDataList.size() != expr.size()) {
 
-                                try {
-                                    calculatedExpressions.wait(WAIT_POLL);
-                                } catch (Exception e) {
-                                    log.error("getLocalVariables", e);
-                                    throw new CompletionException(e);
-                                }
-                            }
-                            calculatedData = calculatedExpressions.remove(resultId);
-                        }
+                        var resultIds = expr.stream()
+                                .filter(expression -> {
+                                    var expressionResultId = expression.getSrcCalcInfo().getExpressionResultID();
+                                    return calculatedDataList.stream().noneMatch(calculatedData -> {
+                                        var dataResultId = calculatedData.getExpressionResultID();
+                                        return dataResultId.equals(expressionResultId);
+                                    });
+                                })
+                                .map(expression -> expression.getSrcCalcInfo().getExpressionResultID())
+                                .collect(Collectors.toList());
+
+                        var queueData = getCalculationsFromQueue(resultIds);
+                        calculatedDataList.addAll(queueData);
                     }
-                    return calculatedData;
+
+                    return calculatedDataList;
                 });
+    }
+
+    private CalculationResultBaseData getCalculationFromQueue(UUID resultId) {
+
+        calculationsLock.lock();
+        try {
+            var isAwakened = true;
+            while (!calculatedExpressions.containsKey(resultId) && isAwakened) {
+
+                try {
+                    isAwakened = updateCondition.await(10L, TimeUnit.SECONDS);
+                } catch (Exception e) {
+                    log.error("getLocalVariables", e);
+                    throw new CompletionException(e);
+                }
+            }
+
+            return calculatedExpressions.remove(resultId);
+
+        } finally {
+            calculationsLock.unlock();
+        }
+    }
+
+    private List<CalculationResultBaseData> getCalculationsFromQueue(List<UUID> resultIds) {
+
+        var result = new ArrayList<CalculationResultBaseData>();
+
+        calculationsLock.lock();
+        try {
+            while (resultIds.size() != result.size()) {
+
+                try {
+                    updateCondition.await(10L, TimeUnit.SECONDS);
+                } catch (Exception e) {
+                    log.error("getLocalVariables", e);
+                    throw new CompletionException(e);
+                }
+
+                resultIds.forEach(resultId -> {
+                    if (calculatedExpressions.containsKey(resultId)) {
+                        result.add(calculatedExpressions.remove(resultId));
+                    }
+                });
+            }
+        } finally {
+            calculationsLock.unlock();
+        }
+
+        return result;
     }
 
     private void postEvent(Object event) {
@@ -348,7 +333,7 @@ public class Debugee implements Runnable {
 //                            }
 //                        }
 //                );
-  }
+    }
 
     private void expressionEvaluatedEvent(DBGUIExtCmdInfoExprEvaluated command) {
 
@@ -361,8 +346,12 @@ public class Debugee implements Runnable {
         var resultId = calculatedData.getExpressionResultID();
         log.trace("[expressionEvaluatedEvent] resultId={}", resultId);
 
-        synchronized (calculatedExpressions) {
+        calculationsLock.lock();
+        try {
             calculatedExpressions.put(resultId, calculatedData);
+            updateCondition.signalAll();
+        } finally {
+            calculationsLock.unlock();
         }
 
         postEvent(new CmdExprEvaluated(command));

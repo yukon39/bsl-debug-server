@@ -22,8 +22,8 @@ public class RteFilterStorage {
     private final List<RteFilterItem> strTemplate = new ArrayList<>();
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRTEFilter")
-    private Boolean stopOnErrors;
+    private Boolean stopOnErrors = false;
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRTEFilter")
-    private Boolean analyzeErrorStr;
+    private Boolean analyzeErrorStr = false;
 }

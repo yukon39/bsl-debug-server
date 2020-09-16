@@ -4,6 +4,8 @@ import jakarta.xml.bind.annotation.XmlEnumValue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public enum DebugTargetType {
@@ -83,14 +85,8 @@ public enum DebugTargetType {
     }
 
     @Contract(value = " -> new", pure = true)
-    public static DebugTargetType [] defaultTargetTypes() {
-        return new DebugTargetType[]{
-                CLIENT,
-                MANAGED_CLIENT,
-                WEB_CLIENT,
-                SERVER,
-                SERVER_EMULATION
-        };
+    public static List<DebugTargetType> defaultTargetTypes() {
+        return List.of(CLIENT, MANAGED_CLIENT, WEB_CLIENT, SERVER, SERVER_EMULATION);
     }
 
     @Override
