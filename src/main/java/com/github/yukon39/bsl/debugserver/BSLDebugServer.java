@@ -171,6 +171,18 @@ public class BSLDebugServer implements IDebugProtocolServer {
     }
 
     @Override
+    public CompletableFuture<Void> next(NextArguments args) {
+        return context.stepNext(args)
+                .exceptionally((e) ->
+                        {
+                            log.error("Step next error", e);
+                            outputError("Step continue error", e); // TODO: localize this
+                            return null;
+                        }
+                );
+    }
+
+    @Override
     public CompletableFuture<Void> stepIn(StepInArguments args) {
 
         return context.stepIn(args)
