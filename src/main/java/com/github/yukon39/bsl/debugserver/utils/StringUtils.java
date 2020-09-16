@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class StringUtils {
 
@@ -22,6 +23,10 @@ public class StringUtils {
 
     @Contract(value = "_ -> new", pure = true)
     public static @NotNull String toString(byte[] byteArray) {
-        return new String(byteArray, StandardCharsets.UTF_8);
+        if (Objects.nonNull(byteArray)) {
+            return new String(byteArray, StandardCharsets.UTF_8);
+        } else {
+            return "";
+        }
     }
 }
