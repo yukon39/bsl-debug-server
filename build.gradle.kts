@@ -18,6 +18,8 @@ val junitVersion = "5.6.1"
 
 dependencies {
 
+    implementation(project(":debugBSL"))
+  
     implementation( "org.eclipse.lsp4j", "org.eclipse.lsp4j.debug", "0.9.0")
     implementation( "com.github.1c-syntax", "mdclasses", "0.6.0")
 
@@ -27,9 +29,6 @@ dependencies {
     implementation("org.slf4j", "slf4j-simple", "1.8.0-beta4")
 
     implementation("org.jetbrains", "annotations", "19.0.0")
-
-    implementation("jakarta.xml.bind", "jakarta.xml.bind-api", "3.0.0-RC3")
-    implementation("org.glassfish.jaxb", "jaxb-runtime", "3.0.0-M4")
 
     implementation("com.google.code.findbugs", "jsr305", "3.0.2")
     implementation("com.intellij", "annotations", "12.0")
