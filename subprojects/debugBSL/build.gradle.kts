@@ -1,5 +1,6 @@
 plugins {
     java
+    jacoco
     id("io.franzbecker.gradle-lombok")
 }
 
@@ -33,4 +34,9 @@ dependencies {
 
     testImplementation("org.assertj", "assertj-core", "3.16.1")
     testImplementation("com.ginsberg", "junit5-system-exit", "1.0.0")
+}
+
+tasks.test {
+    systemProperty("file.encoding", "utf-8")
+    useJUnitPlatform()
 }
