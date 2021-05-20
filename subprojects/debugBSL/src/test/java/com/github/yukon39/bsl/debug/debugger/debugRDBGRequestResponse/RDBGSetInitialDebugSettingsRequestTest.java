@@ -2,14 +2,13 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternalTest;
 import com.github.yukon39.bsl.debug.debugger.debugRTEFilter.RteFilterStorage;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,9 +35,8 @@ public class RDBGSetInitialDebugSettingsRequestTest {
         request.setData(data);
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = serializer.serialize(request);
-        var response = serializer.deserialize(xml, RDBGSetInitialDebugSettingsRequest.class);
+        var xml = DebuggerXmlSerializer.serialize(request);
+        var response = DebuggerXmlSerializer.deserialize(xml, RDBGSetInitialDebugSettingsRequest.class);
 
         // then
         assertThat(request).isEqualTo(response);
@@ -61,12 +59,11 @@ public class RDBGSetInitialDebugSettingsRequestTest {
         request.setIdOfDebuggerUI(UUID.fromString("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
         request.setData(data);
 
-        var file = new File("./src/test/resources/httpDebug/RDBGSetInitialDebugSettingsRequestTest.xml");
+        var xmlString = UtilsTest.xmlString("debugger", "debugRDBGRequestResponse",
+                "RDBGSetInitialDebugSettingsRequestTest.xml");
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = Files.readAllBytes(file.toPath());
-        var response = serializer.deserialize(xml, RDBGSetInitialDebugSettingsRequest.class);
+        var response = DebuggerXmlSerializer.deserialize(xmlString, RDBGSetInitialDebugSettingsRequest.class);
 
         // then
         assertThat(request).isEqualTo(response);

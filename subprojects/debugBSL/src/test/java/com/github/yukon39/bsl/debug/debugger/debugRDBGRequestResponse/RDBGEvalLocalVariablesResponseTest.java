@@ -3,12 +3,11 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
 import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,12 +67,11 @@ class RDBGEvalLocalVariablesResponseTest {
 
         request.setResult(result);
 
-        var file = new File("./src/test/resources/httpDebug/RDBGEvalLocalVariablesResponseTest.xml");
+        var xmlString = UtilsTest.xmlString("debugger", "debugRDBGRequestResponse",
+                "RDBGEvalLocalVariablesResponseTest.xml");
 
         // when
-        var xml = Files.readAllBytes(file.toPath());
-        var serializer = new DebuggerXmlSerializer();
-        var response = serializer.deserialize(xml, RDBGEvalLocalVariablesResponse.class);
+        var response = DebuggerXmlSerializer.deserialize(xmlString, RDBGEvalLocalVariablesResponse.class);
 
         // then
         assertThat(request).isEqualTo(response);

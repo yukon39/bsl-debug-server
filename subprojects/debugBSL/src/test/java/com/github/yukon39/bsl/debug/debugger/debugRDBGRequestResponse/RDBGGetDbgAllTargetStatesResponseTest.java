@@ -37,9 +37,8 @@ public class RDBGGetDbgAllTargetStatesResponseTest {
         request.getItem().add(targetStateInfo);
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = serializer.serialize(request);
-        var response = serializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
+        var xml = DebuggerXmlSerializer.serialize(request);
+        var response = DebuggerXmlSerializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
 
         // then
         assertThat(request).isEqualTo(response);

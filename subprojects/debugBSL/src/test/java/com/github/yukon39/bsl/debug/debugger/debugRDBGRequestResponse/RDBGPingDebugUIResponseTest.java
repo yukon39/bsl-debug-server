@@ -4,6 +4,7 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
 import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternalTest;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdTest;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.StackItemViewInfoData;
@@ -14,9 +15,7 @@ import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoQ
 import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,9 +44,8 @@ public class RDBGPingDebugUIResponseTest {
         request.getResult().add(callstack);
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = serializer.serialize(request);
-        var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
+        var xml = DebuggerXmlSerializer.serialize(request);
+        var response = DebuggerXmlSerializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 
         // then
         assertThat(request).isEqualTo(response);
@@ -114,12 +112,11 @@ public class RDBGPingDebugUIResponseTest {
         cmdCmdInfoExprEvaluated.setEvalExprResBaseData(evalExprResBaseData);
         requestResult.add(cmdCmdInfoExprEvaluated);
 
-        var file = new File("./src/test/resources/httpDebug/RDBGPingDebugUIResponseTest.xml");
+        var xmlString = UtilsTest.xmlString("debugger", "debugRDBGRequestResponse",
+                "RDBGPingDebugUIResponseTest.xml");
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = Files.readAllBytes(file.toPath());
-        var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
+        var response = DebuggerXmlSerializer.deserialize(xmlString, RDBGPingDebugUIResponse.class);
 
         // then
         var responseResult = response.getResult();

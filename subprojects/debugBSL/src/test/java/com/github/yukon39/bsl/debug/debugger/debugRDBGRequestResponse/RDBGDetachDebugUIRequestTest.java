@@ -2,11 +2,10 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,12 +20,10 @@ public class RDBGDetachDebugUIRequestTest {
         request.setInfoBaseAlias("DefAlias");
         request.setIdOfDebuggerUI(UUID.fromString("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
 
-        var file = new File("./src/test/resources/httpDebug/RDBGDetachDebugUIRequestTest.xml");
+        var xmlString = UtilsTest.xmlString("debugger", "debugRDBGRequestResponse", "RDBGDetachDebugUIRequestTest.xml");
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = Files.readAllBytes(file.toPath());
-        var response = serializer.deserialize(xml, RDBGDetachDebugUIRequest.class);
+        var response = DebuggerXmlSerializer.deserialize(xmlString, RDBGDetachDebugUIRequest.class);
 
         // then
         assertThat(request).isEqualTo(response);

@@ -23,9 +23,8 @@ public class RDBGAttachDebugUIRequestTest {
         request.setOptions(options);
 
         // when
-        var serializer = new DebuggerXmlSerializer();
-        var xml = serializer.serialize(request);
-        var response = serializer.deserialize(xml, RDBGAttachDebugUIRequest.class);
+        var xml = DebuggerXmlSerializer.serialize(request);
+        var response = DebuggerXmlSerializer.deserialize(xml, RDBGAttachDebugUIRequest.class);
 
         // then
         assertThat(request).isEqualTo(response);

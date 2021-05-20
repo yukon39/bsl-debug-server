@@ -29,7 +29,6 @@ import static java.net.http.HttpResponse.BodyHandlers;
 public class HTTPDebugClient {
 
     private final HttpClient httpClient = newHttpClient();
-    final DebuggerXmlSerializer serializer = new DebuggerXmlSerializer();
     private URL debugServerURL;
     String infobaseAlias;
     UUID debugSession;
@@ -446,7 +445,7 @@ public class HTTPDebugClient {
                 .completedFuture(command)
                 .thenApply(request -> {
                     try {
-                        return serializer.serialize(request);
+                        return DebuggerXmlSerializer.serialize(request);
                     } catch (Exception e) {
                         throw new CompletionException(e);
                     }
@@ -465,7 +464,7 @@ public class HTTPDebugClient {
                         if (responseBody.length == 0) {
                             return responseType.getDeclaredConstructor().newInstance();
                         } else {
-                            return serializer.deserialize(responseBody, responseType);
+                            return DebuggerXmlSerializer.deserialize(responseBody, responseType);
                         }
                     } catch (Exception e) {
                         throw new CompletionException(e);

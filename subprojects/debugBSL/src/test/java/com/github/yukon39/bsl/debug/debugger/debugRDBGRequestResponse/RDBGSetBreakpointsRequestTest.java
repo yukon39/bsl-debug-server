@@ -21,10 +21,9 @@ class RDBGSetBreakpointsRequestTest {
         request.setIdOfDebuggerUI(UUID.randomUUID());
         request.setBpWorkspace(bpWorkspace);
 
-        var serializer = new DebuggerXmlSerializer();
-        var xml = serializer.serialize(request);
+        var xml = DebuggerXmlSerializer.serialize(request);
 
-        var response = serializer.deserialize(xml, RDBGSetBreakpointsRequest.class);
+        var response = DebuggerXmlSerializer.deserialize(xml, RDBGSetBreakpointsRequest.class);
 
         assertThat(request).isEqualTo(response);
     }
