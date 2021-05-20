@@ -1,17 +1,15 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.*;
+import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationResultBaseData;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationSourceDataStorage;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.*;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.DebuggerOptions;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugException;
 import com.google.common.eventbus.EventBus;
-import com.sun.source.tree.AnnotatedTypeTree;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

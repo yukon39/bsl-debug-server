@@ -2,11 +2,13 @@ package com.github.yukon39.bsl.debugserver.context.managers;
 
 import com.github._1c_syntax.mdclasses.mdo.MDObjectBase;
 import com.github._1c_syntax.mdclasses.metadata.Configuration;
-import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
+import com.github._1c_syntax.mdclasses.metadata.additional.MDOType;
+import com.github._1c_syntax.mdclasses.metadata.additional.ModuleType;
+import com.github.yukon39.bsl.debug.data.ModulePropertyId;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdLight;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleType;
 import com.github.yukon39.bsl.debugserver.context.data.SourceContext;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdLight;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleType;
 import org.eclipse.lsp4j.debug.Source;
 
 import java.net.URI;
@@ -70,7 +72,7 @@ public class SourceManager {
         var source = createSource(srcPath);
 
         var moduleType = configuration.getModuleType(uri);
-        var propertyId = ModulePropertyId.getPropertyId(mdObject, moduleType);
+        var propertyId = getPropertyId(mdObject, moduleType);
 
         var moduleId = new BSLModuleIdInternal();
         moduleId.setType(BSLModuleType.CONFIG_MODULE);
@@ -106,6 +108,56 @@ public class SourceManager {
             return Path.of(rootPath.toString(), relPath.toString());
         } else {
             return Path.of(rootPath.toString(), path.toString());
+        }
+    }
+
+    private static ModulePropertyId getPropertyId(MDObjectBase metadataObject, ModuleType moduleType) {
+        var mdoType = metadataObject.getType();
+
+        switch (moduleType) {
+
+            case OrdinaryApplicationModule:
+                return ModulePropertyId.ORDINARY_APPLICATION_MODULE;
+
+            case ManagedApplicationModule:
+                return ModulePropertyId.MANAGED_APPLICATION_MODULE;
+
+            case ExternalConnectionModule:
+                return ModulePropertyId.EXTERNAL_CONNECTION_MODULE;
+
+            case SessionModule:
+                return ModulePropertyId.SESSION_MODULE;
+
+            case CommonModule:
+            case WEBServiceModule:
+            case HTTPServiceModule:
+                return ModulePropertyId.COMMON_MODULE;
+
+            case ValueManagerModule:
+                return ModulePropertyId.VALUE_MANAGER_MODULE;
+
+            case ManagerModule:
+
+                if (mdoType == MDOType.SETTINGS_STORAGE) {
+                    return ModulePropertyId.SETTINGS_STORE_MANAGER_MODULE;
+                } else {
+                    return ModulePropertyId.MANAGER_MODULE;
+                }
+
+            case ObjectModule:
+                return ModulePropertyId.OBJECT_MODULE;
+
+            case RecordSetModule:
+                return ModulePropertyId.RECORDSET_MODULE;
+
+            case FormModule:
+                return ModulePropertyId.FORM_MODULE;
+
+            case CommandModule:
+                return ModulePropertyId.COMMAND_MODULE;
+
+            default:
+                return ModulePropertyId.UNKNOWN;
         }
     }
 }

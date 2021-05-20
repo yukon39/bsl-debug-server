@@ -1,11 +1,11 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.AttachDebugUIResult;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdLight;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultState;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.SourceCalculationDataInfo;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.AttachDebugUIResult;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdLight;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationResultState;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationSourceDataStorage;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.SourceCalculationDataInfo;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClientMock;
 import com.google.common.eventbus.EventBus;
 import org.junit.jupiter.api.BeforeEach;

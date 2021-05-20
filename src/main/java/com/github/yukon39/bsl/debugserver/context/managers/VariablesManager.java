@@ -1,12 +1,14 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
+import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
 import com.github.yukon39.bsl.debugserver.context.data.VariablesContext;
-import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
 import org.eclipse.lsp4j.debug.Variable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class VariablesManager {
 

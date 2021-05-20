@@ -1,6 +1,6 @@
 package com.github.yukon39.bsl.debugserver.context.data;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetId;
 import lombok.Data;
 import org.eclipse.lsp4j.debug.Thread;
 import org.jetbrains.annotations.NotNull;

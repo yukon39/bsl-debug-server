@@ -1,15 +1,15 @@
 package com.github.yukon39.bsl.debugserver.context;
 
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoQuit;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoStarted;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.HTTPServerInitialDebugSettingsData;
 import com.github.yukon39.bsl.debugserver.BSLDebugServer;
 import com.github.yukon39.bsl.debugserver.configuration.DebugServerConfiguration;
 import com.github.yukon39.bsl.debugserver.context.managers.*;
 import com.github.yukon39.bsl.debugserver.debugee.Debugee;
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

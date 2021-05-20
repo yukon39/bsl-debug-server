@@ -1,17 +1,18 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
-import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.IRDBGRequest;
-import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.IRDBGResponse;
-import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.RDBGAttachDebugUIResponse;
-import jakarta.xml.bind.JAXBException;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGRequest;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGResponse;
 import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -50,7 +51,7 @@ public class HTTPDebugClientMock extends HTTPDebugClient {
         this.debugSession = debugSession;
     }
 
-    <T> T readRequest(File requestFile, Class<T> requestType) throws JAXBException, IOException {
+    <T> T readRequest(File requestFile, Class<T> requestType) throws IOException, DebuggerException {
         var xml = Files.readAllBytes(requestFile.toPath());
         return serializer.deserialize(xml, requestType);
     }

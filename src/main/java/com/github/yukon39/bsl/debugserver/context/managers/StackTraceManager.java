@@ -1,16 +1,18 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.StackItemViewInfoData;
 import com.github.yukon39.bsl.debugserver.context.data.StackFrameContext;
 import com.github.yukon39.bsl.debugserver.context.data.ThreadContext;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
 import com.google.common.collect.Lists;
 import lombok.Setter;
 import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackFramePresentationHint;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class StackTraceManager {

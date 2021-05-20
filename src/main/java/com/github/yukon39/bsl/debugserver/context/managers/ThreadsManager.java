@@ -1,8 +1,8 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DbgTargetStateInfo;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetId;
 import com.github.yukon39.bsl.debugserver.context.data.ThreadContext;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DbgTargetStateInfo;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
 import org.eclipse.lsp4j.debug.Thread;
 import org.jetbrains.annotations.NotNull;
 

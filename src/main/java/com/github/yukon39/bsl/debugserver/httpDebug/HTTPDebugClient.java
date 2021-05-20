@@ -1,16 +1,14 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationResultBaseData;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.CalculationSourceDataStorage;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoBase;
-import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.*;
-import com.github.yukon39.bsl.debugserver.utils.StringUtils;
-import com.google.common.annotations.VisibleForTesting;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationResultBaseData;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationSourceDataStorage;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoBase;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.*;
+import com.github.yukon39.bsl.debug.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
@@ -31,7 +29,7 @@ import static java.net.http.HttpResponse.BodyHandlers;
 public class HTTPDebugClient {
 
     private final HttpClient httpClient = newHttpClient();
-    final HTTPDebugSerializer serializer = new HTTPDebugSerializer();
+    final DebuggerXmlSerializer serializer = new DebuggerXmlSerializer();
     private URL debugServerURL;
     String infobaseAlias;
     UUID debugSession;
@@ -382,8 +380,8 @@ public class HTTPDebugClient {
     }
 
     public CompletableFuture<CalculationResultBaseData> evalLocalVariables(DebugTargetIdLight targetId,
-                                                        List<CalculationSourceDataStorage> expressions,
-                                                        Integer waitTime) {
+                                                                           List<CalculationSourceDataStorage> expressions,
+                                                                           Integer waitTime) {
 
         var params = new RequestParameters()
                 .setCommand("evalLocalVariables");

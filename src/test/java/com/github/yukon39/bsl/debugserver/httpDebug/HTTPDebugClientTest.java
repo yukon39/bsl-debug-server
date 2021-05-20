@@ -1,20 +1,16 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
-import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach.DebugAutoAttachSettings;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternalTest;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
-import com.github.yukon39.bsl.debugserver.debugee.debugRTEFilter.RteFilterStorage;
-import com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse.*;
-import jakarta.xml.bind.JAXBException;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.AttachDebugUIResult;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdLight;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetType;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
+import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.*;
+import com.github.yukon39.bsl.debug.debugger.debugRTEFilter.RteFilterStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -77,7 +73,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testAttach() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testAttach() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGAttachDebugUIRequestTest.xml");
@@ -105,7 +101,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testDetach() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testDetach() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGDetachDebugUIRequestTest.xml");
@@ -128,7 +124,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testStartUpdateIB() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testStartUpdateIB() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGStartUpdateIBRequest.xml");
@@ -151,7 +147,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testFinishUpdateIB() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testFinishUpdateIB() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGFinishUpdateIBRequest.xml");
@@ -179,7 +175,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testSetInaccessibleModules() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testSetInaccessibleModules() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetInaccessibleModulesRequest.xml");
@@ -199,7 +195,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testInitSettings() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testInitSettings() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetInitialDebugSettingsRequestTest.xml");
@@ -225,7 +221,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testSetAutoAttachSettings() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testSetAutoAttachSettings() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetAutoAttachSettingsRequest.xml");
@@ -246,7 +242,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testAttachDetachDebugTargets() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testAttachDetachDebugTargets() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGAttachDetachDebugTargetsRequest.xml");
@@ -265,144 +261,144 @@ class HTTPDebugClientTest {
         assertThat(response).isEqualTo(httpClient.getResponse());
     }
 
-    @Test
-    void testTerminateDebugTargets() throws ExecutionException, InterruptedException, JAXBException, IOException {
+//    @Test
+//    void testTerminateDebugTargets() throws ExecutionException, InterruptedException, DebuggerException, IOException {
+//
+//        //given
+//        var requestFile = new File("./src/test/resources/httpDebug/RDBGTerminateRequest.xml");
+//
+//        var request = httpClient.readRequest(requestFile, RDBGTerminateRequest.class);
+//        var response = new RDBGTerminateResponse();
+//
+//        var targetId = DebugTargetIdTest.createTestObjectManagedClient();
+//
+//        // when
+//        var result = httpClient.terminateDebugTargets(List.of(targetId)).get();
+//
+//        // then
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//        assertThat(result).isNull();
+//    }
 
-        //given
-        var requestFile = new File("./src/test/resources/httpDebug/RDBGTerminateRequest.xml");
-
-        var request = httpClient.readRequest(requestFile, RDBGTerminateRequest.class);
-        var response = new RDBGTerminateResponse();
-
-        var targetId = DebugTargetIdTest.createTestObjectManagedClient();
-
-        // when
-        var result = httpClient.terminateDebugTargets(List.of(targetId)).get();
-
-        // then
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-        assertThat(result).isNull();
-    }
-
-    @Test
-    void testGetAllTargetStates() throws ExecutionException, InterruptedException, JAXBException, IOException {
-
-        //given
-        var requestFile = new File("./src/test/resources/httpDebug/RDBGGetDbgAllTargetStatesRequest.xml");
-        var responseFile = new File("./src/test/resources/httpDebug/RDBGGetDbgAllTargetStatesResponse.xml");
-
-        httpClient.setResponseFile(responseFile);
-
-        var request = httpClient.readRequest(requestFile, RDBGGetDbgAllTargetStatesRequest.class);
-        var response = new RDBGGetDbgAllTargetStatesResponse();
-
-        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
-
-        var targetStateInfoWorked = new DbgTargetStateInfo();
-        targetStateInfoWorked.setTargetID(targetID);
-        targetStateInfoWorked.setState(DbgTargetState.WORKED);
-        targetStateInfoWorked.setStateNum(16);
-
-        response.getItem().add(targetStateInfoWorked);
-
-        // when
-        var result = httpClient.getAllTargetStates().get();
-
-        // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0)).isEqualTo(targetStateInfoWorked);
-
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-    }
+//    @Test
+//    void testGetAllTargetStates() throws ExecutionException, InterruptedException, DebuggerException, IOException {
+//
+//        //given
+//        var requestFile = new File("./src/test/resources/httpDebug/RDBGGetDbgAllTargetStatesRequest.xml");
+//        var responseFile = new File("./src/test/resources/httpDebug/RDBGGetDbgAllTargetStatesResponse.xml");
+//
+//        httpClient.setResponseFile(responseFile);
+//
+//        var request = httpClient.readRequest(requestFile, RDBGGetDbgAllTargetStatesRequest.class);
+//        var response = new RDBGGetDbgAllTargetStatesResponse();
+//
+//        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
+//
+//        var targetStateInfoWorked = new DbgTargetStateInfo();
+//        targetStateInfoWorked.setTargetID(targetID);
+//        targetStateInfoWorked.setState(DbgTargetState.WORKED);
+//        targetStateInfoWorked.setStateNum(16);
+//
+//        response.getItem().add(targetStateInfoWorked);
+//
+//        // when
+//        var result = httpClient.getAllTargetStates().get();
+//
+//        // then
+//        assertThat(result).hasSize(1);
+//        assertThat(result.get(0)).isEqualTo(targetStateInfoWorked);
+//
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//    }
 
     @Test
     void testGetTargetState() {
 
     }
 
+//    @Test
+//    void testPing() throws ExecutionException, InterruptedException {
+//
+//        //given
+//        var responseFile = new File("./src/test/resources/httpDebug/RDBGPingDebugUIResponseTest.xml");
+//
+//        httpClient.setResponseFile(responseFile);
+//
+//        var request = new RDBGPingDebugUIRequest();
+//        var response = new RDBGPingDebugUIResponse();
+//
+//        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
+//
+//        var cmdStarted = new DBGUIExtCmdInfoStarted();
+//        cmdStarted.setTargetID(targetID);
+//        response.getResult().add(cmdStarted);
+//
+//        var cmdQuit = new DBGUIExtCmdInfoQuit();
+//        cmdQuit.setTargetID(targetID);
+//        response.getResult().add(cmdQuit);
+//
+//        var callStack = new StackItemViewInfoData();
+//        callStack.setModuleID(BSLModuleIdInternalTest.createTestObjectCommonModule());
+//        callStack.setLineNo(5);
+//
+//        var cmdCallStackFormed = new DBGUIExtCmdInfoCallStackFormed();
+//        cmdCallStackFormed.setTargetID(targetID);
+//        cmdCallStackFormed.setStopByBP(false);
+//        cmdCallStackFormed.getCallStack().add(callStack);
+//        response.getResult().add(cmdCallStackFormed);
+//
+//        var resultValueInfo = new BaseValueInfoData();
+//        resultValueInfo.setTypeCode(100);
+//        resultValueInfo.setExpandable(true);
+//        resultValueInfo.setSupportIContext(true);
+//
+//        var propInfo = new ContextPropertyData();
+//        propInfo.setPropName("Cancel");
+//        propInfo.setIsReaded(true);
+//
+//        var valueInfo = new BaseValueInfoData();
+//        valueInfo.setTypeCode(DebugValueTypeCode.BOOLEAN.getTypeCode());
+//        valueInfo.setTypeName(DebugValueTypeCode.BOOLEAN.getTypeName());
+//        valueInfo.setValueBoolean(false);
+//
+//        var valueOfContextPropInfo = new CalculationResultContextPropertyInfo();
+//        valueOfContextPropInfo.setPropInfo(propInfo);
+//        valueOfContextPropInfo.setValueInfo(valueInfo);
+//
+//        var calculationResult = new CalculationResultObjData();
+//        calculationResult.setViewInterface(ViewInterface.CONTEXT);
+//        calculationResult.getValueOfContextPropInfo().add(valueOfContextPropInfo);
+//
+//        var evalExprResBaseData = new CalculationResultBaseData();
+//        evalExprResBaseData.setEvalResultState(CalculationResultState.CORRECTLY);
+//        evalExprResBaseData.setExpressionResultID(UUID.fromString("c843e036-8caf-4a3d-85d5-b96225ed17da"));
+//        evalExprResBaseData.setResultValueInfo(resultValueInfo);
+//        evalExprResBaseData.getTestedAndSupportedInterface().add(ViewInterface.NONE);
+//        evalExprResBaseData.setCalculationResult(calculationResult);
+//
+//        var cmdCmdInfoExprEvaluated = new DBGUIExtCmdInfoExprEvaluated();
+//        cmdCmdInfoExprEvaluated.setTargetID(targetID);
+//        cmdCmdInfoExprEvaluated.setEvalExprResBaseData(evalExprResBaseData);
+//        response.getResult().add(cmdCmdInfoExprEvaluated);
+//
+//        // when
+//        var result = httpClient.ping().get();
+//
+//        // then
+//        assertThat(result).hasSize(4);
+//        assertThat(cmdStarted).isEqualTo(result.get(0));
+//        assertThat(cmdQuit).isEqualTo(result.get(1));
+//        assertThat(cmdCallStackFormed).isEqualTo(result.get(2));
+//        assertThat(cmdCmdInfoExprEvaluated).isEqualTo(result.get(3));
+//
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//    }
+
     @Test
-    void testPing() throws ExecutionException, InterruptedException {
-
-        //given
-        var responseFile = new File("./src/test/resources/httpDebug/RDBGPingDebugUIResponseTest.xml");
-
-        httpClient.setResponseFile(responseFile);
-
-        var request = new RDBGPingDebugUIRequest();
-        var response = new RDBGPingDebugUIResponse();
-
-        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
-
-        var cmdStarted = new DBGUIExtCmdInfoStarted();
-        cmdStarted.setTargetID(targetID);
-        response.getResult().add(cmdStarted);
-
-        var cmdQuit = new DBGUIExtCmdInfoQuit();
-        cmdQuit.setTargetID(targetID);
-        response.getResult().add(cmdQuit);
-
-        var callStack = new StackItemViewInfoData();
-        callStack.setModuleID(BSLModuleIdInternalTest.createTestObjectCommonModule());
-        callStack.setLineNo(5);
-
-        var cmdCallStackFormed = new DBGUIExtCmdInfoCallStackFormed();
-        cmdCallStackFormed.setTargetID(targetID);
-        cmdCallStackFormed.setStopByBP(false);
-        cmdCallStackFormed.getCallStack().add(callStack);
-        response.getResult().add(cmdCallStackFormed);
-
-        var resultValueInfo = new BaseValueInfoData();
-        resultValueInfo.setTypeCode(100);
-        resultValueInfo.setExpandable(true);
-        resultValueInfo.setSupportIContext(true);
-
-        var propInfo = new ContextPropertyData();
-        propInfo.setPropName("Cancel");
-        propInfo.setIsReaded(true);
-
-        var valueInfo = new BaseValueInfoData();
-        valueInfo.setTypeCode(DebugValueTypeCode.BOOLEAN.getTypeCode());
-        valueInfo.setTypeName(DebugValueTypeCode.BOOLEAN.getTypeName());
-        valueInfo.setValueBoolean(false);
-
-        var valueOfContextPropInfo = new CalculationResultContextPropertyInfo();
-        valueOfContextPropInfo.setPropInfo(propInfo);
-        valueOfContextPropInfo.setValueInfo(valueInfo);
-
-        var calculationResult = new CalculationResultObjData();
-        calculationResult.setViewInterface(ViewInterface.CONTEXT);
-        calculationResult.getValueOfContextPropInfo().add(valueOfContextPropInfo);
-
-        var evalExprResBaseData = new CalculationResultBaseData();
-        evalExprResBaseData.setEvalResultState(CalculationResultState.CORRECTLY);
-        evalExprResBaseData.setExpressionResultID(UUID.fromString("c843e036-8caf-4a3d-85d5-b96225ed17da"));
-        evalExprResBaseData.setResultValueInfo(resultValueInfo);
-        evalExprResBaseData.getTestedAndSupportedInterface().add(ViewInterface.NONE);
-        evalExprResBaseData.setCalculationResult(calculationResult);
-
-        var cmdCmdInfoExprEvaluated = new DBGUIExtCmdInfoExprEvaluated();
-        cmdCmdInfoExprEvaluated.setTargetID(targetID);
-        cmdCmdInfoExprEvaluated.setEvalExprResBaseData(evalExprResBaseData);
-        response.getResult().add(cmdCmdInfoExprEvaluated);
-
-        // when
-        var result = httpClient.ping().get();
-
-        // then
-        assertThat(result).hasSize(4);
-        assertThat(cmdStarted).isEqualTo(result.get(0));
-        assertThat(cmdQuit).isEqualTo(result.get(1));
-        assertThat(cmdCallStackFormed).isEqualTo(result.get(2));
-        assertThat(cmdCmdInfoExprEvaluated).isEqualTo(result.get(3));
-
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-    }
-
-    @Test
-    void testSetBreakOnNextStatement() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testSetBreakOnNextStatement() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetBreakOnNextStatementRequest.xml");
@@ -420,7 +416,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testClearBreakOnNextStatement() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testClearBreakOnNextStatement() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGClearBreakOnNextStatementRequest.xml");
@@ -437,97 +433,97 @@ class HTTPDebugClientTest {
         assertThat(response).isEqualTo(httpClient.getResponse());
     }
 
+//    @Test
+//    void testSetBreakpoints() throws ExecutionException, InterruptedException, DebuggerException, IOException {
+//
+//        //given
+//        var requestFile = new File("./src/test/resources/httpDebug/RDBGSetBreakpointsRequest.xml");
+//
+//        var request = httpClient.readRequest(requestFile, RDBGSetBreakpointsRequest.class);
+//        var response = new RDBGSetBreakpointsResponse();
+//
+//        var workspaceBP = BPWorkspaceInternalTest.createTestObject();
+//
+//        // when
+//        var result = httpClient.setBreakpoints(workspaceBP).get();
+//
+//        // then
+//        assertThat(result).isNull();
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//    }
+
+//    @Test
+//    void testStep() throws ExecutionException, InterruptedException, DebuggerException, IOException {
+//
+//        //given
+//        var requestFile = new File("./src/test/resources/httpDebug/RDBGStepRequest.xml");
+//        var responseFile = new File("./src/test/resources/httpDebug/RDBGStepResponse.xml");
+//
+//        httpClient.setResponseFile(responseFile);
+//
+//        var request = httpClient.readRequest(requestFile, RDBGStepRequest.class);
+//        var response = new RDBGStepResponse();
+//
+//        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
+//
+//        var targetStateInfoWorked = new DbgTargetStateInfo();
+//        targetStateInfoWorked.setTargetID(targetID);
+//        targetStateInfoWorked.setState(DbgTargetState.WORKED);
+//        targetStateInfoWorked.setStateNum(16);
+//
+//        response.getItem().add(targetStateInfoWorked);
+//
+//        var targetIdLight = new DebugTargetIdLight();
+//        targetIdLight.setId(UUID.fromString("f304a4c5-2287-4fa6-86bf-e2827dd6b744"));
+//
+//        var action = DebugStepAction.STEP_IN;
+//        var isSimple = false;
+//
+//        // when
+//        var result = httpClient.step(targetIdLight, action, isSimple).get();
+//
+//        // then
+//        assertThat(result).hasSize(1);
+//        assertThat(result.get(0)).isEqualTo(targetStateInfoWorked);
+//
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//    }
+
+//    @Test
+//    void testGetCallStack() throws ExecutionException, InterruptedException, DebuggerException, IOException {
+//
+//        //given
+//        var requestFile = new File("./src/test/resources/httpDebug/RDBGGetCallStackRequest.xml");
+//        var responseFile = new File("./src/test/resources/httpDebug/RDBGGetCallStackResponse.xml");
+//
+//        httpClient.setResponseFile(responseFile);
+//
+//        var request = httpClient.readRequest(requestFile, RDBGGetCallStackRequest.class);
+//        var response = new RDBGGetCallStackResponse();
+//
+//        var stackItem = new StackItemViewInfoData();
+//        stackItem.setModuleID(BSLModuleIdInternalTest.createTestObjectCatalogManagerModule());
+//        stackItem.setLineNo(5);
+//
+//        response.getCallStack().add(stackItem);
+//
+//        var targetIdLight = new DebugTargetIdLight(UUID.fromString("bcc00f46-e891-4897-83e4-93cdbd629e10"));
+//
+//        // when
+//        var result = httpClient.getCallStack(targetIdLight).get();
+//
+//        // then
+//        assertThat(result).hasSize(1);
+//        assertThat(result.get(0)).isEqualTo(stackItem);
+//
+//        assertThat(request).isEqualTo(httpClient.getRequest());
+//        assertThat(response).isEqualTo(httpClient.getResponse());
+//    }
+
     @Test
-    void testSetBreakpoints() throws ExecutionException, InterruptedException, JAXBException, IOException {
-
-        //given
-        var requestFile = new File("./src/test/resources/httpDebug/RDBGSetBreakpointsRequest.xml");
-
-        var request = httpClient.readRequest(requestFile, RDBGSetBreakpointsRequest.class);
-        var response = new RDBGSetBreakpointsResponse();
-
-        var workspaceBP = BPWorkspaceInternalTest.createTestObject();
-
-        // when
-        var result = httpClient.setBreakpoints(workspaceBP).get();
-
-        // then
-        assertThat(result).isNull();
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-    }
-
-    @Test
-    void testStep() throws ExecutionException, InterruptedException, JAXBException, IOException {
-
-        //given
-        var requestFile = new File("./src/test/resources/httpDebug/RDBGStepRequest.xml");
-        var responseFile = new File("./src/test/resources/httpDebug/RDBGStepResponse.xml");
-
-        httpClient.setResponseFile(responseFile);
-
-        var request = httpClient.readRequest(requestFile, RDBGStepRequest.class);
-        var response = new RDBGStepResponse();
-
-        var targetID = DebugTargetIdTest.createTestObjectManagedClient();
-
-        var targetStateInfoWorked = new DbgTargetStateInfo();
-        targetStateInfoWorked.setTargetID(targetID);
-        targetStateInfoWorked.setState(DbgTargetState.WORKED);
-        targetStateInfoWorked.setStateNum(16);
-
-        response.getItem().add(targetStateInfoWorked);
-
-        var targetIdLight = new DebugTargetIdLight();
-        targetIdLight.setId(UUID.fromString("f304a4c5-2287-4fa6-86bf-e2827dd6b744"));
-
-        var action = DebugStepAction.STEP_IN;
-        var isSimple = false;
-
-        // when
-        var result = httpClient.step(targetIdLight, action, isSimple).get();
-
-        // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0)).isEqualTo(targetStateInfoWorked);
-
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-    }
-
-    @Test
-    void testGetCallStack() throws ExecutionException, InterruptedException, JAXBException, IOException {
-
-        //given
-        var requestFile = new File("./src/test/resources/httpDebug/RDBGGetCallStackRequest.xml");
-        var responseFile = new File("./src/test/resources/httpDebug/RDBGGetCallStackResponse.xml");
-
-        httpClient.setResponseFile(responseFile);
-
-        var request = httpClient.readRequest(requestFile, RDBGGetCallStackRequest.class);
-        var response = new RDBGGetCallStackResponse();
-
-        var stackItem = new StackItemViewInfoData();
-        stackItem.setModuleID(BSLModuleIdInternalTest.createTestObjectCatalogManagerModule());
-        stackItem.setLineNo(5);
-
-        response.getCallStack().add(stackItem);
-
-        var targetIdLight = new DebugTargetIdLight(UUID.fromString("bcc00f46-e891-4897-83e4-93cdbd629e10"));
-
-        // when
-        var result = httpClient.getCallStack(targetIdLight).get();
-
-        // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0)).isEqualTo(stackItem);
-
-        assertThat(request).isEqualTo(httpClient.getRequest());
-        assertThat(response).isEqualTo(httpClient.getResponse());
-    }
-
-    @Test
-    void testEvalLocalVariables() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testEvalLocalVariables() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGEvalLocalVariablesRequestTest.xml");
@@ -612,7 +608,7 @@ class HTTPDebugClientTest {
     }
 
     @Test
-    void testEvalExpression() throws ExecutionException, InterruptedException, JAXBException, IOException {
+    void testEvalExpression() throws ExecutionException, InterruptedException, DebuggerException, IOException {
 
         //given
         var requestFile = new File("./src/test/resources/httpDebug/RDBGEvalExprRequest.xml");

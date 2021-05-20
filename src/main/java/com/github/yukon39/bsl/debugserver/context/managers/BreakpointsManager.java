@@ -1,12 +1,11 @@
 package com.github.yukon39.bsl.debugserver.context.managers;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BreakpointInfo;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.ModuleBPInfoInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BreakpointInfo;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.ModuleBPInfoInternal;
 import org.eclipse.lsp4j.debug.Breakpoint;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.SourceBreakpoint;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
