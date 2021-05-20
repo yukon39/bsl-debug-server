@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@XmlRootElement()
+@XmlRootElement(name = "response", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso({
         DBGUIExtCmdInfoCallStackFormed.class,
