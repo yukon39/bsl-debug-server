@@ -1,17 +1,10 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
-import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
-import com.github.yukon39.bsl.debugserver.debugee.data.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleType;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternalTest;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BreakpointInfo;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.ModuleBPInfoInternal;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugRTEFilter.RteFilterStorage;
-import jakarta.xml.bind.JAXBException;
-import org.jetbrains.annotations.NotNull;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternalTest;
+import com.github.yukon39.bsl.debug.debugger.debugRTEFilter.RteFilterStorage;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -24,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RDBGSetInitialDebugSettingsRequestTest {
 
     @Test
-    void testSerialize() throws JAXBException{
+    void testSerialize() throws DebuggerException {
 
         // given
         var rteProcessing = new RteFilterStorage();
@@ -43,7 +36,7 @@ public class RDBGSetInitialDebugSettingsRequestTest {
         request.setData(data);
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = serializer.serialize(request);
         var response = serializer.deserialize(xml, RDBGSetInitialDebugSettingsRequest.class);
 
@@ -52,7 +45,7 @@ public class RDBGSetInitialDebugSettingsRequestTest {
     }
 
     @Test
-    void testDeserializeFromFile() throws IOException, JAXBException {
+    void testDeserializeFromFile() throws IOException, DebuggerException {
 
         // given
         var rteProcessing = new RteFilterStorage();
@@ -71,7 +64,7 @@ public class RDBGSetInitialDebugSettingsRequestTest {
         var file = new File("./src/test/resources/httpDebug/RDBGSetInitialDebugSettingsRequestTest.xml");
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = Files.readAllBytes(file.toPath());
         var response = serializer.deserialize(xml, RDBGSetInitialDebugSettingsRequest.class);
 

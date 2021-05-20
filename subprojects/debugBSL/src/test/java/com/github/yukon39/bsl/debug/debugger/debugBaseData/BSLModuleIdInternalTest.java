@@ -1,6 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugBaseData;
+package com.github.yukon39.bsl.debug.debugger.debugBaseData;
 
-import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
+import com.github.yukon39.bsl.debug.data.ModulePropertyId;
 
 import java.util.UUID;
 

@@ -1,10 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugBaseData;
-
-import org.jetbrains.annotations.NotNull;
+package com.github.yukon39.bsl.debug.debugger.debugBaseData;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class DebugTargetIdTest {
 

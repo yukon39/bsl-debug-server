@@ -1,13 +1,9 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebuggerOptions;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import jakarta.xml.bind.JAXBException;
-import org.jetbrains.annotations.NotNull;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RDBGAttachDebugUIRequestTest {
 
     @Test
-    public void testSerialize() throws JAXBException {
+    public void testSerialize() throws DebuggerException {
 
         // given
         var request = new RDBGAttachDebugUIRequest();
@@ -27,7 +23,7 @@ public class RDBGAttachDebugUIRequestTest {
         request.setOptions(options);
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = serializer.serialize(request);
         var response = serializer.deserialize(xml, RDBGAttachDebugUIRequest.class);
 

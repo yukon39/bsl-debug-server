@@ -1,22 +1,18 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.*;
-import jakarta.xml.bind.JAXBException;
-import org.jetbrains.annotations.NotNull;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DbgTargetState;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DbgTargetStateInfo;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdTest;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RDBGGetDbgAllTargetStatesResponseTest {
 
     @Test
-    public void testSerialize() throws JAXBException {
+    public void testSerialize() throws DebuggerException {
 
         // given
 
@@ -41,7 +37,7 @@ public class RDBGGetDbgAllTargetStatesResponseTest {
         request.getItem().add(targetStateInfo);
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = serializer.serialize(request);
         var response = serializer.deserialize(xml, RDBGGetDbgAllTargetStatesResponse.class);
 

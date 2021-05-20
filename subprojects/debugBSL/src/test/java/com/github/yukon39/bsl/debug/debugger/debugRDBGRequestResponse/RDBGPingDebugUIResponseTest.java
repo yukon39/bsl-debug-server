@@ -1,17 +1,17 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternalTest;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetIdTest;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.StackItemViewInfoData;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoQuit;
-import com.github.yukon39.bsl.debugserver.debugee.debugDBGUICommands.DBGUIExtCmdInfoStarted;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import jakarta.xml.bind.JAXBException;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternalTest;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdTest;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.StackItemViewInfoData;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoCallStackFormed;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoExprEvaluated;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoQuit;
+import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.DBGUIExtCmdInfoStarted;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RDBGPingDebugUIResponseTest {
 
     @Test
-    void testSerialize() throws JAXBException {
+    void testSerialize() throws DebuggerException {
 
         // given
         var request = new RDBGPingDebugUIResponse();
@@ -45,7 +45,7 @@ public class RDBGPingDebugUIResponseTest {
         request.getResult().add(callstack);
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = serializer.serialize(request);
         var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 
@@ -54,7 +54,7 @@ public class RDBGPingDebugUIResponseTest {
     }
 
     @Test
-    void testDeserializeFromFile() throws IOException, JAXBException {
+    void testDeserializeFromFile() throws IOException, DebuggerException {
 
         // given
         var request = new RDBGPingDebugUIResponse();
@@ -117,7 +117,7 @@ public class RDBGPingDebugUIResponseTest {
         var file = new File("./src/test/resources/httpDebug/RDBGPingDebugUIResponseTest.xml");
 
         // when
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = Files.readAllBytes(file.toPath());
         var response = serializer.deserialize(xml, RDBGPingDebugUIResponse.class);
 

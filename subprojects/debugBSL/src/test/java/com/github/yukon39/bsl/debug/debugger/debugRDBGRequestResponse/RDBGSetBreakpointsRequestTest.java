@@ -1,9 +1,8 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints.BPWorkspaceInternalTest;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import jakarta.xml.bind.JAXBException;
-import org.jetbrains.annotations.NotNull;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternalTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -13,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RDBGSetBreakpointsRequestTest {
 
     @Test
-    void testSerialize() throws JAXBException {
+    void testSerialize() throws DebuggerException {
 
         var bpWorkspace = BPWorkspaceInternalTest.createTestObject();
 
@@ -22,7 +21,7 @@ class RDBGSetBreakpointsRequestTest {
         request.setIdOfDebuggerUI(UUID.randomUUID());
         request.setBpWorkspace(bpWorkspace);
 
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var xml = serializer.serialize(request);
 
         var response = serializer.deserialize(xml, RDBGSetBreakpointsRequest.class);

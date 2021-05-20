@@ -1,9 +1,9 @@
-package com.github.yukon39.bsl.debugserver.httpDebug.debugRDBGRequestResponse;
+package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
-import com.github.yukon39.bsl.debugserver.debugee.data.DebugValueTypeCode;
-import com.github.yukon39.bsl.debugserver.debugee.debugCalculations.*;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugSerializer;
-import jakarta.xml.bind.JAXBException;
+import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
+import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RDBGEvalLocalVariablesResponseTest {
 
     @Test
-    void testDeserializeFromFile() throws IOException, JAXBException {
+    void testDeserializeFromFile() throws IOException, DebuggerException {
 
         // given
         var request = new RDBGEvalLocalVariablesResponse();
@@ -72,7 +72,7 @@ class RDBGEvalLocalVariablesResponseTest {
 
         // when
         var xml = Files.readAllBytes(file.toPath());
-        var serializer = new HTTPDebugSerializer();
+        var serializer = new DebuggerXmlSerializer();
         var response = serializer.deserialize(xml, RDBGEvalLocalVariablesResponse.class);
 
         // then

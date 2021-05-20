@@ -1,14 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints;
+package com.github.yukon39.bsl.debug.debugger.debugBreakpoints;
 
-import com.github.yukon39.bsl.debugserver.context.ModulePropertyId;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternalTest;
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleType;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternalTest;
 
 public class BPWorkspaceInternalTest {
 
