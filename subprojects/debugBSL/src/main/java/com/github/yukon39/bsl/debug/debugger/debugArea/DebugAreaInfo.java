@@ -1,6 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugArea;
+package com.github.yukon39.bsl.debug.debugger.debugArea;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetType;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetType;
 import lombok.Data;
 
 @Data

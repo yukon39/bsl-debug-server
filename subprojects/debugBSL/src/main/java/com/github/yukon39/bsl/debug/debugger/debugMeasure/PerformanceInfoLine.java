@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugMeasure;
+package com.github.yukon39.bsl.debug.debugger.debugMeasure;
 
 import lombok.Data;
 

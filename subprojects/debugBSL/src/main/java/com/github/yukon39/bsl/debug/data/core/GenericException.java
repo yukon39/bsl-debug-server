@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.debugee.core;
+package com.github.yukon39.bsl.debug.data.core;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

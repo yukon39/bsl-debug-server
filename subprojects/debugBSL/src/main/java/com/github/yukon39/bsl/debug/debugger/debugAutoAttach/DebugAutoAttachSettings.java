@@ -1,6 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugAutoAttach;
+package com.github.yukon39.bsl.debug.debugger.debugAutoAttach;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetType;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetType;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;

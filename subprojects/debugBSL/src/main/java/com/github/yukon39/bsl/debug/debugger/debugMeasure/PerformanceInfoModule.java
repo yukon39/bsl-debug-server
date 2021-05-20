@@ -1,6 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugMeasure;
+package com.github.yukon39.bsl.debug.debugger.debugMeasure;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.BSLModuleIdInternal;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternal;
 import lombok.Data;
 
 @Data

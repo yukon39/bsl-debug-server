@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugArea;
+package com.github.yukon39.bsl.debug.debugger.debugArea;
 
 import lombok.Data;
 

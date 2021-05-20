@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugBreakpoints;
+package com.github.yukon39.bsl.debug.debugger.debugBreakpoints;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

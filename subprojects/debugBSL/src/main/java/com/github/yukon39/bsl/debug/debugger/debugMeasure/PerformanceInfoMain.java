@@ -1,6 +1,6 @@
-package com.github.yukon39.bsl.debugserver.debugee.debugMeasure;
+package com.github.yukon39.bsl.debug.debugger.debugMeasure;
 
-import com.github.yukon39.bsl.debugserver.debugee.debugBaseData.DebugTargetId;
+import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetId;
 import lombok.Data;
 
 import java.util.UUID;
