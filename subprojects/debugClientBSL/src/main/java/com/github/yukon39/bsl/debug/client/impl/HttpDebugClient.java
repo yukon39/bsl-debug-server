@@ -1,6 +1,7 @@
-package com.github.yukon39.bsl.debugserver.httpDebug;
+package com.github.yukon39.bsl.debug.client.impl;
 
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.client.DebuggerClientException;
 import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
@@ -26,7 +27,7 @@ import static java.net.http.HttpRequest.BodyPublishers;
 import static java.net.http.HttpResponse.BodyHandlers;
 
 @Slf4j
-public class HTTPDebugClient {
+public class HttpDebugClient {
 
     private final HttpClient httpClient = newHttpClient();
     private URL debugServerURL;
@@ -474,7 +475,7 @@ public class HTTPDebugClient {
                     if (Objects.isNull(throwable)) {
                         return response;
                     } else {
-                        var httpDebugException = new HTTPDebugException(throwable);
+                        var httpDebugException = new DebuggerClientException(throwable);
                         log.error("[executeRequest]", throwable);
                         throw new CompletionException(httpDebugException);
                     }

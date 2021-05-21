@@ -19,7 +19,9 @@ val junitVersion = "5.6.1"
 dependencies {
 
     implementation(project(":debugBSL"))
-  
+    implementation(project(":debugClientBSL"))
+    testImplementation(project(":debugClientBSL"))
+
     implementation( "org.eclipse.lsp4j", "org.eclipse.lsp4j.debug", "0.9.0")
     implementation( "com.github.1c-syntax", "mdclasses", "0.6.0")
 

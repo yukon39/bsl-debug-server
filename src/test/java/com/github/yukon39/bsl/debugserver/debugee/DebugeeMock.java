@@ -1,7 +1,6 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClientMock;
+import com.github.yukon39.bsl.debug.client.impl.HttpDebugClient;
 
 public class DebugeeMock extends Debugee {
 
@@ -9,7 +8,7 @@ public class DebugeeMock extends Debugee {
         this.attached = attached;
     }
 
-    public void setHttpClient(HTTPDebugClient httpClient) {
+    public void setHttpClient(HttpDebugClient httpClient) {
         this.httpDebugClient = httpClient;
     }
 }

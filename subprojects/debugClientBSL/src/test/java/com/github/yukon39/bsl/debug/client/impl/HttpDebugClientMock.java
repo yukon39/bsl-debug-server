@@ -1,7 +1,8 @@
-package com.github.yukon39.bsl.debugserver.httpDebug;
+package com.github.yukon39.bsl.debug.client.impl;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
+import com.github.yukon39.bsl.debug.client.DebuggerClientException;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGRequest;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGResponse;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-public class HTTPDebugClientMock extends HTTPDebugClient {
+public class HttpDebugClientMock extends HttpDebugClient {
 
     private final Queue<File> responseQueue = new LinkedList<>();
 
@@ -81,7 +82,7 @@ public class HTTPDebugClientMock extends HTTPDebugClient {
                         response = (IRDBGResponse) aResponse;
                         return aResponse;
                     } else {
-                        var httpDebugException = new HTTPDebugException(throwable);
+                        var httpDebugException = new DebuggerClientException(throwable);
                         throw new CompletionException(httpDebugException);
                     }
                 });

@@ -1,4 +1,4 @@
 @ParametersAreNonnullByDefault
-package com.github.yukon39.bsl.debugserver.httpDebug;
+package com.github.yukon39.bsl.debug.client;
 
 import javax.annotation.ParametersAreNonnullByDefault;

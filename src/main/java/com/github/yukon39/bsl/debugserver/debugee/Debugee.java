@@ -1,5 +1,6 @@
 package com.github.yukon39.bsl.debugserver.debugee;
 
+import com.github.yukon39.bsl.debug.client.impl.HttpDebugClient;
 import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
@@ -8,7 +9,6 @@ import com.github.yukon39.bsl.debug.debugger.debugCalculations.CalculationSource
 import com.github.yukon39.bsl.debug.debugger.debugDBGUICommands.*;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.DebuggerOptions;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.HTTPServerInitialDebugSettingsData;
-import com.github.yukon39.bsl.debugserver.httpDebug.HTTPDebugClient;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class Debugee implements Runnable {
 
     private static long WAIT_POLL = 500L;
 
-    HTTPDebugClient httpDebugClient;
+    HttpDebugClient httpDebugClient;
 
     private final Map<UUID, CalculationResultBaseData> calculatedExpressions = new HashMap<>();
     private final ReentrantLock calculationsLock = new ReentrantLock();
@@ -50,7 +50,7 @@ public class Debugee implements Runnable {
     private EventBus eventBus;
 
     public Debugee() {
-        httpDebugClient = new HTTPDebugClient();
+        httpDebugClient = new HttpDebugClient();
     }
 
     @Override

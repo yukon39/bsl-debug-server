@@ -1,4 +1,4 @@
-package com.github.yukon39.bsl.debugserver.httpDebug;
+package com.github.yukon39.bsl.debug.client.impl;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
@@ -23,13 +23,13 @@ import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HTTPDebugClientTest {
+class HttpDebugClientTest {
 
-    private HTTPDebugClientMock httpClient;
+    private HttpDebugClientMock httpClient;
 
     @BeforeEach
     void beforeEach() {
-        httpClient = new HTTPDebugClientMock();
+        httpClient = new HttpDebugClientMock();
         httpClient.setInfobaseAlias("DefAlias");
         httpClient.setDebugSession(UUID.fromString("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
     }
