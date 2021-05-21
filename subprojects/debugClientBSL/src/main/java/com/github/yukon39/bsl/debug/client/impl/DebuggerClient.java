@@ -1,5 +1,6 @@
 package com.github.yukon39.bsl.debug.client.impl;
 
+import com.github.yukon39.bsl.debug.client.IDebuggerClient;
 import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
@@ -17,14 +18,16 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
-public class HttpDebugClient {
+public class DebuggerClient implements IDebuggerClient {
 
     private DebuggerClientExecutor executor;
     private SessionContext context;
+    private DebuggerClientTargets targets;
 
     public void configure(URL debugServerURL, String infobaseAlias, UUID debugSession) {
         this.context = SessionContext.newInstance(infobaseAlias, debugSession);
         this.executor = DebuggerClientExecutor.newInstance(debugServerURL);
+        this.targets = DebuggerClientTargets.newInstance(context, executor);
     }
 
     public CompletableFuture<String> getApiVersion() {
@@ -51,6 +54,10 @@ public class HttpDebugClient {
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("Test successful"));
+    }
+
+    public DebuggerClientTargets getTargetsInstance() {
+        return targets;
     }
 
     public CompletableFuture<AttachDebugUIResult> attach(char[] password, DebuggerOptions options) {

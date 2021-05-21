@@ -23,13 +23,13 @@ import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HttpDebugClientTest {
+class DebuggerClientTest {
 
-    private HttpDebugClientMock httpClient;
+    private DebuggerClientMock httpClient;
 
     @BeforeEach
     void beforeEach() {
-        httpClient = new HttpDebugClientMock();
+        httpClient = new DebuggerClientMock();
         httpClient.setInfobaseAlias("DefAlias");
         httpClient.setDebugSession(UUID.fromString("dbe7b1e9-9786-4a25-8da8-304684fa2ce3"));
     }
