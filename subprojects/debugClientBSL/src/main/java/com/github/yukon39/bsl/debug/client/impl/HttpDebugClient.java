@@ -1,7 +1,5 @@
 package com.github.yukon39.bsl.debug.client.impl;
 
-import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
-import com.github.yukon39.bsl.debug.client.DebuggerClientException;
 import com.github.yukon39.bsl.debug.debugger.debugAutoAttach.DebugAutoAttachSettings;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.*;
 import com.github.yukon39.bsl.debug.debugger.debugBreakpoints.BPWorkspaceInternal;
@@ -13,32 +11,22 @@ import com.github.yukon39.bsl.debug.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-
-import static java.net.http.HttpClient.Version;
-import static java.net.http.HttpRequest.BodyPublishers;
-import static java.net.http.HttpResponse.BodyHandlers;
 
 @Slf4j
 public class HttpDebugClient {
 
-    private final HttpClient httpClient = newHttpClient();
-    private URL debugServerURL;
+    private DebuggerClientExecutor executor;
     String infobaseAlias;
     UUID debugSession;
 
     public void configure(URL debugServerURL, String infobaseAlias, UUID debugSession) {
-        this.debugServerURL = debugServerURL;
         this.infobaseAlias = infobaseAlias;
         this.debugSession = debugSession;
+        this.executor = DebuggerClientExecutor.newInstance(debugServerURL);
     }
 
     public CompletableFuture<String> getApiVersion() {
@@ -47,7 +35,7 @@ public class HttpDebugClient {
 
         var request = new MiscRDbgGetAPIVerRequest();
 
-        return execute(request, MiscRDbgGetAPIVerResponse.class, params)
+        return executor.executeAsync(request, params, MiscRDbgGetAPIVerResponse.class)
                 .thenApply(response -> {
                     var apiVersion = response.getVersion();
 
@@ -63,7 +51,7 @@ public class HttpDebugClient {
 
         var request = new RDBGTestRequest();
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("Test successful"));
     }
 
@@ -81,7 +69,7 @@ public class HttpDebugClient {
         }
         request.setOptions(options);
 
-        return execute(request, RDBGAttachDebugUIResponse.class, params)
+        return executor.executeAsync(request, params, RDBGAttachDebugUIResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -99,7 +87,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGDetachDebugUIResponse.class, params)
+        return executor.executeAsync(request, params, RDBGDetachDebugUIResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -117,7 +105,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGStartUpdateIBResponse.class, params)
+        return executor.executeAsync(request, params, RDBGStartUpdateIBResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -135,7 +123,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGFinishUpdateIBResponse.class, params)
+        return executor.executeAsync(request, params, RDBGFinishUpdateIBResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -153,7 +141,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGGetInaccessibleModulesResponse.class, params)
+        return executor.executeAsync(request, params, RDBGGetInaccessibleModulesResponse.class)
                 .thenApply(response -> {
                     var result = response.getModuleID();
 
@@ -172,7 +160,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.getModuleID().addAll(moduleId);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("SetInaccessibleModules successful"));
     }
 
@@ -185,7 +173,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setData(data);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("InitSettings successful"));
     }
 
@@ -198,7 +186,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setAutoAttachSettings(autoAttachSettings);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("SetAutoAttachSettings successful"));
     }
 
@@ -212,7 +200,7 @@ public class HttpDebugClient {
         request.setAttach(attach);
         request.getId().addAll(targets);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("attachDetachDebugTargets successful"));
     }
 
@@ -225,7 +213,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.getTargetID().addAll(targetID);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("TerminateDebugTargets successful"));
     }
 
@@ -237,7 +225,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGGetDbgAllTargetStatesResponse.class, params)
+        return executor.executeAsync(request, params, RDBGGetDbgAllTargetStatesResponse.class)
                 .thenApply(response -> {
                     var result = response.getItem();
 
@@ -256,7 +244,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setId(id);
 
-        return execute(request, RDBGGetDbgTargetStateResponse.class, params)
+        return executor.executeAsync(request, params, RDBGGetDbgTargetStateResponse.class)
                 .thenApply(response -> {
                     var result = response.getState();
 
@@ -273,7 +261,7 @@ public class HttpDebugClient {
 
         var request = new RDBGPingDebugUIRequest();
 
-        return execute(request, RDBGPingDebugUIResponse.class, params)
+        return executor.executeAsync(request, params, RDBGPingDebugUIResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -290,7 +278,7 @@ public class HttpDebugClient {
         var request = new RDBGSetBreakOnNextStatementRequest();
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("SetBreakOnNextStatement successful"));
     }
 
@@ -302,7 +290,7 @@ public class HttpDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("ClearBreakOnNextStatement successful"));
     }
 
@@ -315,7 +303,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setBpWorkspace(bpWorkspace);
 
-        return execute(request, RDBGEmptyResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("SetBreakpoints successful"));
     }
 
@@ -330,7 +318,7 @@ public class HttpDebugClient {
         request.setAction(action);
         request.setSimple(simple);
 
-        return execute(request, RDBGStepResponse.class, params)
+        return executor.executeAsync(request, params, RDBGStepResponse.class)
                 .thenApply(response -> {
                     var result = response.getItem();
 
@@ -349,7 +337,7 @@ public class HttpDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setId(id);
 
-        return execute(request, RDBGGetCallStackResponse.class, params)
+        return executor.executeAsync(request, params, RDBGGetCallStackResponse.class)
                 .thenApply(response -> {
                     var result = response.getCallStack();
 
@@ -372,7 +360,7 @@ public class HttpDebugClient {
         request.setTargetID(targetId);
         request.getExpr().addAll(expressions);
 
-        return execute(request, RDBGEvalLocalVariablesResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEvalLocalVariablesResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
@@ -399,64 +387,13 @@ public class HttpDebugClient {
         request.setTargetID(targetId);
         request.getExpr().addAll(expressions);
 
-        return execute(request, RDBGEvalExprResponse.class, params)
+        return executor.executeAsync(request, params, RDBGEvalExprResponse.class)
                 .thenApply(response -> {
                     var result = response.getResult();
 
                     log.debug(String.format("evalExpression result size is %d", result.size()));
 
                     return result;
-                });
-    }
-
-    private HttpClient newHttpClient() {
-        return HttpClient.newBuilder()
-                .version(Version.HTTP_1_1)
-                .connectTimeout(Duration.ofSeconds(60))
-                .build();
-    }
-
-    <T> CompletableFuture<T> execute(IRDBGRequest command, Class<T> responseType, RequestParameters requestParameters) {
-
-        var requestURI = requestParameters.requestURI(debugServerURL);
-
-        return CompletableFuture
-                .completedFuture(command)
-                .thenApply(request -> {
-                    try {
-                        return DebuggerXmlSerializer.serialize(request);
-                    } catch (Exception e) {
-                        throw new CompletionException(e);
-                    }
-                })
-                .thenApply(body -> HttpRequest.newBuilder(requestURI)
-                        .header("Accept", "application/xml")
-                        .header("Content-Type", "application/xml; charset=utf-8")
-                        .header("Accept-Encoding", "gzip")
-                        .header("User-Agent", "1CV8")
-                        .POST(BodyPublishers.ofString(body))
-                        .build())
-                .thenCompose(httpRequest -> httpClient.sendAsync(httpRequest, BodyHandlers.ofByteArray()))
-                .thenApply(HttpResponse::body)
-                .thenApply(responseBody -> {
-                    try {
-                        if (responseBody.length == 0) {
-                            return responseType.getDeclaredConstructor().newInstance();
-                        } else {
-                            return DebuggerXmlSerializer.deserialize(responseBody, responseType);
-                        }
-                    } catch (Exception e) {
-                        throw new CompletionException(e);
-                    }
-                })
-                .handle((response, throwable) -> {
-                    if (Objects.isNull(throwable)) {
-                        return response;
-                    } else {
-                        var httpDebugException = new DebuggerClientException(throwable);
-                        log.error("[executeRequest]", throwable);
-                        throw new CompletionException(httpDebugException);
-                    }
                 });
     }
 }
