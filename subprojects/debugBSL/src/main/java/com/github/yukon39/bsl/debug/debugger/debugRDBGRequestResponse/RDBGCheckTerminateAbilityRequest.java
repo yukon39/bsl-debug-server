@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
-public class RDBGCheckTerminateAbilityRequest extends RDbgBaseRequest{
+public class RDBGCheckTerminateAbilityRequest extends RDbgBaseRequest implements IRDBGRequest {
     private DebugTargetId id;
 }
