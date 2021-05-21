@@ -1,6 +1,7 @@
 package com.github.yukon39.bsl.debugserver.httpDebug;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
+import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGRequest;
 import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.IRDBGResponse;
 import lombok.Getter;
@@ -53,7 +54,7 @@ public class HTTPDebugClientMock extends HTTPDebugClient {
 
     <T> T readRequest(File requestFile, Class<T> requestType) throws IOException, DebuggerException {
         var xml = Files.readAllBytes(requestFile.toPath());
-        return serializer.deserialize(xml, requestType);
+        return DebuggerXmlSerializer.deserialize(xml, requestType);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class HTTPDebugClientMock extends HTTPDebugClient {
                             return responseType.getDeclaredConstructor().newInstance();
                         } else {
                             var responseXml = Files.readAllBytes(responseFile.toPath());
-                            return serializer.deserialize(responseXml, responseType);
+                            return DebuggerXmlSerializer.deserialize(responseXml, responseType);
                         }
                     } catch (Exception e) {
                         throw new CompletionException(e);
