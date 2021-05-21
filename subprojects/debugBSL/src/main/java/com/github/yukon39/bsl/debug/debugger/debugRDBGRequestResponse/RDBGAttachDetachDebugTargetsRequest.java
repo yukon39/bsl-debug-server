@@ -21,5 +21,5 @@ public class RDBGAttachDetachDebugTargetsRequest extends RDbgBaseRequest impleme
     private Boolean attach;
 
     @XmlElement(required = true)
-    private List<DebugTargetIdLight> id = new ArrayList<>();
+    private final List<DebugTargetIdLight> id = new ArrayList<>();
 }

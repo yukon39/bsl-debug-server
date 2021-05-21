@@ -64,7 +64,7 @@ public class HTTPDebugClient {
 
         var request = new RDBGTestRequest();
 
-        return execute(request, RDBGTestResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("Test successful"));
     }
 
@@ -179,7 +179,7 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.getModuleID().addAll(moduleId);
 
-        return execute(request, RDBGSetInaccessibleModulesResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("SetInaccessibleModules successful"));
     }
 
@@ -193,7 +193,7 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setData(data);
 
-        return execute(request, RDBGSetInitialDebugSettingsResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("InitSettings successful"));
     }
 
@@ -207,7 +207,7 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setAutoAttachSettings(autoAttachSettings);
 
-        return execute(request, RDBGSetAutoAttachSettingsResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("SetAutoAttachSettings successful"));
     }
 
@@ -220,9 +220,9 @@ public class HTTPDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
         request.setAttach(attach);
-        request.setId(targets);
+        request.getId().addAll(targets);
 
-        return execute(request, RDBGAttachDetachDebugTargetsResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("attachDetachDebugTargets successful"));
     }
 
@@ -236,7 +236,7 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.getTargetID().addAll(targetID);
 
-        return execute(request, RDBGTerminateResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("TerminateDebugTargets successful"));
     }
 
@@ -305,7 +305,7 @@ public class HTTPDebugClient {
         var request = new RDBGSetBreakOnNextStatementRequest();
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
-        return execute(request, RDBGSetBreakOnNextStatementResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("SetBreakOnNextStatement successful"));
     }
 
@@ -318,7 +318,7 @@ public class HTTPDebugClient {
         request.setIdOfDebuggerUI(debugSession);
         request.setInfoBaseAlias(infobaseAlias);
 
-        return execute(request, RDBGClearBreakOnNextStatementResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("ClearBreakOnNextStatement successful"));
     }
 
@@ -332,7 +332,7 @@ public class HTTPDebugClient {
         request.setInfoBaseAlias(infobaseAlias);
         request.setBpWorkspace(bpWorkspace);
 
-        return execute(request, RDBGSetBreakpointsResponse.class, params)
+        return execute(request, RDBGEmptyResponse.class, params)
                 .thenRun(() -> log.debug("SetBreakpoints successful"));
     }
 

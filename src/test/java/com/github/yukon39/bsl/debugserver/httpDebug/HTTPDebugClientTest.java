@@ -61,7 +61,7 @@ class HTTPDebugClientTest {
 
         //given
         var request = new RDBGTestRequest();
-        var response = new RDBGTestResponse();
+        var response = new RDBGEmptyResponse();
 
         // when
         var result = httpClient.test().get();
@@ -181,7 +181,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetInaccessibleModulesRequest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGSetInaccessibleModulesRequest.class);
-        var response = new RDBGSetInaccessibleModulesResponse();
+        var response = new RDBGEmptyResponse();
 
         var modules = new ArrayList<BSLModuleIdInternal>();
 
@@ -201,7 +201,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetInitialDebugSettingsRequestTest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGSetInitialDebugSettingsRequest.class);
-        var response = new RDBGSetInitialDebugSettingsResponse();
+        var response = new RDBGEmptyResponse();
 
         var data = new HTTPServerInitialDebugSettingsData();
 
@@ -227,7 +227,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetAutoAttachSettingsRequest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGSetAutoAttachSettingsRequest.class);
-        var response = new RDBGSetAutoAttachSettingsResponse();
+        var response = new RDBGEmptyResponse();
 
         var settings = new DebugAutoAttachSettings();
         settings.getTargetType().addAll(DebugTargetType.defaultTargetTypes());
@@ -248,7 +248,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGAttachDetachDebugTargetsRequest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGAttachDetachDebugTargetsRequest.class);
-        var response = new RDBGAttachDetachDebugTargetsResponse();
+        var response = new RDBGEmptyResponse();
 
         var targetId = new DebugTargetIdLight(UUID.fromString("f8849103-dbcd-4984-905d-28059c33a720"));
 
@@ -404,7 +404,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGSetBreakOnNextStatementRequest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGSetBreakOnNextStatementRequest.class);
-        var response = new RDBGSetBreakOnNextStatementResponse();
+        var response = new RDBGEmptyResponse();
 
         // when
         var result = httpClient.setBreakOnNextStatement().get();
@@ -422,7 +422,7 @@ class HTTPDebugClientTest {
         var requestFile = new File("./src/test/resources/httpDebug/RDBGClearBreakOnNextStatementRequest.xml");
 
         var request = httpClient.readRequest(requestFile, RDBGClearBreakOnNextStatementRequest.class);
-        var response = new RDBGClearBreakOnNextStatementResponse();
+        var response = new RDBGEmptyResponse();
 
         // when
         var result = httpClient.clearBreakOnNextStatement().get();
