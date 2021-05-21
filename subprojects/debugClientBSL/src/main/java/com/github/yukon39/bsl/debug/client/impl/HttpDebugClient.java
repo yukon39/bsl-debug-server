@@ -20,12 +20,10 @@ import java.util.concurrent.CompletableFuture;
 public class HttpDebugClient {
 
     private DebuggerClientExecutor executor;
-    String infobaseAlias;
-    UUID debugSession;
+    private SessionContext context;
 
     public void configure(URL debugServerURL, String infobaseAlias, UUID debugSession) {
-        this.infobaseAlias = infobaseAlias;
-        this.debugSession = debugSession;
+        this.context = SessionContext.newInstance(infobaseAlias, debugSession);
         this.executor = DebuggerClientExecutor.newInstance(debugServerURL);
     }
 
@@ -59,9 +57,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("attachDebugUI");
 
-        var request = new RDBGAttachDebugUIRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGAttachDebugUIRequest.class);
 
         if (password.length > 0) {
             var credentials = StringUtils.toByteArray(password);
@@ -83,9 +79,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("detachDebugUI");
 
-        var request = new RDBGDetachDebugUIRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGDetachDebugUIRequest.class);
 
         return executor.executeAsync(request, params, RDBGDetachDebugUIResponse.class)
                 .thenApply(response -> {
@@ -101,9 +95,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("startUpdateIB");
 
-        var request = new RDBGStartUpdateIBRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGStartUpdateIBRequest.class);
 
         return executor.executeAsync(request, params, RDBGStartUpdateIBResponse.class)
                 .thenApply(response -> {
@@ -119,9 +111,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("finishUpdateIB");
 
-        var request = new RDBGFinishUpdateIBRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGFinishUpdateIBRequest.class);
 
         return executor.executeAsync(request, params, RDBGFinishUpdateIBResponse.class)
                 .thenApply(response -> {
@@ -137,9 +127,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("getInaccessibleModules");
 
-        var request = new RDBGGetInaccessibleModulesRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGGetInaccessibleModulesRequest.class);
 
         return executor.executeAsync(request, params, RDBGGetInaccessibleModulesResponse.class)
                 .thenApply(response -> {
@@ -155,9 +143,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("setInaccessibleModules");
 
-        var request = new RDBGSetInaccessibleModulesRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGSetInaccessibleModulesRequest.class);
         request.getModuleID().addAll(moduleId);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
@@ -168,9 +154,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("initSettings");
 
-        var request = new RDBGSetInitialDebugSettingsRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGSetInitialDebugSettingsRequest.class);
         request.setData(data);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
@@ -181,9 +165,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("setAutoAttachSettings");
 
-        var request = new RDBGSetAutoAttachSettingsRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGSetAutoAttachSettingsRequest.class);
         request.setAutoAttachSettings(autoAttachSettings);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
@@ -194,9 +176,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("attachDetachDbgTargets");
 
-        var request = new RDBGAttachDetachDebugTargetsRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGAttachDetachDebugTargetsRequest.class);
         request.setAttach(attach);
         request.getId().addAll(targets);
 
@@ -208,9 +188,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("terminateDbgTarget");
 
-        var request = new RDBGTerminateRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGTerminateRequest.class);
         request.getTargetID().addAll(targetID);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
@@ -221,9 +199,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("getDbgAllTargetStates");
 
-        var request = new RDBGGetDbgAllTargetStatesRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGGetDbgAllTargetStatesRequest.class);
 
         return executor.executeAsync(request, params, RDBGGetDbgAllTargetStatesResponse.class)
                 .thenApply(response -> {
@@ -239,9 +215,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("getDbgTargetState");
 
-        var request = new RDBGGetDbgTargetStateRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGGetDbgTargetStateRequest.class);
         request.setId(id);
 
         return executor.executeAsync(request, params, RDBGGetDbgTargetStateResponse.class)
@@ -256,8 +230,10 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
 
+        var debugsession = context.getDebugSession();
+
         var params = new RequestParameters("pingDebugUIParams");
-        params.setDebugID(debugSession);
+        params.setDebugID(debugsession);
 
         var request = new RDBGPingDebugUIRequest();
 
@@ -275,9 +251,8 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("setBreakOnNextStatement");
 
-        var request = new RDBGSetBreakOnNextStatementRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGSetBreakOnNextStatementRequest.class);
+
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("SetBreakOnNextStatement successful"));
     }
@@ -286,9 +261,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("clearBreakOnNextStatement");
 
-        var request = new RDBGClearBreakOnNextStatementRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGClearBreakOnNextStatementRequest.class);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
                 .thenRun(() -> log.debug("ClearBreakOnNextStatement successful"));
@@ -298,9 +271,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("setBreakpoints");
 
-        var request = new RDBGSetBreakpointsRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGSetBreakpointsRequest.class);
         request.setBpWorkspace(bpWorkspace);
 
         return executor.executeAsync(request, params, RDBGEmptyResponse.class)
@@ -311,9 +282,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("step");
 
-        var request = new RDBGStepRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGStepRequest.class);
         request.setTargetID(targetID);
         request.setAction(action);
         request.setSimple(simple);
@@ -332,9 +301,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("getCallStack");
 
-        var request = new RDBGGetCallStackRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGGetCallStackRequest.class);
         request.setId(id);
 
         return executor.executeAsync(request, params, RDBGGetCallStackResponse.class)
@@ -353,9 +320,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("evalLocalVariables");
 
-        var request = new RDBGEvalLocalVariablesRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGEvalLocalVariablesRequest.class);
         request.setCalcWaitingTime(waitTime);
         request.setTargetID(targetId);
         request.getExpr().addAll(expressions);
@@ -380,9 +345,7 @@ public class HttpDebugClient {
 
         var params = new RequestParameters("evalExpr");
 
-        var request = new RDBGEvalExprRequest();
-        request.setIdOfDebuggerUI(debugSession);
-        request.setInfoBaseAlias(infobaseAlias);
+        var request = context.newSessionRequest(RDBGEvalExprRequest.class);
         request.setCalcWaitingTime(waitTime);
         request.setTargetID(targetId);
         request.getExpr().addAll(expressions);
