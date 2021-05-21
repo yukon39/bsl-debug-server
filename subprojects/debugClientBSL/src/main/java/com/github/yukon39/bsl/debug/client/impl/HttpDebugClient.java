@@ -12,13 +12,14 @@ import com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse.*;
 import com.github.yukon39.bsl.debug.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -42,8 +43,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<String> getApiVersion() {
 
-        var params = new RequestParameters()
-                .setCommand("getRDbgAPIVer");
+        var params = new RequestParameters("getRDbgAPIVer");
 
         var request = new MiscRDbgGetAPIVerRequest();
 
@@ -59,9 +59,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> test() {
 
-        var params = new RequestParameters()
-                .setResource("rdbgTest")
-                .setCommand("test");
+        var params = new RequestParameters("test", "rdbgTest");
 
         var request = new RDBGTestRequest();
 
@@ -71,8 +69,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<AttachDebugUIResult> attach(char[] password, DebuggerOptions options) {
 
-        var params = new RequestParameters()
-                .setCommand("attachDebugUI");
+        var params = new RequestParameters("attachDebugUI");
 
         var request = new RDBGAttachDebugUIRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -96,8 +93,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Boolean> detach() {
 
-        var params = new RequestParameters()
-                .setCommand("detachDebugUI");
+        var params = new RequestParameters("detachDebugUI");
 
         var request = new RDBGDetachDebugUIRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -115,8 +111,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Boolean> startUpdateIB() {
 
-        var params = new RequestParameters()
-                .setCommand("startUpdateIB");
+        var params = new RequestParameters("startUpdateIB");
 
         var request = new RDBGStartUpdateIBRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -134,8 +129,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Boolean> finishUpdateIB() {
 
-        var params = new RequestParameters()
-                .setCommand("finishUpdateIB");
+        var params = new RequestParameters("finishUpdateIB");
 
         var request = new RDBGFinishUpdateIBRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -153,8 +147,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<BSLModuleIdInternal>> getInaccessibleModules() {
 
-        var params = new RequestParameters()
-                .setCommand("getInaccessibleModules");
+        var params = new RequestParameters("getInaccessibleModules");
 
         var request = new RDBGGetInaccessibleModulesRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -172,8 +165,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> setInaccessibleModules(List<BSLModuleIdInternal> moduleId) {
 
-        var params = new RequestParameters()
-                .setCommand("setInaccessibleModules");
+        var params = new RequestParameters("setInaccessibleModules");
 
         var request = new RDBGSetInaccessibleModulesRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -186,8 +178,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> initSettings(HTTPServerInitialDebugSettingsData data) {
 
-        var params = new RequestParameters()
-                .setCommand("initSettings");
+        var params = new RequestParameters("initSettings");
 
         var request = new RDBGSetInitialDebugSettingsRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -200,8 +191,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> setAutoAttachSettings(DebugAutoAttachSettings autoAttachSettings) {
 
-        var params = new RequestParameters()
-                .setCommand("setAutoAttachSettings");
+        var params = new RequestParameters("setAutoAttachSettings");
 
         var request = new RDBGSetAutoAttachSettingsRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -214,8 +204,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> attachDetachDebugTargets(Boolean attach, List<DebugTargetIdLight> targets) {
 
-        var params = new RequestParameters()
-                .setCommand("attachDetachDbgTargets");
+        var params = new RequestParameters("attachDetachDbgTargets");
 
         var request = new RDBGAttachDetachDebugTargetsRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -229,8 +218,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> terminateDebugTargets(List<DebugTargetId> targetID) {
 
-        var params = new RequestParameters()
-                .setCommand("terminateDbgTarget");
+        var params = new RequestParameters("terminateDbgTarget");
 
         var request = new RDBGTerminateRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -243,8 +231,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<DbgTargetStateInfo>> getAllTargetStates() {
 
-        var params = new RequestParameters()
-                .setCommand("getDbgAllTargetStates");
+        var params = new RequestParameters("getDbgAllTargetStates");
 
         var request = new RDBGGetDbgAllTargetStatesRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -262,8 +249,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<DbgTargetState> getTargetState(DebugTargetIdLight id) {
 
-        var params = new RequestParameters()
-                .setCommand("getDbgTargetState");
+        var params = new RequestParameters("getDbgTargetState");
 
         var request = new RDBGGetDbgTargetStateRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -282,9 +268,8 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<DBGUIExtCmdInfoBase>> ping() {
 
-        var params = new RequestParameters()
-                .setCommand("pingDebugUIParams")
-                .setDebugID(debugSession);
+        var params = new RequestParameters("pingDebugUIParams");
+        params.setDebugID(debugSession);
 
         var request = new RDBGPingDebugUIRequest();
 
@@ -300,8 +285,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> setBreakOnNextStatement() {
 
-        var params = new RequestParameters()
-                .setCommand("setBreakOnNextStatement");
+        var params = new RequestParameters("setBreakOnNextStatement");
 
         var request = new RDBGSetBreakOnNextStatementRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -312,8 +296,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> clearBreakOnNextStatement() {
 
-        var params = new RequestParameters()
-                .setCommand("clearBreakOnNextStatement");
+        var params = new RequestParameters("clearBreakOnNextStatement");
 
         var request = new RDBGClearBreakOnNextStatementRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -325,8 +308,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<Void> setBreakpoints(BPWorkspaceInternal bpWorkspace) {
 
-        var params = new RequestParameters()
-                .setCommand("setBreakpoints");
+        var params = new RequestParameters("setBreakpoints");
 
         var request = new RDBGSetBreakpointsRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -339,8 +321,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<DbgTargetStateInfo>> step(DebugTargetIdLight targetID, DebugStepAction action, Boolean simple) {
 
-        var params = new RequestParameters()
-                .setCommand("step");
+        var params = new RequestParameters("step");
 
         var request = new RDBGStepRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -361,8 +342,7 @@ public class HttpDebugClient {
 
     public CompletableFuture<List<StackItemViewInfoData>> getCallStack(DebugTargetIdLight id) {
 
-        var params = new RequestParameters()
-                .setCommand("getCallStack");
+        var params = new RequestParameters("getCallStack");
 
         var request = new RDBGGetCallStackRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -383,8 +363,7 @@ public class HttpDebugClient {
                                                                            List<CalculationSourceDataStorage> expressions,
                                                                            Integer waitTime) {
 
-        var params = new RequestParameters()
-                .setCommand("evalLocalVariables");
+        var params = new RequestParameters("evalLocalVariables");
 
         var request = new RDBGEvalLocalVariablesRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -411,8 +390,7 @@ public class HttpDebugClient {
                                                           List<CalculationSourceDataStorage> expressions,
                                                           Integer waitTime) {
 
-        var params = new RequestParameters()
-                .setCommand("evalExpr");
+        var params = new RequestParameters("evalExpr");
 
         var request = new RDBGEvalExprRequest();
         request.setIdOfDebuggerUI(debugSession);
@@ -440,7 +418,7 @@ public class HttpDebugClient {
 
     <T> CompletableFuture<T> execute(IRDBGRequest command, Class<T> responseType, RequestParameters requestParameters) {
 
-        String commandURL = String.format("%s/e1crdbg/%s", debugServerURL, requestParameters.toString());
+        var requestURI = requestParameters.requestURI(debugServerURL);
 
         return CompletableFuture
                 .completedFuture(command)
@@ -451,7 +429,7 @@ public class HttpDebugClient {
                         throw new CompletionException(e);
                     }
                 })
-                .thenApply(body -> HttpRequest.newBuilder(URI.create(commandURL))
+                .thenApply(body -> HttpRequest.newBuilder(requestURI)
                         .header("Accept", "application/xml")
                         .header("Content-Type", "application/xml; charset=utf-8")
                         .header("Accept-Encoding", "gzip")
@@ -480,32 +458,5 @@ public class HttpDebugClient {
                         throw new CompletionException(httpDebugException);
                     }
                 });
-    }
-
-    static class RequestParameters {
-        private final HashMap<String, String> parameters = new HashMap<>();
-        private String resource = "rdbg";
-
-        private RequestParameters setCommand(String commandName) {
-            parameters.put("cmd", commandName);
-            return this;
-        }
-
-        private RequestParameters setDebugID(UUID debugID) {
-            parameters.put("dbgui", debugID.toString());
-            return this;
-        }
-
-        private RequestParameters setResource(String resource) {
-            this.resource = resource;
-            return this;
-        }
-
-        @Override
-        public String toString() {
-            var result = new StringJoiner("&");
-            parameters.forEach((key, value) -> result.add(String.format("%s=%s", key, value)));
-            return resource + "?" + result.toString();
-        }
     }
 }
