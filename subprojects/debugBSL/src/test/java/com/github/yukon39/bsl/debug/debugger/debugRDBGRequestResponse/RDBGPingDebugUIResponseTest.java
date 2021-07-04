@@ -3,7 +3,6 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
-import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
 import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.BSLModuleIdInternalTest;
 import com.github.yukon39.bsl.debug.debugger.debugBaseData.DebugTargetIdTest;
@@ -88,8 +87,8 @@ public class RDBGPingDebugUIResponseTest {
         propInfo.setIsReaded(true);
 
         var valueInfo = new BaseValueInfoData();
-        valueInfo.setTypeCode(DebugValueTypeCode.BOOLEAN.getTypeCode());
-        valueInfo.setTypeName(DebugValueTypeCode.BOOLEAN.getTypeName());
+        valueInfo.setTypeCode(2); // BOOLEAN
+        valueInfo.setTypeName("Boolean");
         valueInfo.setValueBoolean(false);
 
         var valueOfContextPropInfo = new CalculationResultContextPropertyInfo();

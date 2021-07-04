@@ -1,7 +1,6 @@
 package com.github.yukon39.bsl.debug.debugger.debugCalculations;
 
 
-import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
 import com.github.yukon39.bsl.debug.utils.StringUtils;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -15,7 +14,7 @@ import java.util.Date;
 public class BaseValueInfoData {
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
-    private Integer typeCode = DebugValueTypeCode.UNDEFINED.getTypeCode();
+    private Integer typeCode = 0; // UNDEFINED
 
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugCalculations")
     private String typeName;

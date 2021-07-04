@@ -2,7 +2,6 @@ package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
 import com.github.yukon39.bsl.debug.DebuggerException;
 import com.github.yukon39.bsl.debug.DebuggerXmlSerializer;
-import com.github.yukon39.bsl.debug.data.DebugValueTypeCode;
 import com.github.yukon39.bsl.debug.debugger.UtilsTest;
 import com.github.yukon39.bsl.debug.debugger.debugCalculations.*;
 import org.junit.jupiter.api.Test;
@@ -41,8 +40,8 @@ class RDBGEvalLocalVariablesResponseTest {
         valueOfContextPropInfo.setPropInfo(propInfo);
 
         var valueInfo = new BaseValueInfoData();
-        valueInfo.setTypeCode(DebugValueTypeCode.BOOLEAN.getTypeCode());
-        valueInfo.setTypeName(DebugValueTypeCode.BOOLEAN.getTypeNameRU());
+        valueInfo.setTypeCode(2); // BOOLEAN
+        valueInfo.setTypeName("Boolean");
         valueInfo.setValueBoolean(false);
         valueOfContextPropInfo.setValueInfo(valueInfo);
 
@@ -55,8 +54,8 @@ class RDBGEvalLocalVariablesResponseTest {
         valueOfContextPropInfo.setPropInfo(propInfo);
 
         valueInfo = new BaseValueInfoData();
-        valueInfo.setTypeCode(DebugValueTypeCode.VALUE_LIST_ITEM.getTypeCode());
-        valueInfo.setTypeName(DebugValueTypeCode.VALUE_LIST_ITEM.getTypeNameRU());
+        valueInfo.setTypeCode(100);
+        valueInfo.setTypeName("ValueListItem");
         valueInfo.setExpandable(true);
         valueInfo.setSupportIContext(true);
         valueOfContextPropInfo.setValueInfo(valueInfo);

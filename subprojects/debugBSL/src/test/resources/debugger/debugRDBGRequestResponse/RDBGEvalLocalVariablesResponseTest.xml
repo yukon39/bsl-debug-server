@@ -24,7 +24,7 @@
                 </debugCalculations:propInfo>
                 <debugCalculations:valueInfo>
                     <debugCalculations:typeCode>2</debugCalculations:typeCode>
-                    <debugCalculations:typeName>Булево</debugCalculations:typeName>
+                    <debugCalculations:typeName>Boolean</debugCalculations:typeName>
                     <debugCalculations:valueBoolean>false</debugCalculations:valueBoolean>
                 </debugCalculations:valueInfo>
             </debugCalculations:valueOfContextPropInfo>
@@ -35,7 +35,7 @@
                 </debugCalculations:propInfo>
                 <debugCalculations:valueInfo>
                     <debugCalculations:typeCode>100</debugCalculations:typeCode>
-                    <debugCalculations:typeName>ЭлементСпискаЗначений</debugCalculations:typeName>
+                    <debugCalculations:typeName>ValueListItem</debugCalculations:typeName>
                     <debugCalculations:isExpandable>true</debugCalculations:isExpandable>
                     <debugCalculations:isSupportIContext>true</debugCalculations:isSupportIContext>
                 </debugCalculations:valueInfo>
