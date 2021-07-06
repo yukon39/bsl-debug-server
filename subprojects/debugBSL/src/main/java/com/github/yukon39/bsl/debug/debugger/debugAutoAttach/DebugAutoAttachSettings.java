@@ -10,14 +10,23 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Описание настроек автоматического подключения предметов отладки
+ */
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(namespace = "http://v8.1c.ru/8.3/debugger/debugAutoAttach")
 public class DebugAutoAttachSettings {
 
+    /**
+     * Тип предмета отладки для автоматического подключения
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugAutoAttach")
     private final List<DebugTargetType> targetType = new ArrayList<>();
 
+    /**
+     * Имена областей отладки
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugAutoAttach")
     private final List<String> areaName = new ArrayList<>();
 }

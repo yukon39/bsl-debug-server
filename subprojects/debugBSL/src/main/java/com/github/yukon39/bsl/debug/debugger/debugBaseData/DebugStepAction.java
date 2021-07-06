@@ -1,22 +1,39 @@
 package com.github.yukon39.bsl.debug.debugger.debugBaseData;
 
 import jakarta.xml.bind.annotation.XmlEnumValue;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * Описание шага отладки
+ */
 public enum DebugStepAction {
 
+    /**
+     * Неизвестное состояние
+     */
     @XmlEnumValue("Unknown")
     UNKNOWN("Unknown"),
 
+    /**
+     * Выполнить шаг
+     */
     @XmlEnumValue("Step")
     STEP("Step"),
 
+    /**
+     * Выполнить шаг внутрь
+     */
     @XmlEnumValue("StepIn")
     STEP_IN("StepIn"),
 
+    /**
+     * Выполнить шаг наружу
+     */
     @XmlEnumValue("StepOut")
     STEP_OUT("StepOut"),
 
+    /**
+     * Продолжить отладку
+     */
     @XmlEnumValue("Continue")
     CONTINUE("Continue");
 

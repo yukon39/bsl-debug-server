@@ -1,16 +1,27 @@
 package com.github.yukon39.bsl.debug.debugger.debugBaseData;
 
 import jakarta.xml.bind.annotation.XmlEnumValue;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * Определение типа информационной базы для предмета отладки
+ */
 public enum IsServerInfoBase {
 
+    /**
+     * Тип неопределен
+     */
     @XmlEnumValue("undefined")
     UNDEFINED("undefined"),
 
+    /**
+     * Истина (информационная база клиент-серверная)
+     */
     @XmlEnumValue("true")
     TRUE("true"),
 
+    /**
+     * Ложь (информационная база файловая)
+     */
     @XmlEnumValue("false")
     FALSE("false");
 
