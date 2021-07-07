@@ -8,11 +8,18 @@ import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
+/**
+ * Описание события о запросе помощника для активизации окна партнера по соединению
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DBGUIExtCmdInfoForegroundHelperRequest extends DBGUIExtCmdInfoBase {
+
+    /**
+     * Идентификатор отправителя
+     */
     private UUID senderID;
 
     public DBGUIExtCmdInfoForegroundHelperRequest() {

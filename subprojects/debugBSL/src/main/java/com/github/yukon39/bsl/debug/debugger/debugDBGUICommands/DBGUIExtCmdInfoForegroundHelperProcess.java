@@ -7,12 +7,18 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Описание события об активизации окна партнера по соединению переданным помощником
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DBGUIExtCmdInfoForegroundHelperProcess extends DBGUIExtCmdInfoBase {
 
+    /**
+     * Данные для активации окна
+     */
     private ForegroundWindowData data;
 
     public DBGUIExtCmdInfoForegroundHelperProcess() {

@@ -8,12 +8,18 @@ import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Описание события о вычислении выражения
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "DBGUIExtCmdInfoExprEvaluated")
 public class DBGUIExtCmdInfoExprEvaluated extends DBGUIExtCmdInfoBase {
 
+    /**
+     * Результат вычисления
+     */
     @XmlElement
     private CalculationResultBaseData evalExprResBaseData;
 

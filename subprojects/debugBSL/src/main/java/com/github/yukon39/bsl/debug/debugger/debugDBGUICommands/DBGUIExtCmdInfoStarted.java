@@ -5,6 +5,9 @@ import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Описание события о начале работы предмета отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement

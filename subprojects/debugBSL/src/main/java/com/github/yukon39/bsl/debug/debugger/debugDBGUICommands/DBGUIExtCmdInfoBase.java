@@ -8,6 +8,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import lombok.Data;
 
+/**
+ * Базовый тип для описания информации о событии
+ */
 @Data
 @XmlSeeAlso({
         DBGUIExtCmdInfoCallStackFormed.class,
@@ -22,17 +25,36 @@ import lombok.Data;
         DBGUIExtCmdInfoRte.class,
         DBGUIExtCmdInfoRteBPCondition.class,
         DBGUIExtCmdInfoStarted.class,
-        DBGUIExtCmdInfoValueModifyResult.class})
+        DBGUIExtCmdInfoValueModifyResult.class,
+        DBGUIExtCmdShowMetadataObject.class})
 @XmlRootElement
 public abstract class DBGUIExtCmdInfoBase {
 
+    /**
+     * Идентификатор события для клиента отладки (в виде числа)
+     */
     @XmlElement
     private final Integer cmdIDNum;
+
+    /**
+     * Идентификатор события для клиента отладки
+     */
     @XmlElement
     private final DBGUIExtCmds cmdId;
 
+    /**
+     * Идентификатор события для клиента отладки (в виде строки)
+     */
     private DebugTargetIdStr targetIDStr;
+
+    /**
+     * Идентификатор предмета отладки
+     */
     private DebugTargetId targetID;
+
+    /**
+     * Идентификатор события, ответом на которое является данное событие
+     */
     private String requestQueueID;
 
     DBGUIExtCmdInfoBase() {

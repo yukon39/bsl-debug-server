@@ -6,10 +6,17 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Описание события о скорректированных точках останова для модуля
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DBGUIExtCmdInfoCorrectedBP extends DBGUIExtCmdInfoBase {
+
+    /**
+     * Пространство точек останова
+     */
     private BPWorkspaceInternal bpWorkspace;
 
     public DBGUIExtCmdInfoCorrectedBP() {
