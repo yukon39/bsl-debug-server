@@ -10,11 +10,18 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ответ на запрос вычисления выражения в предмете отладки
+ */
+
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "response", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 public class RDBGEvalExprResponse implements IRDBGResponse {
 
+    /**
+     * Результат вычисления выражения
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
     private final List<CalculationResultBaseData> result = new ArrayList<>();
 }

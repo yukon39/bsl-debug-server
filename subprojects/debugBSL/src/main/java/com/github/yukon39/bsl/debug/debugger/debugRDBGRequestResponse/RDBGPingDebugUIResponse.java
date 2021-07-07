@@ -7,6 +7,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ответ на запрос о наличии событий для клиентской части отладчика
+ */
 @Data
 @XmlRootElement(name = "response", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 @XmlAccessorType(XmlAccessType.NONE)
@@ -23,9 +26,14 @@ import java.util.List;
         DBGUIExtCmdInfoRte.class,
         DBGUIExtCmdInfoRteBPCondition.class,
         DBGUIExtCmdInfoStarted.class,
-        DBGUIExtCmdInfoValueModifyResult.class})
+        DBGUIExtCmdInfoValueModifyResult.class,
+        DBGUIExtCmdShowMetadataObject.class
+})
 public class RDBGPingDebugUIResponse implements IRDBGResponse {
 
+    /**
+     * События для клиентской части отладчика
+     */
     @XmlElement
-    private List<DBGUIExtCmdInfoBase> result = new ArrayList<>();
+    private final List<DBGUIExtCmdInfoBase> result = new ArrayList<>();
 }

@@ -5,9 +5,23 @@ import com.github.yukon39.bsl.debug.debugger.debugForegroundData.ForegroundWindo
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Запрос на активизицию отладчика из предмета отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RDBGApplyDebuggerForegroundHelperData extends RDbgBaseRequest {
-    private DebugTargetId[] targetID;
+
+    /**
+     * Идентификатор предмета отладки
+     */
+    private final List<DebugTargetId> targetID = new ArrayList<>();
+
+    /**
+     * Данные для активации окна
+     */
     private ForegroundWindowData data;
 }

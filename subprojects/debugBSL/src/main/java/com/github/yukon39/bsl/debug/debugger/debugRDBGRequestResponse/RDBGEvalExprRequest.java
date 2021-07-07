@@ -12,18 +12,30 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Запрос для вычисления выражения в предмете отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 public class RDBGEvalExprRequest extends RDbgBaseRequest implements IRDBGRequest {
 
+    /**
+     * Время для ожидания результата вычисления выражения (в милисекундах): 0 - без ожидания результата
+     */
     @XmlElement
     private Integer calcWaitingTime;
 
+    /**
+     * Идентификатор предмета отладки
+     */
     @XmlElement
     private DebugTargetIdLight targetID;
 
+    /**
+     * Выражение для вычисления
+     */
     @XmlElement
     private final List<CalculationSourceDataStorage> expr = new ArrayList<>();
 }

@@ -11,12 +11,18 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Запрос на завершение работы предметов отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 public class RDBGTerminateRequest extends RDbgBaseRequest implements IRDBGRequest {
 
+    /**
+     * Идентификатор предмета отладки
+     */
     @XmlElement
     private final List<DebugTargetId> targetID = new ArrayList<>();
 }

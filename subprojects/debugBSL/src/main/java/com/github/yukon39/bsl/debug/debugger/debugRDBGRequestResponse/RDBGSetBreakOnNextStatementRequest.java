@@ -5,6 +5,9 @@ import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Запрос на выполнение останова на следующей строке кода
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlType(name = "RDBGSetBreamOnNextStatementRequest")

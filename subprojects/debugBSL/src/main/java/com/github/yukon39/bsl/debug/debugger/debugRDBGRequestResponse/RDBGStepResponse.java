@@ -10,11 +10,17 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ответ на выполнение шага или останова
+ */
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "response", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 public class RDBGStepResponse implements IRDBGResponse {
 
+    /**
+     * Состояние предмета отладки
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
     private final List<DbgTargetStateInfo> item = new ArrayList<>();
 }

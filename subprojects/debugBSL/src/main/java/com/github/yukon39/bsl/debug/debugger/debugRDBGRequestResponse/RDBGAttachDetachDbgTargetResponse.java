@@ -4,11 +4,11 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
 /**
- * Ответ на запрос о проверке возможности принудительного завершения работы предмета отладки
+ * Ответ на запрос о подключении/отключении предмета отладки
  */
 @Data
 @XmlRootElement(name = "response", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
-public class RDBGCheckTerminateAbilityResponse implements IRDBGResponse {
+public class RDBGAttachDetachDbgTargetResponse implements IRDBGResponse {
 
     /**
      * Результат выполнения операции

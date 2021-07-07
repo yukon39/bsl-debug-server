@@ -8,9 +8,16 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Запрос на перезапуск приложений с предметами отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
 public class RDBGRestartRequest extends RDbgBaseRequest implements IRDBGRequest {
+
+    /**
+     * Идентификатор предмета отладки
+     */
     private final List<DebugTargetId> targetID = new ArrayList<>();
 }

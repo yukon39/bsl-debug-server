@@ -12,19 +12,24 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Настройки окружения для процесса отладки на сервере отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse",
-        propOrder = {
-                "debugAreaInfo",
-                "autoAttachSettings"
-        })
+@XmlType(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
 public class HTTPServerInitialDebugSettingsData extends HTTPInitialDebugSettingsData {
 
+    /**
+     * Области отладки
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
     private final List<DebugAreaInfo> debugAreaInfo = new ArrayList<>();
 
+    /**
+     * Настройки автоматического подключения предметов отладки
+     */
     @XmlElement(namespace = "http://v8.1c.ru/8.3/debugger/debugRDBGRequestResponse")
     private DebugAutoAttachSettings autoAttachSettings;
 }

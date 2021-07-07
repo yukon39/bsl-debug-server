@@ -1,12 +1,21 @@
 package com.github.yukon39.bsl.debug.debugger.debugRDBGRequestResponse;
 
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Запрос на получение списка предметов отладки
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
-public class RDBGSGetDbgTargetsRequest extends RDbgBaseRequest {
-    private String degugAreaName; // yes, degug
+public class RDBGSGetDbgTargetsRequest extends RDbgBaseRequest implements  IRDBGRequest {
+
+    /**
+    * Имя области отладки
+    */
+    @XmlElement(name= "degugAreaName") // yes, degug
+    private String debugAreaName;
 }

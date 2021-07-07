@@ -4,8 +4,11 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Запрос об идентификаторе клиентской части отладчика
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @XmlRootElement(name = "request", namespace = "http://v8.1c.ru/8.3/debugger/debugBaseData")
-public class RDBGGetDebugIDRequest extends RDbgBaseRequest {
+public class RDBGGetDebugIDRequest extends RDbgBaseRequest implements IRDBGRequest {
 }
