@@ -1,7 +1,7 @@
 plugins {
     java
     jacoco
-    id("io.franzbecker.gradle-lombok") version "4.0.0"
+    id("io.franzbecker.gradle-lombok") version "5.0.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.sonarqube") version "3.0"
 }
